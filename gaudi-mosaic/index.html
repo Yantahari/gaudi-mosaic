@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="description" content="Crea mosaics digitals amb la tècnica del trencadís d'Antoni Gaudí. App gratuïta per al centenari 1926-2026. / Create digital mosaics with Antoni Gaudí's trencadís technique. Free app for the 1926-2026 centenary.">
+  <meta name="theme-color" content="#1C1914">
+  <meta name="author" content="Gaudí Mosaic">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Gaudí Mosaic — Trencadís Creator</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Gaudí Mosaic — Trencadís Creator">
+  <meta property="og:description" content="Crea mosaics digitals amb la tècnica del trencadís d'Antoni Gaudí. App gratuïta per al centenari 1926-2026. / Create digital mosaics with Antoni Gaudí's trencadís technique. Free app for the 1926-2026 centenary.">
+  <meta property="og:image" content="https://gaudimosaic.art/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Gaudí Mosaic — Fragments de trencadís amb rajoles de colors envoltant el títol de l'aplicació">
+  <meta property="og:url" content="https://gaudimosaic.art">
+  <meta property="og:site_name" content="Gaudí Mosaic">
+  <meta property="og:locale" content="ca_ES">
+  <meta property="og:locale:alternate" content="en_GB">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gaudí Mosaic — Trencadís Creator">
+  <meta name="twitter:description" content="Crea mosaics digitals amb la tècnica del trencadís d'Antoni Gaudí. App gratuïta per al centenari 1926-2026. / Create digital mosaics with Antoni Gaudí's trencadís technique. Free app for the 1926-2026 centenary.">
+  <meta name="twitter:image" content="https://gaudimosaic.art/assets/og-image.png">
+  <meta name="twitter:image:alt" content="Gaudí Mosaic — Fragments de trencadís amb rajoles de colors envoltant el títol de l'aplicació">
+
+  <!-- Tipografies -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Estils -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/splash.css">
+  <link rel="stylesheet" href="css/panels.css">
+  <link rel="stylesheet" href="css/modals.css">
+</head>
+<body>
+
+<!-- Patró de fons decoratiu -->
+<div class="bg-pattern"></div>
+
+<!-- ===== PANTALLA DE BENVINGUDA ===== -->
+<div class="splash" id="splash">
+  <div class="splash-mosaic" id="splashMosaic"></div>
+  <h1 data-i18n="splash.title">Gaudí Mosaic</h1>
+  <p class="splash-subtitle" data-i18n="splash.subtitle">Trencadís Creator</p>
+  <div class="splash-lang" id="splashLang"></div>
+  <p class="splash-cita" id="splashCita"></p>
+  <button class="splash-enter" id="enterBtn" data-i18n="splash.enter">Comença a crear</button>
+  <div class="splash-year" data-i18n="splash.year">1926 — 2026 · Centenari d'Antoni Gaudí</div>
+</div>
+
+<!-- ===== APLICACIÓ PRINCIPAL ===== -->
+<div class="app" id="app">
+
+  <!-- Capçalera -->
+  <div class="header">
+    <div class="header-brand" data-i18n-title="header.brandTitle" title="Fes doble clic per una sorpresa">Gaudí <span>Mosaic</span></div>
+    <div class="header-actions">
+      <button class="header-btn edu" id="eduBtn" data-i18n="header.edu" data-i18n-title="header.eduTitle" data-i18n-aria="header.eduAria" title="Descobreix Gaudí (?)" aria-label="Contingut educatiu i guia">🏛 Gaudí</button>
+      <div class="header-sep"></div>
+      <button class="header-btn" id="loadBtn" data-i18n="header.load" data-i18n-title="header.loadTitle" title="Carregar projecte (Ctrl+O)" aria-label="Carregar">↑ Carregar</button>
+      <button class="header-btn" id="saveBtn" data-i18n="header.save" data-i18n-title="header.saveTitle" title="Guardar projecte (Ctrl+S)" aria-label="Guardar">↓ Guardar</button>
+      <div class="header-sep"></div>
+      <button class="header-btn" id="clearBtn" data-i18n="header.clear" data-i18n-title="header.clearTitle" title="Netejar llenç" aria-label="Netejar">Netejar</button>
+      <button class="header-btn" id="undoBtn" data-i18n="header.undo" data-i18n-title="header.undoTitle" title="Desfer (Ctrl+Z)" aria-label="Desfer">↩ Desfer</button>
+      <button class="header-btn primary" id="exportBtn" data-i18n="header.export" data-i18n-title="header.exportTitle" title="Exportar PNG (Ctrl+E)" aria-label="Exportar">Exportar</button>
+      <div class="header-sep"></div>
+      <!-- Selector d'idioma -->
+      <div class="lang-selector" id="langSelector"></div>
+    </div>
+  </div>
+
+  <!-- Espai de treball -->
+  <div class="workspace">
+
+    <!-- Panell lateral -->
+    <div class="panel" id="panel">
+      <!-- Pestanyes -->
+      <div class="panel-tabs">
+        <button class="panel-tab active" data-panel="ceramics" data-i18n="panels.ceramics">Ceràmiques</button>
+        <button class="panel-tab" data-panel="layers" data-i18n="panels.layers">Capes</button>
+        <button class="panel-tab" data-panel="templates" data-i18n="panels.templates">Plantilles</button>
+      </div>
+
+      <!-- Contingut: Ceràmiques -->
+      <div class="panel-content active" id="panel-ceramics">
+        <div class="panel-header">
+          <div class="panel-title" data-i18n="panels.ceramicsTitle">Ceràmiques</div>
+          <div class="panel-subtitle" data-i18n="panels.ceramicsSubtitle">Selecciona i trenca per crear fragments</div>
+        </div>
+
+        <!-- Filtre d'acabat -->
+        <div class="ceramic-controls" id="ceramicControls">
+          <div class="control-row">
+            <span class="control-label" data-i18n="panels.finishLabel">Acabat</span>
+            <select class="control-select" id="ceramicType">
+              <option value="glazed" data-i18n="finishes.glazed">Vidriat</option>
+              <option value="matte" data-i18n="finishes.matte">Mat</option>
+              <option value="iridescent" data-i18n="finishes.iridescent">Iridiscent</option>
+              <option value="rustic" data-i18n="finishes.rustic">Rústic</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Graella de ceràmiques -->
+        <div class="ceramics-grid" id="ceramicsGrid"></div>
+      </div>
+
+      <!-- Contingut: Capes -->
+      <div class="panel-content" id="panel-layers">
+        <div class="panel-header">
+          <div class="panel-title" data-i18n="panels.layersTitle">Capes</div>
+          <div class="panel-subtitle" data-i18n="panels.layersSubtitle">Organitza el teu mosaic per capes</div>
+        </div>
+        <div class="layers-section">
+          <div id="layersList"></div>
+          <button class="add-layer-btn" id="addLayerBtn" data-i18n="panels.addLayer">+ Nova capa</button>
+        </div>
+      </div>
+
+      <!-- Contingut: Plantilles -->
+      <div class="panel-content" id="panel-templates">
+        <div class="panel-header">
+          <div class="panel-title" data-i18n="panels.templatesTitle">Plantilles</div>
+          <div class="panel-subtitle" data-i18n="panels.templatesSubtitle">Guies visuals inspirades en Gaudí</div>
+        </div>
+        <div class="templates-section" id="templatesList"></div>
+        <div class="template-opacity-wrap">
+          <div class="control-row">
+            <span class="control-label" data-i18n="panels.opacityLabel">Opacitat</span>
+            <input type="range" class="control-range" id="templateOpacity" min="5" max="50" value="15">
+          </div>
+          <div class="control-row">
+            <span class="control-label" data-i18n="panels.sizeLabel">Mida</span>
+            <input type="range" class="control-range" id="templateScale" min="50" max="200" value="100">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Àrea principal del llenç -->
+    <div class="canvas-area" id="canvasArea">
+
+      <canvas id="mosaicCanvas"></canvas>
+
+      <div class="canvas-hint" id="canvasHint">
+        <div class="canvas-hint-icon">✦</div>
+        <p><span data-i18n="canvas.hint">Selecciona una ceràmica del panell esquerre</span><br>
+        <strong data-i18n="canvas.hintBold">Trenca-la</strong> <span data-i18n="canvas.hintSuffix">i arrossega els fragments aquí</span></p>
+      </div>
+
+      <!-- Safata de fragments -->
+      <div class="fragments-tray hidden" id="fragmentsTray">
+        <div class="tray-label" data-i18n="canvas.trayLabel">Peces</div>
+      </div>
+
+      <!-- Info de peça seleccionada -->
+      <div class="piece-info" id="pieceInfo"></div>
+    </div>
+  </div>
+
+  <!-- Zona de trencament (overlay) -->
+  <div class="break-zone" id="breakZone">
+    <div class="break-instruction">
+      <span data-i18n="breakzone.title">Trenca la ceràmica</span>
+      <small data-i18n="breakzone.subtitle">L'atzar decideix les fractures, com en un trencadís real</small>
+    </div>
+    <div class="break-canvas-wrap">
+      <canvas id="breakCanvas" width="300" height="300"></canvas>
+    </div>
+    <!-- Controls de fractura dins la zona de trencament -->
+    <div class="break-controls">
+      <div class="control-row">
+        <span class="control-label" data-i18n="breakzone.algorithmLabel">Algorisme</span>
+        <select class="control-select" id="breakFractureType">
+          <option value="voronoi" data-i18n="fractures.voronoi">Voronoi</option>
+          <option value="radial" data-i18n="fractures.radial">Radial</option>
+          <option value="organic" data-i18n="fractures.organic">Orgànic</option>
+        </select>
+      </div>
+      <div class="control-row">
+        <span class="control-label" data-i18n="breakzone.granularityLabel">Granularitat</span>
+        <input type="range" class="control-range" id="breakGranularity" min="0" max="100" value="50">
+        <span class="control-value" id="breakGranularityLabel" data-i18n="breakzone.granularityMedium">Mitjà</span>
+      </div>
+    </div>
+    <div class="break-actions">
+      <button class="break-btn crack" id="crackBtn" data-i18n="breakzone.crack">⚡ Trencar</button>
+      <button class="break-btn use" id="useFragsBtn" style="display:none" data-i18n="breakzone.useFragments">✓ Usar fragments</button>
+      <button class="break-btn cancel" id="cancelBreakBtn" data-i18n="breakzone.cancel">Cancel·lar</button>
+    </div>
+  </div>
+
+  <!-- Barra d'eines inferior (desktop) -->
+  <div class="toolbar" id="toolbar">
+    <span class="tool-label" data-i18n="tools.label">Eines</span>
+    <button class="tool-btn active" id="toolMove" data-tool="move" data-i18n-title="tools.moveTitle" data-i18n-aria="tools.move" title="Moure (V)" aria-label="Moure">✋</button>
+    <button class="tool-btn" id="toolRotate" data-tool="rotate" data-i18n-title="tools.rotateTitle" data-i18n-aria="tools.rotate" title="Girar (R)" aria-label="Girar">↻</button>
+    <button class="tool-btn" id="toolScale" data-tool="scale" data-i18n-title="tools.scaleTitle" data-i18n-aria="tools.scale" title="Escalar (S)" aria-label="Escalar">⤡</button>
+    <button class="tool-btn" id="toolPan" data-tool="pan" data-i18n-title="tools.panTitle" data-i18n-aria="tools.pan" title="Desplaçar (Espai)" aria-label="Desplaçar">☩</button>
+    <div class="tool-sep"></div>
+    <button class="tool-btn" id="toolDuplicate" data-i18n-title="tools.duplicateTitle" data-i18n-aria="tools.duplicate" title="Duplicar (Ctrl+D)" aria-label="Duplicar">⊕</button>
+    <button class="tool-btn" id="toolDelete" data-tool="delete" data-i18n-title="tools.deleteTitle" data-i18n-aria="tools.delete" title="Eliminar (Supr)" aria-label="Eliminar">✕</button>
+    <div class="tool-sep"></div>
+
+    <!-- Controls de rejunt -->
+    <div class="grout-controls">
+      <span class="tool-label" data-i18n="grout.label">Rejunt</span>
+      <input type="checkbox" class="grout-toggle" id="groutToggle" data-i18n-title="grout.toggle" data-i18n-aria="grout.toggle" title="Activar rejunt" aria-label="Activar rejunt">
+      <input type="color" class="grout-color" id="groutColor" value="#B5A898" data-i18n-title="grout.color" data-i18n-aria="grout.color" title="Color del rejunt" aria-label="Color del rejunt">
+      <input type="range" class="grout-width control-range" id="groutWidth" min="1" max="4" value="2" data-i18n-title="grout.width" title="Amplada del rejunt">
+    </div>
+    <div class="tool-sep"></div>
+
+    <!-- Fons -->
+    <span class="tool-label" data-i18n="backgrounds.label">Fons</span>
+    <button class="bg-btn active" id="bg-dark" data-i18n-title="backgrounds.dark" title="Fosc" aria-label="Fons fosc" style="background:#1C1914"></button>
+    <button class="bg-btn" id="bg-light" data-i18n-title="backgrounds.light" title="Clar" aria-label="Fons clar" style="background:#F5ECD7"></button>
+    <button class="bg-btn" id="bg-blue" data-i18n-title="backgrounds.blue" title="Blau mediterrani" aria-label="Fons blau" style="background:#1A3A4A"></button>
+    <button class="bg-btn" id="bg-stone" data-i18n-title="backgrounds.stone" title="Pedra" aria-label="Fons pedra" style="background:#8C7B6B"></button>
+    <button class="bg-btn" id="bg-cement" data-i18n-title="backgrounds.cement" title="Ciment" aria-label="Fons ciment" style="background:#A09585"></button>
+    <div class="tool-sep"></div>
+
+    <button class="tool-btn" id="zoomReset" data-i18n-title="tools.resetZoomTitle" data-i18n-aria="tools.resetZoom" title="Reiniciar zoom (Ctrl+0)" aria-label="Reiniciar zoom">🔍</button>
+  </div>
+
+  <!-- Navegació mòbil inferior (pestanyes) -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Navegació principal mòbil">
+    <button class="mobile-nav-btn active" data-view="ceramics" data-i18n-aria="mobile.ceramics" aria-label="Ceràmiques">
+      <span class="mobile-nav-icon">🎨</span>
+      <span class="mobile-nav-label" data-i18n="mobile.ceramics">Ceràmiques</span>
+    </button>
+    <button class="mobile-nav-btn" data-view="canvas" data-i18n-aria="mobile.canvas" aria-label="Llenç">
+      <span class="mobile-nav-icon">✦</span>
+      <span class="mobile-nav-label" data-i18n="mobile.canvas">Llenç</span>
+    </button>
+    <button class="mobile-nav-btn" data-view="layers" data-i18n-aria="mobile.layers" aria-label="Capes">
+      <span class="mobile-nav-icon">◫</span>
+      <span class="mobile-nav-label" data-i18n="mobile.layers">Capes</span>
+    </button>
+    <button class="mobile-nav-btn" data-view="tools" data-i18n-aria="mobile.tools" aria-label="Eines">
+      <span class="mobile-nav-icon">⚙</span>
+      <span class="mobile-nav-label" data-i18n="mobile.tools">Eines</span>
+    </button>
+  </nav>
+</div>
+
+<!-- Notificació toast -->
+<div class="notification" id="notification" role="status" aria-live="polite"></div>
+
+<!-- Entrada de l'aplicació -->
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>

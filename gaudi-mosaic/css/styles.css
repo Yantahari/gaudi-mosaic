@@ -1,0 +1,731 @@
+/* =====================================================
+   GAUDÍ MOSAIC — Estils principals
+   "L'originalitat consisteix a tornar a l'origen."
+   ===================================================== */
+
+/* --- Variables de disseny --- */
+:root {
+  --gaudi-gold: #D4A843;
+  --gaudi-blue: #2E6B8A;
+  --gaudi-teal: #1A8A7D;
+  --gaudi-orange: #D4763A;
+  --gaudi-cream: #F5ECD7;
+  --gaudi-dark: #1C1914;
+  --gaudi-ceramic: #E8DCC8;
+  --gaudi-green: #4A7C59;
+  --gaudi-red: #B84233;
+  --gaudi-white: #FAF6EE;
+  --shadow-soft: 0 4px 20px rgba(28,25,20,0.15);
+  --shadow-deep: 0 8px 40px rgba(28,25,20,0.25);
+  --border-subtle: 1px solid rgba(212,168,67,0.15);
+  --border-faint: 1px solid rgba(212,168,67,0.08);
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Reset i base --- */
+*, *::before, *::after {
+  margin: 0; padding: 0; box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--gaudi-dark);
+  color: var(--gaudi-cream);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Patró de fons --- */
+.bg-pattern {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.06;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, var(--gaudi-gold) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, var(--gaudi-blue) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, var(--gaudi-teal) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* --- App principal --- */
+.app {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  z-index: 1;
+}
+.app.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Capçalera --- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: rgba(28,25,20,0.95);
+  border-bottom: var(--border-subtle);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.header-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gaudi-cream);
+  cursor: pointer;
+  user-select: none;
+}
+.header-brand span { color: var(--gaudi-gold); }
+
+.header-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.header-btn {
+  padding: 6px 12px;
+  background: rgba(212,168,67,0.08);
+  border: 1px solid rgba(212,168,67,0.15);
+  color: var(--gaudi-gold);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.header-btn:hover {
+  background: rgba(212,168,67,0.18);
+  border-color: rgba(212,168,67,0.3);
+}
+.header-btn.primary {
+  background: var(--gaudi-gold);
+  color: var(--gaudi-dark);
+  border-color: var(--gaudi-gold);
+  font-weight: 600;
+}
+.header-btn.primary:hover {
+  background: #c49930;
+}
+.header-btn.edu {
+  background: rgba(26,138,125,0.15);
+  border-color: rgba(26,138,125,0.3);
+  color: #24ADA0;
+}
+.header-btn.edu:hover {
+  background: rgba(26,138,125,0.25);
+}
+.header-btn.help {
+  background: rgba(212,168,67,0.1);
+  border-color: rgba(212,168,67,0.2);
+  font-size: 13px;
+  padding: 4px 8px;
+}
+.header-btn.help:hover {
+  background: rgba(212,168,67,0.2);
+}
+
+.header-sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(212,168,67,0.1);
+  margin: 0 4px;
+}
+
+/* --- Selector d'idioma --- */
+.lang-selector {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+.lang-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  transition: all 0.2s;
+  opacity: 0.5;
+}
+.lang-btn:hover {
+  opacity: 0.8;
+  border-color: rgba(212,168,67,0.2);
+}
+.lang-btn.active {
+  opacity: 1;
+  border-color: rgba(212,168,67,0.4);
+  background: rgba(212,168,67,0.08);
+}
+
+/* --- Espai de treball --- */
+.workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* --- Panell lateral --- */
+.panel {
+  width: 260px;
+  background: rgba(28,25,20,0.97);
+  border-right: var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: transform var(--transition-smooth);
+}
+
+.panel-tabs {
+  display: flex;
+  border-bottom: var(--border-faint);
+}
+.panel-tab {
+  flex: 1;
+  padding: 10px 8px;
+  background: none;
+  border: none;
+  color: rgba(245,236,215,0.55);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid transparent;
+}
+.panel-tab:hover {
+  color: rgba(245,236,215,0.8);
+}
+.panel-tab.active {
+  color: var(--gaudi-gold);
+  border-bottom-color: var(--gaudi-gold);
+}
+
+.panel-content {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.panel-content.active {
+  display: flex;
+}
+
+.panel-header {
+  padding: 12px 14px;
+  border-bottom: var(--border-faint);
+}
+.panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  color: var(--gaudi-gold);
+  margin-bottom: 2px;
+}
+.panel-subtitle {
+  font-size: 10px;
+  color: rgba(245,236,215,0.55);
+}
+
+/* Controls de ceràmica */
+.ceramic-controls {
+  padding: 10px 14px;
+  border-bottom: var(--border-faint);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.control-label {
+  font-size: 10px;
+  color: rgba(245,236,215,0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 55px;
+}
+.control-select {
+  flex: 1;
+  padding: 4px 6px;
+  background: rgba(212,168,67,0.06);
+  border: 1px solid rgba(212,168,67,0.12);
+  color: var(--gaudi-cream);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.control-select option {
+  background: var(--gaudi-dark);
+  color: var(--gaudi-cream);
+}
+.control-range {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(212,168,67,0.15);
+  border-radius: 2px;
+  outline: none;
+}
+.control-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--gaudi-gold);
+  cursor: pointer;
+}
+.control-value {
+  font-size: 10px;
+  color: var(--gaudi-gold);
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Graella de ceràmiques */
+.ceramics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 10px;
+  overflow-y: auto;
+  flex: 1;
+}
+.ceramic-tile {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: all 0.25s ease;
+}
+.ceramic-tile:hover {
+  border-color: var(--gaudi-gold);
+  transform: scale(1.04);
+}
+.ceramic-tile:focus {
+  outline: 2px solid var(--gaudi-gold);
+  outline-offset: 2px;
+}
+.ceramic-tile.selected {
+  border-color: var(--gaudi-gold);
+  box-shadow: 0 0 12px rgba(212,168,67,0.4);
+}
+.ceramic-tile canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.ceramic-name {
+  display: none;
+}
+
+/* --- Panell de capes --- */
+.layers-section {
+  padding: 10px;
+  flex: 1;
+  overflow-y: auto;
+}
+.layer-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background var(--transition-smooth);
+  margin-bottom: 4px;
+}
+.layer-item:hover {
+  background: rgba(212,168,67,0.06);
+}
+.layer-item.active {
+  background: rgba(212,168,67,0.12);
+  border-left: 3px solid var(--gaudi-gold);
+}
+.layer-vis {
+  background: none;
+  border: none;
+  color: rgba(245,236,215,0.5);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  transition: color var(--transition-smooth);
+}
+.layer-vis:hover { color: var(--gaudi-cream); }
+.layer-vis.visible { color: var(--gaudi-gold); }
+.layer-name {
+  flex: 1;
+  font-size: 12px;
+  color: var(--gaudi-cream);
+}
+.layer-count {
+  font-size: 10px;
+  color: var(--gaudi-gold);
+  background: rgba(212,168,67,0.15);
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.layer-del {
+  background: none;
+  border: none;
+  color: #D4645A;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  transition: color var(--transition-smooth);
+}
+.layer-del:hover { color: var(--gaudi-red); }
+
+.add-layer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  background: rgba(212,168,67,0.06);
+  border: 1px dashed rgba(212,168,67,0.15);
+  color: rgba(212,168,67,0.75);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all var(--transition-smooth);
+}
+.add-layer-btn:hover {
+  background: rgba(212,168,67,0.1);
+  color: var(--gaudi-gold);
+}
+
+/* --- Panell de plantilles --- */
+.templates-section {
+  padding: 10px;
+  flex: 1;
+  overflow-y: auto;
+}
+.template-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background var(--transition-smooth);
+  margin-bottom: 4px;
+}
+.template-item:hover {
+  background: rgba(212,168,67,0.06);
+}
+.template-item.active {
+  background: rgba(212,168,67,0.12);
+  border-left: 3px solid var(--gaudi-gold);
+}
+.template-info {
+  flex: 1;
+}
+.template-name {
+  font-size: 12px;
+  color: var(--gaudi-cream);
+  margin-bottom: 2px;
+}
+.template-desc {
+  font-size: 10px;
+  color: rgba(245,236,215,0.55);
+}
+.template-opacity-wrap {
+  padding: 10px 14px;
+  border-top: var(--border-faint);
+}
+
+/* --- Àrea del llenç --- */
+.canvas-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, rgba(245,236,215,0.03) 0%, transparent 70%);
+}
+#mosaicCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.canvas-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.canvas-hint.hidden { opacity: 0; }
+.canvas-hint-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border: 2px dashed rgba(212,168,67,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(212,168,67,0.55);
+  font-size: 24px;
+}
+.canvas-hint p {
+  font-size: 14px;
+  color: rgba(245,236,215,0.55);
+  line-height: 1.6;
+}
+.canvas-hint p strong {
+  color: rgba(212,168,67,0.75);
+  font-weight: 500;
+}
+
+/* --- Safata de fragments --- */
+.fragments-tray {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 10px 16px;
+  background: rgba(28,25,20,0.95);
+  border: var(--border-subtle);
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+  max-width: 80vw;
+  overflow-x: auto;
+  z-index: 50;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.fragments-tray.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+  pointer-events: none;
+}
+.tray-label {
+  font-size: 10px;
+  color: rgba(212,168,67,0.75);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+}
+.fragment-thumb {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  cursor: grab;
+  border: 1px solid rgba(212,168,67,0.2);
+  border-radius: 3px;
+  transition: all 0.2s;
+  background: rgba(28,25,20,0.5);
+}
+.fragment-thumb:hover {
+  border-color: var(--gaudi-gold);
+  transform: scale(1.1);
+}
+.fragment-thumb canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Barra d'eines inferior --- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 16px;
+  background: rgba(28,25,20,0.97);
+  border-top: var(--border-subtle);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.tool-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212,168,67,0.06);
+  border: 1px solid rgba(212,168,67,0.12);
+  color: var(--gaudi-cream);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 3px;
+  font-size: 15px;
+  position: relative;
+}
+.tool-btn:hover {
+  background: rgba(212,168,67,0.15);
+  border-color: rgba(212,168,67,0.3);
+}
+.tool-btn:focus {
+  outline: 2px solid var(--gaudi-gold);
+  outline-offset: 2px;
+}
+.tool-btn.active {
+  background: rgba(212,168,67,0.2);
+  border-color: var(--gaudi-gold);
+  color: var(--gaudi-gold);
+}
+.tool-sep {
+  width: 1px;
+  height: 24px;
+  background: rgba(212,168,67,0.1);
+  margin: 0 4px;
+}
+.tool-label {
+  font-size: 9px;
+  color: rgba(245,236,215,0.55);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 6px;
+}
+
+/* Botons de fons */
+.bg-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(212,168,67,0.2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.bg-btn:hover { border-color: rgba(212,168,67,0.5); }
+.bg-btn.active { border-color: var(--gaudi-gold); box-shadow: 0 0 8px rgba(212,168,67,0.3); }
+
+/* Controls del rejunt */
+.grout-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: rgba(245,236,215,0.55);
+}
+.grout-toggle {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 34px;
+  height: 20px;
+  background: rgba(212,168,67,0.25);
+  border: 1px solid rgba(212,168,67,0.3);
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+}
+.grout-toggle:hover {
+  border-color: rgba(212,168,67,0.5);
+}
+.grout-toggle:checked {
+  background: var(--gaudi-gold);
+  border-color: var(--gaudi-gold);
+}
+.grout-toggle::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  background: var(--gaudi-cream);
+  border-radius: 50%;
+  transition: transform var(--transition-smooth);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.grout-toggle:checked::before {
+  transform: translateX(14px);
+}
+.grout-color {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+}
+.grout-width {
+  width: 50px;
+}
+
+/* --- Notificacions --- */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  background: rgba(28,25,20,0.95);
+  border: 1px solid var(--gaudi-gold);
+  color: var(--gaudi-cream);
+  font-size: 13px;
+  z-index: 500;
+  transform: translateX(120%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 3px;
+  max-width: 300px;
+  backdrop-filter: blur(10px);
+}
+.notification.show { transform: translateX(0); }
+
+/* --- Pista de peça seleccionada --- */
+.piece-info {
+  position: absolute;
+  bottom: 70px;
+  right: 20px;
+  padding: 8px 14px;
+  background: rgba(28,25,20,0.95);
+  border: var(--border-subtle);
+  border-radius: 4px;
+  font-size: 10px;
+  color: rgba(245,236,215,0.5);
+  z-index: 50;
+  display: none;
+}
+.piece-info.visible { display: block; }
+.piece-info strong { color: var(--gaudi-gold); font-weight: 600; }
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(212,168,67,0.2); border-radius: 2px; }
+
+/* --- Navegació mòbil (es mostra via media query a modals.css) --- */
+.mobile-nav { display: none; }
+
+/* --- Zoom info --- */
+.zoom-info {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 10px;
+  color: rgba(212,168,67,0.75);
+  pointer-events: none;
+  z-index: 40;
+}

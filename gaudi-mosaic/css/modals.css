@@ -1,0 +1,781 @@
+/* =====================================================
+   GAUDÍ MOSAIC — Modals, contingut educatiu i responsive
+   ===================================================== */
+
+/* --- Modal genèric --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(28,25,20,0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.active { opacity: 1; }
+
+.modal {
+  background: rgba(28,25,20,0.98);
+  border: 1px solid rgba(212,168,67,0.2);
+  border-radius: 6px;
+  width: 90vw;
+  max-width: 700px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-deep);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal {
+  transform: translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(212,168,67,0.1);
+}
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--gaudi-gold);
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: rgba(245,236,215,0.55);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s;
+}
+.modal-close:hover { color: var(--gaudi-cream); }
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* --- Contingut educatiu --- */
+.edu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.edu-nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.edu-nav-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 10px 12px;
+  background: rgba(212,168,67,0.06);
+  border: 1px solid rgba(212,168,67,0.12);
+  color: rgba(245,236,215,0.5);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s;
+  text-align: center;
+}
+.edu-nav-btn:hover {
+  background: rgba(212,168,67,0.12);
+  color: var(--gaudi-cream);
+}
+.edu-nav-btn.active {
+  background: rgba(212,168,67,0.15);
+  border-color: var(--gaudi-gold);
+  color: var(--gaudi-gold);
+}
+.edu-nav-icon {
+  margin-right: 4px;
+}
+
+.edu-content {
+  min-height: 200px;
+}
+
+.edu-intro {
+  margin-bottom: 20px;
+}
+.edu-intro h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--gaudi-cream);
+  margin-bottom: 4px;
+}
+.edu-subtitle {
+  font-size: 13px;
+  color: var(--gaudi-gold);
+  margin-bottom: 12px;
+}
+.edu-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(245,236,215,0.7);
+}
+
+/* Timeline */
+.edu-timeline {
+  position: relative;
+  padding-left: 20px;
+}
+.edu-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gaudi-gold), rgba(212,168,67,0.1));
+}
+
+.timeline-item {
+  position: relative;
+  padding: 0 0 24px 24px;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gaudi-gold);
+  border: 2px solid var(--gaudi-dark);
+}
+
+.timeline-year {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--gaudi-gold);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.timeline-content h4 {
+  font-size: 14px;
+  color: var(--gaudi-cream);
+  margin-bottom: 4px;
+}
+.timeline-content p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(245,236,215,0.6);
+}
+.timeline-quote {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-left: 3px solid var(--gaudi-gold);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--gaudi-gold);
+  background: rgba(212,168,67,0.05);
+}
+
+/* Cards */
+.edu-card {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  background: rgba(212,168,67,0.04);
+  border: 1px solid rgba(212,168,67,0.08);
+  border-radius: 4px;
+  margin-bottom: 10px;
+  transition: background 0.2s;
+}
+.edu-card:hover {
+  background: rgba(212,168,67,0.08);
+}
+.edu-card-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  width: 36px;
+  text-align: center;
+}
+.edu-card-content h4 {
+  font-size: 14px;
+  color: var(--gaudi-cream);
+  margin-bottom: 4px;
+}
+.edu-card-content p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(245,236,215,0.6);
+}
+
+/* Grid d'exemples */
+.edu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.edu-example {
+  padding: 12px;
+  background: rgba(212,168,67,0.04);
+  border: 1px solid rgba(212,168,67,0.08);
+  border-radius: 4px;
+}
+.edu-example h4 {
+  font-size: 12px;
+  color: var(--gaudi-gold);
+  margin-bottom: 4px;
+}
+.edu-example p {
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(245,236,215,0.55);
+}
+
+.edu-quote {
+  padding: 16px 20px;
+  border-left: 3px solid var(--gaudi-gold);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--gaudi-gold);
+  background: rgba(212,168,67,0.05);
+  border-radius: 0 4px 4px 0;
+  margin-top: 16px;
+}
+
+/* Curiositats */
+.edu-curiosities {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.curiosity-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(212,168,67,0.03);
+  border-radius: 3px;
+}
+.curiosity-bullet {
+  color: var(--gaudi-gold);
+  font-size: 10px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.curiosity-item p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(245,236,215,0.6);
+}
+
+.edu-divider {
+  border: none;
+  height: 1px;
+  background: rgba(212,168,67,0.1);
+  margin: 16px 0;
+}
+
+.edu-cites-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--gaudi-gold);
+  margin-bottom: 12px;
+}
+
+.edu-quotes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.edu-quote-item {
+  padding: 10px 14px;
+  border-left: 2px solid rgba(212,168,67,0.3);
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: rgba(245,236,215,0.6);
+  line-height: 1.5;
+}
+
+/* --- TUTORIAL PRIMERA VEGADA --- */
+.tutorial-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(28,25,20,0.88);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  padding: 20px;
+}
+.tutorial-overlay.active {
+  opacity: 1;
+}
+.tutorial-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  max-width: 520px;
+  width: 100%;
+}
+.tutorial-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.tutorial-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: tutorialFadeIn 0.5s ease forwards;
+}
+@keyframes tutorialFadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.tutorial-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--gaudi-gold);
+  color: var(--gaudi-dark);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tutorial-icon {
+  font-size: 40px;
+  line-height: 1;
+}
+.tutorial-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--gaudi-cream);
+  text-align: center;
+  max-width: 110px;
+  line-height: 1.3;
+}
+.tutorial-arrow {
+  font-size: 20px;
+  color: rgba(212,168,67,0.4);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: tutorialFadeIn 0.4s ease forwards;
+}
+.tutorial-btn {
+  padding: 10px 32px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--gaudi-dark);
+  background: var(--gaudi-gold);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  opacity: 0;
+  animation: tutorialFadeIn 0.5s ease 0.8s forwards;
+}
+.tutorial-btn:hover {
+  background: #e0b84e;
+  transform: scale(1.04);
+}
+
+/* Mòbil: passos en columna */
+@media (max-width: 480px) {
+  .tutorial-steps {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .tutorial-step {
+    flex-direction: row;
+    gap: 12px;
+  }
+  .tutorial-icon {
+    font-size: 32px;
+  }
+  .tutorial-label {
+    text-align: left;
+    max-width: none;
+  }
+  .tutorial-arrow {
+    transform: rotate(90deg);
+    margin: 0;
+  }
+}
+
+/* --- NAVEGACIÓ MÒBIL (BOTTOM TABS) --- */
+.mobile-nav {
+  display: none; /* Només visible en mòbil */
+}
+.mobile-tools-view {
+  display: none; /* Només visible en mòbil */
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .panel { width: 200px; }
+  .splash {
+    justify-content: flex-start;
+    padding-top: 60px;
+  }
+  .splash h1 { font-size: 28px; }
+  .splash-mosaic {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    flex-shrink: 0;
+  }
+  .fragments-tray { max-width: 90vw; }
+
+  /* Selector d'idioma a la splash: més petit en mòbil */
+  .splash-lang-btn {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+  .splash-lang-flag {
+    font-size: 13px;
+  }
+
+  .modal {
+    width: 95vw;
+    max-height: 80vh;
+    max-height: 80dvh;
+  }
+  .edu-grid {
+    grid-template-columns: 1fr;
+  }
+  .edu-nav-btn { min-width: 70px; padding: 8px 8px; font-size: 11px; }
+
+  /* Dropdowns dins del viewport */
+  .control-select {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  /* ===== LAYOUT MÒBIL AMB PESTANYES ===== */
+
+  /* Navegació inferior fixa */
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 150;
+    background: rgba(28,25,20,0.98);
+    border-top: 1px solid rgba(212,168,67,0.3);
+    padding: 6px 0 0 0;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+  }
+  .mobile-nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 4px 6px;
+    min-height: 50px;
+    background: none;
+    border: none;
+    color: rgba(245,236,215,0.55);
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: color 0.2s;
+    justify-content: center;
+  }
+  .mobile-nav-btn.active {
+    color: var(--gaudi-gold);
+  }
+  .mobile-nav-icon {
+    font-size: 24px;
+    line-height: 1;
+  }
+  .mobile-nav-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  /* Amagar toolbar desktop i mobile-toggle antic */
+  .toolbar {
+    display: none !important;
+  }
+  .mobile-toggle {
+    display: none !important;
+  }
+  .mobile-backdrop {
+    display: none !important;
+  }
+
+  /* Capçalera mòbil: només logo + botó ❓ */
+  .header {
+    padding: 8px 12px;
+    gap: 4px;
+  }
+  .header-brand { font-size: 15px; }
+  .header-sep { display: none !important; }
+  .header-actions { gap: 4px; overflow: hidden; }
+  /* Amagar tots els botons excepte Gaudí */
+  .header-btn { display: none !important; }
+  .header-btn.edu { display: inline-flex !important; padding: 4px 8px; font-size: 11px; }
+  .lang-selector { display: none !important; }
+
+  /* Workspace ocupa tot l'espai disponible, amb marge per la nav inferior */
+  .workspace {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    margin-bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Panell lateral ocupa tot en mòbil */
+  .panel {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    z-index: 10;
+    border-right: none;
+    transition: none;
+  }
+
+  /* Amagar pestanyes superiors (redundants amb nav inferior) */
+  .panel-tabs {
+    display: none;
+  }
+  /* Amagar capçalera del panell en mòbil (redundant amb pestanyes inferiors) */
+  .panel-header {
+    display: none;
+  }
+  /* Controls ceràmiques compactes */
+  .ceramic-controls {
+    padding: 6px 12px;
+    gap: 4px;
+  }
+  /* Titols de col·lecció: NO sticky en mòbil */
+  .collection-header {
+    position: static;
+  }
+  /* Fix rajoles: quadrats explícits (aspect-ratio no fiable dins flex+grid en mòbil) */
+  .ceramic-tile {
+    aspect-ratio: auto;
+    height: calc((100vw - 26px) / 2);
+  }
+  .ceramics-grid {
+    align-content: start;
+    padding-bottom: 120px;
+  }
+
+  /* Template controls sempre visibles */
+  .template-opacity-wrap {
+    padding: 8px 12px;
+    flex-shrink: 0;
+  }
+
+  /* Àrea del llenç ocupa tot */
+  .canvas-area {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+  }
+
+  /* Per defecte, tot amagat excepte la vista activa */
+  .panel {
+    display: none;
+  }
+  .canvas-area {
+    display: none;
+  }
+
+  /* Vista activa mòbil */
+  .panel.mobile-view-active {
+    display: flex !important;
+  }
+  .canvas-area.mobile-view-active {
+    display: block !important;
+  }
+
+  /* Vista d'eines mòbil */
+  .mobile-tools-view {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background: rgba(28,25,20,0.97);
+    display: none;
+    flex-direction: column;
+    padding: 16px 16px 140px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-tools-view.mobile-view-active {
+    display: flex !important;
+  }
+  .mobile-tools-section {
+    margin-bottom: 20px;
+  }
+  .mobile-tools-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: var(--gaudi-gold);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(212,168,67,0.1);
+  }
+  .mobile-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .mobile-tool-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 8px;
+    background: rgba(212,168,67,0.06);
+    border: 1px solid rgba(212,168,67,0.12);
+    border-radius: 4px;
+    color: var(--gaudi-cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mobile-tool-btn:hover,
+  .mobile-tool-btn.active {
+    background: rgba(212,168,67,0.15);
+    border-color: var(--gaudi-gold);
+    color: var(--gaudi-gold);
+  }
+  .mobile-tool-btn .tool-icon {
+    font-size: 20px;
+  }
+
+  /* Controls de rejunt en mòbil */
+  .mobile-grout-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+  }
+
+  /* Botons de fons en mòbil */
+  .mobile-bg-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .mobile-bg-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgba(212,168,67,0.2);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mobile-bg-btn:hover,
+  .mobile-bg-btn.active {
+    border-color: var(--gaudi-gold);
+    box-shadow: 0 0 8px rgba(212,168,67,0.3);
+  }
+
+  /* Safata fragments — fixed per sobre de la nav inferior, visible amb qualsevol vista */
+  .fragments-tray {
+    position: fixed;
+    bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 92vw;
+    padding: 10px 14px;
+    z-index: 200;
+    background: rgba(28,25,20,0.97);
+    border: 1px solid rgba(212,168,67,0.25);
+    border-radius: 8px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+  }
+  .fragments-tray.hidden {
+    display: none;
+  }
+  .tray-label { display: none; }
+  .fragment-thumb { width: 48px; height: 48px; }
+
+  /* Breakzone adaptat */
+  .break-zone {
+    justify-content: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 12px 0 calc(70px + env(safe-area-inset-bottom, 0px));
+    gap: 6px;
+  }
+  .break-instruction {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  #breakCanvas {
+    width: 55vw;
+    height: 55vw;
+  }
+  .break-canvas-wrap {
+    max-width: 85vw;
+    flex-shrink: 0;
+  }
+  .break-instruction { font-size: 16px; padding: 0 12px; }
+  .break-controls {
+    width: 90vw;
+    max-width: 320px;
+  }
+  .break-controls .control-label {
+    min-width: 40px;
+    font-size: 9px;
+  }
+  .break-controls .control-value {
+    min-width: 30px;
+    font-size: 9px;
+  }
+  .break-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 90vw;
+    gap: 8px;
+  }
+  .break-btn {
+    padding: 10px 18px;
+    font-size: 12px;
+    min-width: 0;
+  }
+
+  /* Modals */
+  .modal-title { font-size: 18px; }
+  .timeline-item { padding-left: 16px; }
+
+  /* Selects dins del viewport */
+  select {
+    max-width: 100%;
+  }
+}

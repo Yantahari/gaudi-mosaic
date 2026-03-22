@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Gaudí Mosaic — Trencadís Creator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gaudi-gold: #D4A843;
+    --gaudi-blue: #2E6B8A;
+    --gaudi-teal: #1A8A7D;
+    --gaudi-orange: #D4763A;
+    --gaudi-cream: #F5ECD7;
+    --gaudi-dark: #1C1914;
+    --gaudi-ceramic: #E8DCC8;
+    --gaudi-green: #4A7C59;
+    --gaudi-red: #B84233;
+    --gaudi-white: #FAF6EE;
+    --shadow-soft: 0 4px 20px rgba(28,25,20,0.15);
+    --shadow-deep: 0 8px 40px rgba(28,25,20,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gaudi-dark);
+    color: var(--gaudi-cream);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ===== BACKGROUND MOSAIC PATTERN ===== */
+  .bg-pattern {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.06;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, var(--gaudi-gold) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, var(--gaudi-blue) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, var(--gaudi-teal) 0%, transparent 50%);
+  }
+
+  /* ===== SPLASH SCREEN ===== */
+  .splash {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--gaudi-dark);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .splash.hidden {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+  }
+  .splash-mosaic {
+    width: 120px;
+    height: 120px;
+    position: relative;
+    margin-bottom: 32px;
+    animation: mosaicPulse 2s ease-in-out infinite;
+  }
+  @keyframes mosaicPulse {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(3deg) scale(1.05); }
+  }
+  .splash-piece {
+    position: absolute;
+    border-radius: 3px;
+    transition: all 0.4s ease;
+  }
+  .splash h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    color: var(--gaudi-cream);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .splash p {
+    font-size: 14px;
+    color: var(--gaudi-gold);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  .splash-enter {
+    padding: 14px 48px;
+    background: transparent;
+    border: 1.5px solid var(--gaudi-gold);
+    color: var(--gaudi-gold);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 0;
+  }
+  .splash-enter:hover {
+    background: var(--gaudi-gold);
+    color: var(--gaudi-dark);
+  }
+  .splash-year {
+    position: absolute;
+    bottom: 32px;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: rgba(212,168,67,0.4);
+    letter-spacing: 2px;
+  }
+
+  /* ===== MAIN APP LAYOUT ===== */
+  .app {
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    z-index: 1;
+  }
+  .app.active { display: flex; flex-direction: column; }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(28,25,20,0.95);
+    border-bottom: 1px solid rgba(212,168,67,0.15);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    flex-shrink: 0;
+  }
+  .header-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gaudi-cream);
+  }
+  .header-brand span { color: var(--gaudi-gold); }
+  .header-actions { display: flex; gap: 8px; }
+  .header-btn {
+    padding: 6px 14px;
+    background: rgba(212,168,67,0.1);
+    border: 1px solid rgba(212,168,67,0.2);
+    color: var(--gaudi-gold);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+  }
+  .header-btn:hover { background: rgba(212,168,67,0.2); }
+  .header-btn.primary {
+    background: var(--gaudi-gold);
+    color: var(--gaudi-dark);
+    border-color: var(--gaudi-gold);
+    font-weight: 600;
+  }
+
+  /* Main workspace */
+  .workspace {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ===== SIDE PANEL: CERAMICS ===== */
+  .panel {
+    width: 240px;
+    background: rgba(28,25,20,0.97);
+    border-right: 1px solid rgba(212,168,67,0.1);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 16px;
+    border-bottom: 1px solid rgba(212,168,67,0.08);
+  }
+  .panel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--gaudi-gold);
+    margin-bottom: 4px;
+  }
+  .panel-subtitle {
+    font-size: 11px;
+    color: rgba(245,236,215,0.4);
+  }
+  .ceramics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 12px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .ceramic-tile {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: all 0.25s ease;
+  }
+  .ceramic-tile:hover {
+    border-color: var(--gaudi-gold);
+    transform: scale(1.05);
+  }
+  .ceramic-tile.selected {
+    border-color: var(--gaudi-gold);
+    box-shadow: 0 0 12px rgba(212,168,67,0.4);
+  }
+  .ceramic-tile canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .ceramic-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 4px 6px;
+    background: rgba(28,25,20,0.8);
+    font-size: 9px;
+    color: var(--gaudi-cream);
+    text-align: center;
+  }
+
+  /* ===== BREAKING ZONE ===== */
+  .break-zone {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    z-index: 200;
+    background: rgba(28,25,20,0.95);
+    backdrop-filter: blur(20px);
+  }
+  .break-zone.active { display: flex; }
+  .break-instruction {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--gaudi-gold);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .break-instruction small {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: rgba(245,236,215,0.5);
+    margin-top: 8px;
+    font-style: normal;
+  }
+  .break-canvas-wrap {
+    position: relative;
+    border: 1px solid rgba(212,168,67,0.2);
+    box-shadow: var(--shadow-deep);
+  }
+  #breakCanvas {
+    display: block;
+    cursor: crosshair;
+  }
+  .break-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .break-btn {
+    padding: 10px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+    letter-spacing: 1px;
+  }
+  .break-btn.crack {
+    background: var(--gaudi-orange);
+    color: white;
+    border: none;
+  }
+  .break-btn.crack:hover { background: #c06830; }
+  .break-btn.use {
+    background: var(--gaudi-teal);
+    color: white;
+    border: none;
+  }
+  .break-btn.use:hover { background: #15756a; }
+  .break-btn.cancel {
+    background: transparent;
+    color: var(--gaudi-cream);
+    border: 1px solid rgba(245,236,215,0.2);
+  }
+  .break-btn.cancel:hover { background: rgba(245,236,215,0.05); }
+
+  /* ===== CANVAS WORKSPACE ===== */
+  .canvas-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at center, rgba(245,236,215,0.03) 0%, transparent 70%);
+  }
+  #mosaicCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+  }
+  .canvas-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .canvas-hint.hidden { opacity: 0; }
+  .canvas-hint-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    border: 2px dashed rgba(212,168,67,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(212,168,67,0.3);
+    font-size: 24px;
+  }
+  .canvas-hint p {
+    font-size: 14px;
+    color: rgba(245,236,215,0.25);
+    line-height: 1.6;
+  }
+  .canvas-hint p strong {
+    color: rgba(212,168,67,0.4);
+    font-weight: 500;
+  }
+
+  /* ===== BOTTOM TOOLBAR ===== */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: rgba(28,25,20,0.97);
+    border-top: 1px solid rgba(212,168,67,0.1);
+    flex-shrink: 0;
+  }
+  .tool-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212,168,67,0.06);
+    border: 1px solid rgba(212,168,67,0.12);
+    color: var(--gaudi-cream);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 3px;
+    font-size: 16px;
+    position: relative;
+  }
+  .tool-btn:hover {
+    background: rgba(212,168,67,0.15);
+    border-color: rgba(212,168,67,0.3);
+  }
+  .tool-btn.active {
+    background: rgba(212,168,67,0.2);
+    border-color: var(--gaudi-gold);
+    color: var(--gaudi-gold);
+  }
+  .tool-btn title { display: none; }
+  .tool-sep {
+    width: 1px;
+    height: 24px;
+    background: rgba(212,168,67,0.1);
+    margin: 0 6px;
+  }
+  .tool-label {
+    font-size: 10px;
+    color: rgba(245,236,215,0.3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 8px;
+  }
+
+  /* Fragments tray */
+  .fragments-tray {
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    padding: 10px 16px;
+    background: rgba(28,25,20,0.95);
+    border: 1px solid rgba(212,168,67,0.15);
+    border-radius: 6px;
+    backdrop-filter: blur(10px);
+    max-width: 80vw;
+    overflow-x: auto;
+    z-index: 50;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .fragments-tray.hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+    pointer-events: none;
+  }
+  .fragment-thumb {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    cursor: grab;
+    border: 1px solid rgba(212,168,67,0.2);
+    border-radius: 3px;
+    transition: all 0.2s;
+    background: rgba(28,25,20,0.5);
+  }
+  .fragment-thumb:hover {
+    border-color: var(--gaudi-gold);
+    transform: scale(1.1);
+  }
+  .fragment-thumb canvas {
+    width: 100%;
+    height: 100%;
+  }
+  .tray-label {
+    font-size: 10px;
+    color: rgba(212,168,67,0.5);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
+  }
+
+  /* ===== NOTIFICATIONS ===== */
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    background: rgba(28,25,20,0.95);
+    border: 1px solid var(--gaudi-gold);
+    color: var(--gaudi-cream);
+    font-size: 13px;
+    z-index: 500;
+    transform: translateX(120%);
+    transition: transform 0.4s ease;
+    border-radius: 3px;
+    max-width: 300px;
+  }
+  .notification.show { transform: translateX(0); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .panel { width: 180px; }
+    .splash h1 { font-size: 28px; }
+    .fragments-tray { max-width: 90vw; }
+  }
+  @media (max-width: 540px) {
+    .panel { display: none; }
+    .workspace { flex-direction: column; }
+    .mobile-ceramics-toggle {
+      display: flex !important;
+    }
+  }
+
+  .mobile-ceramics-toggle {
+    display: none;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 60;
+    padding: 8px 12px;
+    background: rgba(28,25,20,0.9);
+    border: 1px solid rgba(212,168,67,0.2);
+    color: var(--gaudi-gold);
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(212,168,67,0.2); border-radius: 2px; }
+
+  /* Selection info */
+  .piece-info {
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    padding: 10px 16px;
+    background: rgba(28,25,20,0.95);
+    border: 1px solid rgba(212,168,67,0.15);
+    border-radius: 4px;
+    font-size: 11px;
+    color: rgba(245,236,215,0.5);
+    z-index: 50;
+    display: none;
+  }
+  .piece-info.visible { display: block; }
+  .piece-info strong {
+    color: var(--gaudi-gold);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- Background Pattern -->
+<div class="bg-pattern"></div>
+
+<!-- Splash Screen -->
+<div class="splash" id="splash">
+  <div class="splash-mosaic" id="splashMosaic"></div>
+  <h1>Gaudí Mosaic</h1>
+  <p>Trencadís Creator</p>
+  <button class="splash-enter" id="enterBtn">Comença a crear</button>
+  <div class="splash-year">1926 — 2026 · Centenari d'Antoni Gaudí</div>
+</div>
+
+<!-- Main App -->
+<div class="app" id="app">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-brand">Gaudí <span>Mosaic</span></div>
+    <div class="header-actions">
+      <button class="header-btn" id="clearBtn">Netejar</button>
+      <button class="header-btn" id="undoBtn">↩ Desfer</button>
+      <button class="header-btn primary" id="exportBtn">↓ Exportar</button>
+    </div>
+  </div>
+
+  <!-- Workspace -->
+  <div class="workspace">
+    <!-- Ceramics Panel -->
+    <div class="panel" id="panel">
+      <div class="panel-header">
+        <div class="panel-title">Ceràmiques</div>
+        <div class="panel-subtitle">Selecciona i trenca per crear fragments</div>
+      </div>
+      <div class="ceramics-grid" id="ceramicsGrid"></div>
+    </div>
+
+    <!-- Main Canvas -->
+    <div class="canvas-area" id="canvasArea">
+      <canvas id="mosaicCanvas"></canvas>
+      <div class="canvas-hint" id="canvasHint">
+        <div class="canvas-hint-icon">✦</div>
+        <p>Selecciona una ceràmica del panell esquerre<br>
+        <strong>Trenca-la</strong> i arrossega els fragments aquí</p>
+      </div>
+
+      <!-- Fragments Tray -->
+      <div class="fragments-tray hidden" id="fragmentsTray">
+        <div class="tray-label">Peces</div>
+      </div>
+
+      <!-- Piece info -->
+      <div class="piece-info" id="pieceInfo"></div>
+    </div>
+  </div>
+
+  <!-- Breaking Zone (overlay) -->
+  <div class="break-zone" id="breakZone">
+    <div class="break-instruction">
+      Fes clic per traçar línies de fractura
+      <small>Dibuixa línies sobre la ceràmica per trencar-la en fragments</small>
+    </div>
+    <div class="break-canvas-wrap">
+      <canvas id="breakCanvas" width="300" height="300"></canvas>
+    </div>
+    <div class="break-actions">
+      <button class="break-btn crack" id="crackBtn">⚡ Trencar</button>
+      <button class="break-btn use" id="useFragsBtn">✓ Usar fragments</button>
+      <button class="break-btn cancel" id="cancelBreakBtn">Cancel·lar</button>
+    </div>
+  </div>
+
+  <!-- Bottom Toolbar -->
+  <div class="toolbar">
+    <span class="tool-label">Eines</span>
+    <button class="tool-btn active" id="toolMove" title="Moure">✋</button>
+    <button class="tool-btn" id="toolRotate" title="Girar">↻</button>
+    <button class="tool-btn" id="toolScale" title="Escalar">⤡</button>
+    <div class="tool-sep"></div>
+    <button class="tool-btn" id="toolDelete" title="Eliminar peça">✕</button>
+    <div class="tool-sep"></div>
+    <span class="tool-label">Fons</span>
+    <button class="tool-btn" id="bgLight" title="Fons clar">☀</button>
+    <button class="tool-btn" id="bgDark" title="Fons fosc">☽</button>
+    <button class="tool-btn" id="bgBlue" title="Fons blau">◆</button>
+  </div>
+</div>
+
+<!-- Notification -->
+<div class="notification" id="notification"></div>
+
+<script>
+// =====================================================
+// GAUDÍ MOSAIC — Trencadís Creator Engine
+// =====================================================
+
+// --- Gaudí Color Palettes ---
+const PALETTES = {
+  parkGuell: {
+    name: 'Parc Güell',
+    colors: ['#D4A843','#2E6B8A','#E8DCC8','#D4763A','#4A7C59','#B84233','#1A8A7D','#8B6914','#C4956A','#3A5A7C']
+  },
+  casaBatllo: {
+    name: 'Casa Batlló',
+    colors: ['#2E6B8A','#1A8A7D','#4A9BB5','#6BB5A0','#D4A843','#1C4E6B','#7DCFB6','#2A7F6F','#A8D8C8','#3B8EA5']
+  },
+  sagradaFamilia: {
+    name: 'Sagrada Família',
+    colors: ['#C4956A','#D4A843','#8B6914','#E8DCC8','#A67B3D','#D4C4A0','#967544','#B8A070','#6B5530','#F0E6D0']
+  },
+  laManyana: {
+    name: 'El Matí',
+    colors: ['#D4763A','#B84233','#D4A843','#E8DCC8','#6B3A2A','#C9614A','#A85030','#E09060','#8B5030','#F0C090']
+  },
+  mediterrani: {
+    name: 'Mediterrani',
+    colors: ['#FFFFFF','#2E6B8A','#D4A843','#1A8A7D','#E8DCC8','#4A9BB5','#F5ECD7','#3B8EA5','#87CEEB','#D4763A']
+  }
+};
+
+const PALETTE_KEYS = Object.keys(PALETTES);
+
+// --- State ---
+let state = {
+  selectedCeramic: null,
+  breakLines: [],
+  isDrawingBreakLine: false,
+  breakLineStart: null,
+  fragments: [],       // fragments in the tray
+  placedPieces: [],    // pieces on the canvas
+  currentTool: 'move', // move, rotate, scale, delete
+  selectedPiece: null,
+  dragOffset: { x: 0, y: 0 },
+  isDragging: false,
+  isDraggingFromTray: false,
+  dragFragment: null,
+  canvasBg: '#1C1914',
+  history: [],
+  brokenFragments: []  // current break session fragments
+};
+
+// --- Utility ---
+function notify(msg) {
+  const el = document.getElementById('notification');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+function saveHistory() {
+  state.history.push(JSON.parse(JSON.stringify(state.placedPieces)));
+  if (state.history.length > 30) state.history.shift();
+}
+
+// --- Generate Ceramic Tile Patterns ---
+function generateCeramicPattern(canvas, paletteKey, patternType) {
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width = 100;
+  const h = canvas.height = 100;
+  const palette = PALETTES[paletteKey].colors;
+
+  // Fill base
+  ctx.fillStyle = palette[Math.floor(Math.random() * 3)];
+  ctx.fillRect(0, 0, w, h);
+
+  switch (patternType) {
+    case 'circles':
+      for (let i = 0; i < 8; i++) {
+        ctx.beginPath();
+        ctx.arc(
+          Math.random() * w, Math.random() * h,
+          10 + Math.random() * 20,
+          0, Math.PI * 2
+        );
+        ctx.fillStyle = palette[Math.floor(Math.random() * palette.length)];
+        ctx.globalAlpha = 0.6 + Math.random() * 0.4;
+        ctx.fill();
+      }
+      break;
+    case 'stripes':
+      for (let i = 0; i < 6; i++) {
+        ctx.save();
+        ctx.translate(w/2, h/2);
+        ctx.rotate((Math.random() - 0.5) * 1.5);
+        ctx.fillStyle = palette[Math.floor(Math.random() * palette.length)];
+        ctx.globalAlpha = 0.5 + Math.random() * 0.5;
+        ctx.fillRect(-w, -3 - Math.random() * 10, w*2, 6 + Math.random() * 14);
+        ctx.restore();
+      }
+      break;
+    case 'diamonds':
+      for (let i = 0; i < 6; i++) {
+        const cx = Math.random() * w;
+        const cy = Math.random() * h;
+        const s = 10 + Math.random() * 20;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - s);
+        ctx.lineTo(cx + s, cy);
+        ctx.lineTo(cx, cy + s);
+        ctx.lineTo(cx - s, cy);
+        ctx.closePath();
+        ctx.fillStyle = palette[Math.floor(Math.random() * palette.length)];
+        ctx.globalAlpha = 0.5 + Math.random() * 0.5;
+        ctx.fill();
+      }
+      break;
+    case 'organic':
+      for (let i = 0; i < 5; i++) {
+        ctx.beginPath();
+        const sx = Math.random() * w;
+        const sy = Math.random() * h;
+        ctx.moveTo(sx, sy);
+        for (let j = 0; j < 5; j++) {
+          ctx.quadraticCurveTo(
+            Math.random() * w, Math.random() * h,
+            Math.random() * w, Math.random() * h
+          );
+        }
+        ctx.closePath();
+        ctx.fillStyle = palette[Math.floor(Math.random() * palette.length)];
+        ctx.globalAlpha = 0.4 + Math.random() * 0.4;
+        ctx.fill();
+      }
+      break;
+    case 'mosaic':
+      const cellSize = 12 + Math.random() * 8;
+      for (let x = 0; x < w; x += cellSize) {
+        for (let y = 0; y < h; y += cellSize) {
+          ctx.fillStyle = palette[Math.floor(Math.random() * palette.length)];
+          ctx.globalAlpha = 0.7 + Math.random() * 0.3;
+          const gap = 1;
+          ctx.fillRect(x + gap, y + gap, cellSize - gap*2, cellSize - gap*2);
+        }
+      }
+      break;
+  }
+
+  // Add subtle texture
+  ctx.globalAlpha = 0.08;
+  for (let x = 0; x < w; x += 2) {
+    for (let y = 0; y < h; y += 2) {
+      if (Math.random() > 0.5) {
+        ctx.fillStyle = Math.random() > 0.5 ? '#000' : '#fff';
+        ctx.fillRect(x, y, 1, 1);
+      }
+    }
+  }
+  ctx.globalAlpha = 1.0;
+
+  return { paletteKey, patternType };
+}
+
+// --- Initialize Ceramics Panel ---
+function initCeramics() {
+  const grid = document.getElementById('ceramicsGrid');
+  const patterns = ['circles', 'stripes', 'diamonds', 'organic', 'mosaic'];
+
+  PALETTE_KEYS.forEach((pk, i) => {
+    patterns.forEach((pt, j) => {
+      if (j > 1 && i > 2) return; // Limit total tiles
+      const tile = document.createElement('div');
+      tile.className = 'ceramic-tile';
+      const cvs = document.createElement('canvas');
+      const info = generateCeramicPattern(cvs, pk, pt);
+      tile.appendChild(cvs);
+
+      const name = document.createElement('div');
+      name.className = 'ceramic-name';
+      name.textContent = PALETTES[pk].name;
+      tile.appendChild(name);
+
+      tile.addEventListener('click', () => {
+        document.querySelectorAll('.ceramic-tile').forEach(t => t.classList.remove('selected'));
+        tile.classList.add('selected');
+        state.selectedCeramic = { canvas: cvs, palette: pk, pattern: pt };
+        openBreakZone(cvs);
+      });
+
+      grid.appendChild(tile);
+    });
+  });
+}
+
+// --- Break Zone ---
+function openBreakZone(sourceCanvas) {
+  const zone = document.getElementById('breakZone');
+  const bCanvas = document.getElementById('breakCanvas');
+  const bCtx = bCanvas.getContext('2d');
+
+  // Draw the ceramic on break canvas
+  bCtx.clearRect(0, 0, 300, 300);
+  bCtx.drawImage(sourceCanvas, 0, 0, 300, 300);
+
+  state.breakLines = [];
+  state.brokenFragments = [];
+  zone.classList.add('active');
+  document.getElementById('useFragsBtn').style.display = 'none';
+}
+
+function closeBreakZone() {
+  document.getElementById('breakZone').classList.remove('active');
+  state.breakLines = [];
+  state.brokenFragments = [];
+}
+
+// Draw break lines
+const breakCanvas = document.getElementById('breakCanvas');
+breakCanvas.addEventListener('mousedown', (e) => {
+  const rect = breakCanvas.getBoundingClientRect();
+  state.isDrawingBreakLine = true;
+  state.breakLineStart = {
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
+  };
+});
+
+breakCanvas.addEventListener('mousemove', (e) => {
+  if (!state.isDrawingBreakLine) return;
+  const rect = breakCanvas.getBoundingClientRect();
+  const bCtx = breakCanvas.getContext('2d');
+
+  // Redraw
+  redrawBreakCanvas();
+
+  // Preview line
+  bCtx.beginPath();
+  bCtx.moveTo(state.breakLineStart.x, state.breakLineStart.y);
+  bCtx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+  bCtx.strokeStyle = 'rgba(212,168,67,0.8)';
+  bCtx.lineWidth = 2;
+  bCtx.setLineDash([6, 4]);
+  bCtx.stroke();
+  bCtx.setLineDash([]);
+});
+
+breakCanvas.addEventListener('mouseup', (e) => {
+  if (!state.isDrawingBreakLine) return;
+  const rect = breakCanvas.getBoundingClientRect();
+  const end = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  state.breakLines.push({ start: { ...state.breakLineStart }, end });
+  state.isDrawingBreakLine = false;
+  redrawBreakCanvas();
+});
+
+// Touch support for break canvas
+breakCanvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const rect = breakCanvas.getBoundingClientRect();
+  const t = e.touches[0];
+  state.isDrawingBreakLine = true;
+  state.breakLineStart = { x: t.clientX - rect.left, y: t.clientY - rect.top };
+});
+breakCanvas.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  if (!state.isDrawingBreakLine) return;
+  const rect = breakCanvas.getBoundingClientRect();
+  const t = e.touches[0];
+  redrawBreakCanvas();
+  const bCtx = breakCanvas.getContext('2d');
+  bCtx.beginPath();
+  bCtx.moveTo(state.breakLineStart.x, state.breakLineStart.y);
+  bCtx.lineTo(t.clientX - rect.left, t.clientY - rect.top);
+  bCtx.strokeStyle = 'rgba(212,168,67,0.8)';
+  bCtx.lineWidth = 2;
+  bCtx.setLineDash([6,4]);
+  bCtx.stroke();
+  bCtx.setLineDash([]);
+});
+breakCanvas.addEventListener('touchend', (e) => {
+  e.preventDefault();
+  if (!state.isDrawingBreakLine) return;
+  const rect = breakCanvas.getBoundingClientRect();
+  const t = e.changedTouches[0];
+  const end = { x: t.clientX - rect.left, y: t.clientY - rect.top };
+  state.breakLines.push({ start: { ...state.breakLineStart }, end });
+  state.isDrawingBreakLine = false;
+  redrawBreakCanvas();
+});
+
+function redrawBreakCanvas() {
+  const bCanvas = document.getElementById('breakCanvas');
+  const bCtx = bCanvas.getContext('2d');
+  bCtx.clearRect(0, 0, 300, 300);
+  if (state.selectedCeramic) {
+    bCtx.drawImage(state.selectedCeramic.canvas, 0, 0, 300, 300);
+  }
+  // Draw break lines
+  state.breakLines.forEach(line => {
+    bCtx.beginPath();
+    bCtx.moveTo(line.start.x, line.start.y);
+    bCtx.lineTo(line.end.x, line.end.y);
+    bCtx.strokeStyle = 'rgba(255,255,255,0.9)';
+    bCtx.lineWidth = 2.5;
+    bCtx.stroke();
+    // Glow
+    bCtx.strokeStyle = 'rgba(212,168,67,0.4)';
+    bCtx.lineWidth = 6;
+    bCtx.stroke();
+  });
+}
+
+// --- Crack / Fragment Generation (Voronoi-like) ---
+document.getElementById('crackBtn').addEventListener('click', () => {
+  if (state.breakLines.length === 0) {
+    // Auto-generate random break lines
+    for (let i = 0; i < 3 + Math.floor(Math.random() * 4); i++) {
+      state.breakLines.push({
+        start: { x: Math.random() * 300, y: Math.random() * 300 },
+        end: { x: Math.random() * 300, y: Math.random() * 300 }
+      });
+    }
+  }
+  generateFragments();
+});
+
+function generateFragments() {
+  const srcCanvas = state.selectedCeramic.canvas;
+  // Generate Voronoi-like regions using the break lines as guides
+  const numFragments = Math.max(4, state.breakLines.length * 2 + Math.floor(Math.random() * 4));
+
+  // Generate seed points influenced by break lines
+  const seeds = [];
+  for (let i = 0; i < numFragments; i++) {
+    if (i < state.breakLines.length) {
+      const line = state.breakLines[i];
+      seeds.push({
+        x: (line.start.x + line.end.x) / 2 + (Math.random() - 0.5) * 40,
+        y: (line.start.y + line.end.y) / 2 + (Math.random() - 0.5) * 40
+      });
+    } else {
+      seeds.push({ x: Math.random() * 300, y: Math.random() * 300 });
+    }
+  }
+
+  // Simple Voronoi via nearest-seed assignment
+  const assignment = new Int32Array(300 * 300);
+  for (let y = 0; y < 300; y++) {
+    for (let x = 0; x < 300; x++) {
+      let minDist = Infinity, minIdx = 0;
+      for (let s = 0; s < seeds.length; s++) {
+        const d = (x - seeds[s].x) ** 2 + (y - seeds[s].y) ** 2;
+        if (d < minDist) { minDist = d; minIdx = s; }
+      }
+      assignment[y * 300 + x] = minIdx;
+    }
+  }
+
+  // Extract each fragment
+  const srcBig = document.createElement('canvas');
+  srcBig.width = srcBig.height = 300;
+  srcBig.getContext('2d').drawImage(srcCanvas, 0, 0, 300, 300);
+  const srcData = srcBig.getContext('2d').getImageData(0, 0, 300, 300);
+
+  state.brokenFragments = [];
+
+  for (let s = 0; s < seeds.length; s++) {
+    // Find bounding box
+    let minX = 300, minY = 300, maxX = 0, maxY = 0;
+    for (let y = 0; y < 300; y++) {
+      for (let x = 0; x < 300; x++) {
+        if (assignment[y * 300 + x] === s) {
+          minX = Math.min(minX, x);
+          minY = Math.min(minY, y);
+          maxX = Math.max(maxX, x);
+          maxY = Math.max(maxY, y);
+        }
+      }
+    }
+
+    if (maxX <= minX || maxY <= minY) continue;
+
+    const fw = maxX - minX + 1;
+    const fh = maxY - minY + 1;
+    const fragCanvas = document.createElement('canvas');
+    fragCanvas.width = fw;
+    fragCanvas.height = fh;
+    const fCtx = fragCanvas.getContext('2d');
+    const fragData = fCtx.createImageData(fw, fh);
+
+    for (let y = minY; y <= maxY; y++) {
+      for (let x = minX; x <= maxX; x++) {
+        if (assignment[y * 300 + x] === s) {
+          const si = (y * 300 + x) * 4;
+          const di = ((y - minY) * fw + (x - minX)) * 4;
+          fragData.data[di] = srcData.data[si];
+          fragData.data[di+1] = srcData.data[si+1];
+          fragData.data[di+2] = srcData.data[si+2];
+          fragData.data[di+3] = 255;
+        }
+      }
+    }
+
+    fCtx.putImageData(fragData, 0, 0);
+
+    state.brokenFragments.push({
+      canvas: fragCanvas,
+      origX: minX,
+      origY: minY,
+      w: fw,
+      h: fh
+    });
+  }
+
+  // Show on break canvas with gaps
+  animateCrack();
+  document.getElementById('useFragsBtn').style.display = 'inline-block';
+  notify(`${state.brokenFragments.length} fragments creats!`);
+}
+
+function animateCrack() {
+  const bCanvas = document.getElementById('breakCanvas');
+  const bCtx = bCanvas.getContext('2d');
+  bCtx.clearRect(0, 0, 300, 300);
+
+  state.brokenFragments.forEach((frag, i) => {
+    const angle = Math.atan2(frag.origY + frag.h/2 - 150, frag.origX + frag.w/2 - 150);
+    const dist = 3 + Math.random() * 5;
+    const ox = Math.cos(angle) * dist;
+    const oy = Math.sin(angle) * dist;
+
+    bCtx.save();
+    bCtx.shadowColor = 'rgba(0,0,0,0.4)';
+    bCtx.shadowBlur = 4;
+    bCtx.shadowOffsetX = 2;
+    bCtx.shadowOffsetY = 2;
+    bCtx.drawImage(frag.canvas, frag.origX + ox, frag.origY + oy);
+    bCtx.restore();
+  });
+}
+
+// --- Use Fragments ---
+document.getElementById('useFragsBtn').addEventListener('click', () => {
+  // Add fragments to tray
+  state.brokenFragments.forEach(frag => {
+    state.fragments.push({
+      canvas: frag.canvas,
+      w: frag.w,
+      h: frag.h
+    });
+  });
+  updateFragmentsTray();
+  closeBreakZone();
+  document.getElementById('canvasHint').classList.add('hidden');
+  notify('Fragments afegits a la safata. Arrossega\'ls al llenç!');
+});
+
+document.getElementById('cancelBreakBtn').addEventListener('click', closeBreakZone);
+
+// --- Fragments Tray ---
+function updateFragmentsTray() {
+  const tray = document.getElementById('fragmentsTray');
+
+  // Remove old thumbs (keep label)
+  tray.querySelectorAll('.fragment-thumb').forEach(el => el.remove());
+
+  if (state.fragments.length === 0) {
+    tray.classList.add('hidden');
+    return;
+  }
+
+  tray.classList.remove('hidden');
+
+  state.fragments.forEach((frag, idx) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'fragment-thumb';
+    const tc = document.createElement('canvas');
+    tc.width = 48; tc.height = 48;
+    tc.getContext('2d').drawImage(frag.canvas, 0, 0, 48, 48);
+    thumb.appendChild(tc);
+
+    // Drag from tray
+    thumb.addEventListener('mousedown', (e) => startDragFromTray(e, idx));
+    thumb.addEventListener('touchstart', (e) => startDragFromTray(e, idx), { passive: false });
+
+    tray.appendChild(thumb);
+  });
+}
+
+// --- Main Canvas ---
+const mosaicCanvas = document.getElementById('mosaicCanvas');
+const mCtx = mosaicCanvas.getContext('2d');
+
+function resizeCanvas() {
+  const area = document.getElementById('canvasArea');
+  mosaicCanvas.width = area.clientWidth;
+  mosaicCanvas.height = area.clientHeight;
+  renderCanvas();
+}
+
+function renderCanvas() {
+  mCtx.clearRect(0, 0, mosaicCanvas.width, mosaicCanvas.height);
+
+  // Background
+  mCtx.fillStyle = state.canvasBg;
+  mCtx.fillRect(0, 0, mosaicCanvas.width, mosaicCanvas.height);
+
+  // Subtle grid
+  mCtx.strokeStyle = 'rgba(212,168,67,0.04)';
+  mCtx.lineWidth = 0.5;
+  const gridSize = 30;
+  for (let x = 0; x < mosaicCanvas.width; x += gridSize) {
+    mCtx.beginPath(); mCtx.moveTo(x, 0); mCtx.lineTo(x, mosaicCanvas.height); mCtx.stroke();
+  }
+  for (let y = 0; y < mosaicCanvas.height; y += gridSize) {
+    mCtx.beginPath(); mCtx.moveTo(0, y); mCtx.lineTo(mosaicCanvas.width, y); mCtx.stroke();
+  }
+
+  // Render placed pieces
+  state.placedPieces.forEach((piece, idx) => {
+    mCtx.save();
+    mCtx.translate(piece.x + piece.w/2, piece.y + piece.h/2);
+    mCtx.rotate(piece.rotation || 0);
+    mCtx.scale(piece.scale || 1, piece.scale || 1);
+
+    // Shadow
+    mCtx.shadowColor = 'rgba(0,0,0,0.3)';
+    mCtx.shadowBlur = 6;
+    mCtx.shadowOffsetX = 2;
+    mCtx.shadowOffsetY = 2;
+
+    mCtx.drawImage(piece.canvas, -piece.w/2, -piece.h/2, piece.w, piece.h);
+
+    // Selection highlight
+    if (state.selectedPiece === idx) {
+      mCtx.shadowBlur = 0;
+      mCtx.strokeStyle = 'rgba(212,168,67,0.8)';
+      mCtx.lineWidth = 2;
+      mCtx.strokeRect(-piece.w/2 - 3, -piece.h/2 - 3, piece.w + 6, piece.h + 6);
+    }
+
+    mCtx.restore();
+  });
+
+  // Draw dragging piece preview
+  if (state.isDraggingFromTray && state.dragFragment) {
+    mCtx.globalAlpha = 0.7;
+    mCtx.drawImage(
+      state.dragFragment.canvas,
+      state.dragFragment.x, state.dragFragment.y,
+      state.dragFragment.w, state.dragFragment.h
+    );
+    mCtx.globalAlpha = 1.0;
+  }
+}
+
+// --- Piece interaction on canvas ---
+function getPieceAt(x, y) {
+  // Reverse order (top pieces first)
+  for (let i = state.placedPieces.length - 1; i >= 0; i--) {
+    const p = state.placedPieces[i];
+    const s = p.scale || 1;
+    if (x >= p.x && x <= p.x + p.w * s && y >= p.y && y <= p.y + p.h * s) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+mosaicCanvas.addEventListener('mousedown', (e) => {
+  const rect = mosaicCanvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const idx = getPieceAt(x, y);
+
+  if (idx >= 0) {
+    state.selectedPiece = idx;
+    const piece = state.placedPieces[idx];
+
+    if (state.currentTool === 'delete') {
+      saveHistory();
+      state.placedPieces.splice(idx, 1);
+      state.selectedPiece = null;
+      renderCanvas();
+      return;
+    }
+
+    if (state.currentTool === 'rotate') {
+      saveHistory();
+      piece.rotation = (piece.rotation || 0) + Math.PI / 6;
+      renderCanvas();
+      return;
+    }
+
+    if (state.currentTool === 'scale') {
+      saveHistory();
+      piece.scale = (piece.scale || 1) * 1.15;
+      if (piece.scale > 3) piece.scale = 0.5;
+      renderCanvas();
+      return;
+    }
+
+    // Move tool
+    state.isDragging = true;
+    state.dragOffset = { x: x - piece.x, y: y - piece.y };
+    // Bring to front
+    const [moved] = state.placedPieces.splice(idx, 1);
+    state.placedPieces.push(moved);
+    state.selectedPiece = state.placedPieces.length - 1;
+    saveHistory();
+    renderCanvas();
+  } else {
+    state.selectedPiece = null;
+    renderCanvas();
+  }
+});
+
+mosaicCanvas.addEventListener('mousemove', (e) => {
+  const rect = mosaicCanvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  if (state.isDragging && state.selectedPiece !== null) {
+    const piece = state.placedPieces[state.selectedPiece];
+    piece.x = x - state.dragOffset.x;
+    piece.y = y - state.dragOffset.y;
+    renderCanvas();
+  }
+
+  if (state.isDraggingFromTray && state.dragFragment) {
+    state.dragFragment.x = x - state.dragFragment.w / 2;
+    state.dragFragment.y = y - state.dragFragment.h / 2;
+    renderCanvas();
+  }
+});
+
+mosaicCanvas.addEventListener('mouseup', (e) => {
+  if (state.isDraggingFromTray && state.dragFragment) {
+    // Place the fragment
+    const rect = mosaicCanvas.getBoundingClientRect();
+    state.placedPieces.push({
+      canvas: state.dragFragment.canvas,
+      x: state.dragFragment.x,
+      y: state.dragFragment.y,
+      w: state.dragFragment.w,
+      h: state.dragFragment.h,
+      rotation: 0,
+      scale: 1
+    });
+    state.isDraggingFromTray = false;
+    state.dragFragment = null;
+    renderCanvas();
+  }
+  state.isDragging = false;
+});
+
+// Touch support for canvas
+mosaicCanvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const rect = mosaicCanvas.getBoundingClientRect();
+  const t = e.touches[0];
+  const x = t.clientX - rect.left;
+  const y = t.clientY - rect.top;
+  const idx = getPieceAt(x, y);
+  if (idx >= 0) {
+    state.selectedPiece = idx;
+    const piece = state.placedPieces[idx];
+    if (state.currentTool === 'delete') { saveHistory(); state.placedPieces.splice(idx,1); state.selectedPiece=null; renderCanvas(); return; }
+    if (state.currentTool === 'rotate') { saveHistory(); piece.rotation=(piece.rotation||0)+Math.PI/6; renderCanvas(); return; }
+    if (state.currentTool === 'scale') { saveHistory(); piece.scale=(piece.scale||1)*1.15; if(piece.scale>3)piece.scale=0.5; renderCanvas(); return; }
+    state.isDragging = true;
+    state.dragOffset = { x: x - piece.x, y: y - piece.y };
+    const [moved] = state.placedPieces.splice(idx, 1);
+    state.placedPieces.push(moved);
+    state.selectedPiece = state.placedPieces.length - 1;
+    saveHistory();
+    renderCanvas();
+  } else { state.selectedPiece=null; renderCanvas(); }
+});
+mosaicCanvas.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  const rect = mosaicCanvas.getBoundingClientRect();
+  const t = e.touches[0];
+  const x = t.clientX - rect.left;
+  const y = t.clientY - rect.top;
+  if (state.isDragging && state.selectedPiece !== null) {
+    const piece = state.placedPieces[state.selectedPiece];
+    piece.x = x - state.dragOffset.x;
+    piece.y = y - state.dragOffset.y;
+    renderCanvas();
+  }
+  if (state.isDraggingFromTray && state.dragFragment) {
+    state.dragFragment.x = x - state.dragFragment.w / 2;
+    state.dragFragment.y = y - state.dragFragment.h / 2;
+    renderCanvas();
+  }
+});
+mosaicCanvas.addEventListener('touchend', (e) => {
+  if (state.isDraggingFromTray && state.dragFragment) {
+    state.placedPieces.push({
+      canvas: state.dragFragment.canvas,
+      x: state.dragFragment.x,
+      y: state.dragFragment.y,
+      w: state.dragFragment.w,
+      h: state.dragFragment.h,
+      rotation: 0, scale: 1
+    });
+    state.isDraggingFromTray = false;
+    state.dragFragment = null;
+    renderCanvas();
+  }
+  state.isDragging = false;
+});
+
+// --- Drag from Tray ---
+function startDragFromTray(e, fragIdx) {
+  e.preventDefault();
+  const frag = state.fragments[fragIdx];
+  state.isDraggingFromTray = true;
+  const scale = Math.min(80 / frag.w, 80 / frag.h, 1);
+  state.dragFragment = {
+    canvas: frag.canvas,
+    x: 0, y: 0,
+    w: frag.w * scale,
+    h: frag.h * scale
+  };
+
+  // Track mouse/touch globally
+  const onMove = (ev) => {
+    const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+    const clientY = ev.touches ? ev.touches[0].clientY : ev.clientY;
+    const rect = mosaicCanvas.getBoundingClientRect();
+    state.dragFragment.x = clientX - rect.left - state.dragFragment.w / 2;
+    state.dragFragment.y = clientY - rect.top - state.dragFragment.h / 2;
+    renderCanvas();
+  };
+
+  const onUp = (ev) => {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend', onUp);
+
+    if (state.isDraggingFromTray && state.dragFragment) {
+      const rect = mosaicCanvas.getBoundingClientRect();
+      const clientX = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
+      const clientY = ev.changedTouches ? ev.changedTouches[0].clientY : ev.clientY;
+
+      if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
+        saveHistory();
+        state.placedPieces.push({
+          canvas: state.dragFragment.canvas,
+          x: state.dragFragment.x,
+          y: state.dragFragment.y,
+          w: state.dragFragment.w,
+          h: state.dragFragment.h,
+          rotation: 0, scale: 1
+        });
+        // Remove from tray
+        state.fragments.splice(fragIdx, 1);
+        updateFragmentsTray();
+      }
+    }
+    state.isDraggingFromTray = false;
+    state.dragFragment = null;
+    renderCanvas();
+  };
+
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+  document.addEventListener('touchmove', onMove, { passive: false });
+  document.addEventListener('touchend', onUp);
+}
+
+// --- Tools ---
+document.querySelectorAll('.tool-btn').forEach(btn => {
+  if (['toolMove','toolRotate','toolScale','toolDelete'].includes(btn.id)) {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const toolMap = { toolMove: 'move', toolRotate: 'rotate', toolScale: 'scale', toolDelete: 'delete' };
+      state.currentTool = toolMap[btn.id] || 'move';
+    });
+  }
+});
+
+// Background buttons
+document.getElementById('bgLight').addEventListener('click', () => {
+  state.canvasBg = '#F5ECD7';
+  renderCanvas();
+});
+document.getElementById('bgDark').addEventListener('click', () => {
+  state.canvasBg = '#1C1914';
+  renderCanvas();
+});
+document.getElementById('bgBlue').addEventListener('click', () => {
+  state.canvasBg = '#1A3A4A';
+  renderCanvas();
+});
+
+// Undo
+document.getElementById('undoBtn').addEventListener('click', () => {
+  if (state.history.length > 0) {
+    state.placedPieces = state.history.pop();
+    state.selectedPiece = null;
+    renderCanvas();
+    notify('Acció desfeta');
+  }
+});
+
+// Clear
+document.getElementById('clearBtn').addEventListener('click', () => {
+  if (state.placedPieces.length > 0) {
+    saveHistory();
+    state.placedPieces = [];
+    state.selectedPiece = null;
+    renderCanvas();
+    notify('Llenç netejat');
+  }
+});
+
+// Export
+document.getElementById('exportBtn').addEventListener('click', () => {
+  // Create export canvas
+  const exportCanvas = document.createElement('canvas');
+  exportCanvas.width = mosaicCanvas.width;
+  exportCanvas.height = mosaicCanvas.height;
+  const eCtx = exportCanvas.getContext('2d');
+
+  eCtx.fillStyle = state.canvasBg;
+  eCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+  state.placedPieces.forEach(piece => {
+    eCtx.save();
+    eCtx.translate(piece.x + piece.w/2, piece.y + piece.h/2);
+    eCtx.rotate(piece.rotation || 0);
+    eCtx.scale(piece.scale || 1, piece.scale || 1);
+    eCtx.shadowColor = 'rgba(0,0,0,0.3)';
+    eCtx.shadowBlur = 6;
+    eCtx.drawImage(piece.canvas, -piece.w/2, -piece.h/2, piece.w, piece.h);
+    eCtx.restore();
+  });
+
+  // Watermark
+  eCtx.fillStyle = 'rgba(212,168,67,0.3)';
+  eCtx.font = '12px "DM Sans", sans-serif';
+  eCtx.fillText('Gaudí Mosaic · 2026', 12, exportCanvas.height - 12);
+
+  const link = document.createElement('a');
+  link.download = 'gaudi-mosaic.png';
+  link.href = exportCanvas.toDataURL('image/png');
+  link.click();
+  notify('Mosaic exportat!');
+});
+
+// --- Splash Screen ---
+document.getElementById('enterBtn').addEventListener('click', () => {
+  document.getElementById('splash').classList.add('hidden');
+  setTimeout(() => {
+    document.getElementById('app').classList.add('active');
+    resizeCanvas();
+  }, 400);
+});
+
+// --- Create Splash Mosaic ---
+function createSplashMosaic() {
+  const container = document.getElementById('splashMosaic');
+  const colors = ['#D4A843','#2E6B8A','#1A8A7D','#D4763A','#B84233','#4A7C59','#E8DCC8','#8B6914'];
+
+  const pieces = [
+    { x: 0, y: 0, w: 55, h: 50, r: -3 },
+    { x: 58, y: 5, w: 58, h: 48, r: 2 },
+    { x: 5, y: 53, w: 50, h: 55, r: 1 },
+    { x: 57, y: 55, w: 60, h: 52, r: -2 },
+    { x: 20, y: 20, w: 35, h: 35, r: 5 },
+    { x: 70, y: 25, w: 30, h: 40, r: -4 },
+    { x: 10, y: 70, w: 45, h: 35, r: 3 },
+    { x: 65, y: 72, w: 40, h: 38, r: -1 }
+  ];
+
+  pieces.forEach((p, i) => {
+    const el = document.createElement('div');
+    el.className = 'splash-piece';
+    el.style.cssText = `
+      left: ${p.x}px; top: ${p.y}px;
+      width: ${p.w}px; height: ${p.h}px;
+      background: ${colors[i % colors.length]};
+      transform: rotate(${p.r}deg);
+      opacity: ${0.7 + Math.random() * 0.3};
+      clip-path: polygon(
+        ${5 + Math.random()*15}% ${Math.random()*10}%,
+        ${85 + Math.random()*15}% ${5 + Math.random()*10}%,
+        ${90 + Math.random()*10}% ${85 + Math.random()*15}%,
+        ${Math.random()*15}% ${90 + Math.random()*10}%
+      );
+    `;
+    container.appendChild(el);
+  });
+}
+
+// --- Init ---
+function init() {
+  createSplashMosaic();
+  initCeramics();
+  window.addEventListener('resize', resizeCanvas);
+}
+
+init();
+</script>
+</body>
+</html>
