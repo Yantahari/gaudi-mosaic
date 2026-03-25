@@ -263,10 +263,15 @@ function placeTrayFragmentAtCenter(fragIdx) {
   state.fragments.splice(fragIdx, 1);
   updateFragmentsTray();
 
+  // Offset aleatori perquè les peces no s'apilin al centre
+  const spread = 60;
+  const ox = (Math.random() - 0.5) * spread;
+  const oy = (Math.random() - 0.5) * spread;
+
   emit('piece:add', {
     canvas: frag.canvas,
-    x: cx - (frag.w * scale) / 2,
-    y: cy - (frag.h * scale) / 2,
+    x: cx - (frag.w * scale) / 2 + ox,
+    y: cy - (frag.h * scale) / 2 + oy,
     w: frag.w * scale,
     h: frag.h * scale,
     polygon: frag.polygon || []
