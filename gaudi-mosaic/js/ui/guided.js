@@ -7,7 +7,6 @@
 import { getState, setState, subscribe, emit, addPiece } from '../state.js';
 import { TEMPLATES } from '../data/templates.js';
 import { PALETTES } from '../data/palettes.js';
-import { generateCeramicPattern } from '../engine/ceramics.js';
 import { generateFragments } from '../engine/fracture.js';
 import { render } from '../engine/canvas.js';
 import { t } from '../i18n/i18n.js';
@@ -318,27 +317,43 @@ async function startChallenge(challengeId) {
   setState('templateOpacity', 0.12);
   setState('templateScale', 1);
 
-  // Generar fragments a partir de múltiples rajoles de la paleta
+  // Generar fragments a partir de múltiples rajoles de la paleta.
+  // Pintem rajoles procedurals simples (base + taques de color)
+  // per evitar importar ceramics.js (que té un bug d'import amb textures.js).
   const allFragments = [];
-  const colorsPerBatch = 3;
   const batchCount = Math.ceil(challenge.fragmentCount / 8);
 
   for (let b = 0; b < batchCount; b++) {
-    // Crear una rajola procedural amb colors de la paleta
     const tileCanvas = document.createElement('canvas');
-    tileCanvas.width = 256;
-    tileCanvas.height = 256;
+    const size = 256;
+    tileCanvas.width = size;
+    tileCanvas.height = size;
+    const ctx = tileCanvas.getContext('2d');
 
-    // Seleccionar colors aleatoris de la paleta per a cada rajola
-    const startIdx = (b * colorsPerBatch) % palette.colors.length;
-    generateCeramicPattern(tileCanvas, challenge.palette, b % 10, challenge.ceramicType);
+    // Color base aleatori de la paleta
+    const colors = palette.colors;
+    ctx.fillStyle = colors[b % colors.length];
+    ctx.fillRect(0, 0, size, size);
+
+    // Taques de color addicionals per donar riquesa visual
+    for (let i = 0; i < 6; i++) {
+      ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+      ctx.globalAlpha = 0.3 + Math.random() * 0.5;
+      const r = 20 + Math.random() * 80;
+      const x = Math.random() * size;
+      const y = Math.random() * size;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1.0;
 
     // Fracturar la rajola
     const frags = generateFragments(
       tileCanvas,
       challenge.fractureType,
       0.4 + Math.random() * 0.3,
-      256
+      size
     );
 
     allFragments.push(...frags);
