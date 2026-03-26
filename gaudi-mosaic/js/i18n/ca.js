@@ -413,6 +413,32 @@ export default {
     contactLicense: 'Fet amb ♥ a Barcelona'
   },
 
+  // ---- Mode guiat ----
+  guided: {
+    splashBtn: 'Completa un mosaic',
+    headerBtn: '🧩 Guiat',
+    headerTitle: 'Mode guiat: completa un mosaic',
+    modalTitle: 'Completa el mosaic',
+    modalSubtitle: 'Tria un repte. Algunes peces ja estan col·locades — tu has de completar la resta!',
+    fragments: 'fragments',
+    loading: 'Preparant el repte…',
+    started: 'Repte "{name}" iniciat! Completa el mosaic.',
+    progressBtn: '🧩 Progrés',
+    progress: '{placed}/{total} peces · Falten {remaining} · {time}',
+    completed: 'Mosaic completat! Temps: {time}',
+    exitBtn: 'Sortir del mode guiat'
+  },
+
+  // ---- PWA ----
+  pwa: {
+    install: 'Instal·lar',
+    installTitle: 'Instal·la Gaudí Mosaic al teu dispositiu',
+    installed: 'Gaudí Mosaic instal·lat al dispositiu!',
+    offline: 'Sense connexió — treballant offline',
+    online: 'Connexió restablerta',
+    updated: 'Nova versió disponible — recarrega per actualitzar'
+  },
+
   // ---- Selector d'idioma ----
   language: {
     label: 'Idioma',

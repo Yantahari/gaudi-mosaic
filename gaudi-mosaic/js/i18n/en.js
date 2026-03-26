@@ -422,6 +422,32 @@ export default {
     contactLicense: 'Made with ♥ in Barcelona'
   },
 
+  // ---- Guided mode ----
+  guided: {
+    splashBtn: 'Complete a mosaic',
+    headerBtn: '🧩 Guided',
+    headerTitle: 'Guided mode: complete a mosaic',
+    modalTitle: 'Complete the mosaic',
+    modalSubtitle: 'Choose a challenge. Some pieces are already placed — you need to complete the rest!',
+    fragments: 'fragments',
+    loading: 'Preparing the challenge…',
+    started: 'Challenge "{name}" started! Complete the mosaic.',
+    progressBtn: '🧩 Progress',
+    progress: '{placed}/{total} pieces · {remaining} remaining · {time}',
+    completed: 'Mosaic completed! Time: {time}',
+    exitBtn: 'Exit guided mode'
+  },
+
+  // ---- PWA ----
+  pwa: {
+    install: 'Install',
+    installTitle: 'Install Gaudí Mosaic on your device',
+    installed: 'Gaudí Mosaic installed on your device!',
+    offline: 'No connection — working offline',
+    online: 'Connection restored',
+    updated: 'New version available — reload to update'
+  },
+
   // ---- Language selector ----
   language: {
     label: 'Language',

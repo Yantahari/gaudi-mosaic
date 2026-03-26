@@ -17,6 +17,7 @@ import { initStorage } from './utils/storage.js';
 import { initExport } from './utils/export.js';
 import { initTutorial } from './ui/tutorial.js';
 import { initI18n, t, setLanguage, getCurrentLang, getAvailableLanguages } from './i18n/i18n.js';
+import { initGuided } from './ui/guided.js';
 
 /**
  * Inicialització principal de l'aplicació
@@ -38,6 +39,7 @@ function init() {
   initStorage();
   initExport();
   initTutorial();
+  initGuided();
   initMobilePanel();
 
   // Selector d'idioma
@@ -284,9 +286,112 @@ function setupEasterEgg() {
   });
 }
 
+// ---- PWA: Service Worker + instal·lació ----
+
+/** Registra el Service Worker per funcionar offline */
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+
+  navigator.serviceWorker.register('/sw.js')
+    .then(reg => {
+      // Avisar quan hi ha una actualització disponible
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'activated') {
+            emit('notify', t('pwa.updated'));
+          }
+        });
+      });
+    })
+    .catch(() => { /* SW no disponible — no passa res */ });
+}
+
+/** Gestiona l'estat online/offline */
+function setupOfflineIndicator() {
+  const showStatus = (online) => {
+    if (!online) {
+      emit('notify', t('pwa.offline'));
+    } else if (!navigator.onLine === false) {
+      // Només notifiquem la reconnexió si prèviament estàvem offline
+      emit('notify', t('pwa.online'));
+    }
+  };
+
+  window.addEventListener('online', () => showStatus(true));
+  window.addEventListener('offline', () => showStatus(false));
+}
+
+/** Captura l'event d'instal·lació PWA */
+let deferredInstallPrompt = null;
+
+function setupInstallPrompt() {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    // Mostrem un botó d'instal·lació subtil a la capçalera
+    showInstallButton();
+  });
+
+  window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    hideInstallButton();
+    emit('notify', t('pwa.installed'));
+  });
+}
+
+function showInstallButton() {
+  // Afegir botó d'instal·lació a les accions de capçalera
+  const actions = document.querySelector('.header-actions');
+  if (!actions || document.getElementById('installBtn')) return;
+
+  const sep = document.createElement('div');
+  sep.className = 'header-sep';
+  sep.id = 'installSep';
+
+  const btn = document.createElement('button');
+  btn.className = 'header-btn';
+  btn.id = 'installBtn';
+  btn.textContent = t('pwa.install');
+  btn.title = t('pwa.installTitle');
+  btn.addEventListener('click', async () => {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    const result = await deferredInstallPrompt.userChoice;
+    if (result.outcome === 'accepted') {
+      deferredInstallPrompt = null;
+    }
+  });
+
+  // Inserir abans del selector d'idioma
+  const langSelector = document.getElementById('langSelector');
+  if (langSelector) {
+    actions.insertBefore(sep, langSelector);
+    actions.insertBefore(btn, langSelector);
+  } else {
+    actions.appendChild(sep);
+    actions.appendChild(btn);
+  }
+}
+
+function hideInstallButton() {
+  const btn = document.getElementById('installBtn');
+  const sep = document.getElementById('installSep');
+  if (btn) btn.remove();
+  if (sep) sep.remove();
+}
+
 // Iniciar l'aplicació quan el DOM estigui llest
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
   init();
 }
+
+// Registrar SW després de la càrrega (no bloquejar el render)
+window.addEventListener('load', () => {
+  registerServiceWorker();
+  setupOfflineIndicator();
+  setupInstallPrompt();
+});
