@@ -292,8 +292,9 @@ function setupEasterEgg() {
 function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) return;
 
-  navigator.serviceWorker.register('/sw.js')
+  navigator.serviceWorker.register('./sw.js')
     .then(reg => {
+      console.log('[PWA] Service Worker registrat, scope:', reg.scope);
       // Avisar quan hi ha una actualització disponible
       reg.addEventListener('updatefound', () => {
         const newWorker = reg.installing;
@@ -305,22 +306,17 @@ function registerServiceWorker() {
         });
       });
     })
-    .catch(() => { /* SW no disponible — no passa res */ });
+    .catch(err => {
+      console.error('[PWA] Error registrant Service Worker:', err);
+    });
 }
 
 /** Gestiona l'estat online/offline */
 function setupOfflineIndicator() {
-  const showStatus = (online) => {
-    if (!online) {
-      emit('notify', t('pwa.offline'));
-    } else if (!navigator.onLine === false) {
-      // Només notifiquem la reconnexió si prèviament estàvem offline
-      emit('notify', t('pwa.online'));
-    }
-  };
-
-  window.addEventListener('online', () => showStatus(true));
-  window.addEventListener('offline', () => showStatus(false));
+  // L'event 'online' només es dispara quan es recupera la connexió,
+  // i 'offline' quan es perd — no cal verificar navigator.onLine.
+  window.addEventListener('offline', () => emit('notify', t('pwa.offline')));
+  window.addEventListener('online', () => emit('notify', t('pwa.online')));
 }
 
 /** Captura l'event d'instal·lació PWA */
