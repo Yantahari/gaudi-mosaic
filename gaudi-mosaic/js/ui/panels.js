@@ -273,7 +273,7 @@ function initTemplatesPanel() {
   if (!container) return;
 
   container.innerHTML = '';
-  container.className = 'templates-grid';
+  container.classList.add('templates-grid');
 
   // Funció per seleccionar una tarjeta
   const selectCard = (el, template) => {
@@ -447,6 +447,13 @@ export function switchMobileView(viewName) {
       if (panel) {
         panel.classList.add('mobile-view-active');
         activatePanelTab('layers');
+      }
+      break;
+
+    case 'templates':
+      if (panel) {
+        panel.classList.add('mobile-view-active');
+        activatePanelTab('templates');
       }
       break;
 

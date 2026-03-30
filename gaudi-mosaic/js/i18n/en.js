@@ -146,6 +146,7 @@ export default {
     ceramics: 'Ceramics',
     canvas: 'Canvas',
     layers: 'Layers',
+    templates: 'Templates',
     tools: 'Tools',
     actions: 'Actions',
     resetZoom: 'Reset zoom'

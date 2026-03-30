@@ -100,6 +100,9 @@ self.addEventListener('activate', (event) => {
 
 // ---- Intercepció de peticions ----
 self.addEventListener('fetch', (event) => {
+  // Ignorar peticions no-HTTP (chrome-extension://, etc.)
+  if (!event.request.url.startsWith('http')) return;
+
   const url = new URL(event.request.url);
 
   // Fonts de Google: stale-while-revalidate

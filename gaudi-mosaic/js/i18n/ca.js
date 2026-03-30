@@ -146,6 +146,7 @@ export default {
     ceramics: 'Ceràmiques',
     canvas: 'Llenç',
     layers: 'Capes',
+    templates: 'Plantilles',
     tools: 'Eines',
     actions: 'Accions',
     resetZoom: 'Reset zoom'

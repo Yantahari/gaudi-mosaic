@@ -1,6 +1,6 @@
 // =====================================================
 // GAUDÍ MOSAIC — Tutorial interactiu pas a pas
-// Guia l'usuari pel flux real de l'app amb spotlights
+// Guia l'usuari pel flux real amb spotlight
 // =====================================================
 
 import { subscribe } from '../state.js';
@@ -8,42 +8,44 @@ import { t } from '../i18n/i18n.js';
 
 const STORAGE_KEY = 'gaudi-tutorial-done';
 
-// Definició dels passos: element a destacar + text
+// Passos del tutorial — targets adaptats desktop/mòbil
 const STEPS = [
-  { icon: '🎨', titleKey: 'tutorial.step1title', textKey: 'tutorial.step1text', target: '#panel-ceramics' },
-  { icon: '⚡', titleKey: 'tutorial.step2title', textKey: 'tutorial.step2text', target: '.break-actions' },
-  { icon: '✋', titleKey: 'tutorial.step3title', textKey: 'tutorial.step3text', target: '#canvasArea' },
-  { icon: '🧩', titleKey: 'tutorial.step4title', textKey: 'tutorial.step4text', target: '#toolbar' },
-  { icon: '💾', titleKey: 'tutorial.step5title', textKey: 'tutorial.step5text', target: '#exportBtn' }
+  { icon: '🎨', titleKey: 'tutorial.step1title', textKey: 'tutorial.step1text',
+    target: '#panel-ceramics', mobileTarget: '.mobile-nav-btn[data-view="ceramics"]' },
+  { icon: '⚡', titleKey: 'tutorial.step2title', textKey: 'tutorial.step2text',
+    target: '#ceramicsGrid', mobileTarget: '#ceramicsGrid' },
+  { icon: '✋', titleKey: 'tutorial.step3title', textKey: 'tutorial.step3text',
+    target: '#canvasArea', mobileTarget: '.mobile-nav-btn[data-view="canvas"]' },
+  { icon: '🧩', titleKey: 'tutorial.step4title', textKey: 'tutorial.step4text',
+    target: '#toolbar', mobileTarget: '.mobile-nav-btn[data-view="tools"]' },
+  { icon: '💾', titleKey: 'tutorial.step5title', textKey: 'tutorial.step5text',
+    target: '#exportBtn', mobileTarget: '.mobile-nav-btn[data-view="canvas"]' }
 ];
 
 let currentStep = 0;
 let overlayEl = null;
 let onKeyHandler = null;
 
-/**
- * Inicialitza el tutorial — es mostra la primera vegada o quan es demana
- */
+// Detectar mòbil real: la nav inferior és visible (display !== none)
+const isMobile = () => {
+  const nav = document.getElementById('mobileNav');
+  return nav && getComputedStyle(nav).display !== 'none';
+};
+
 export function initTutorial() {
   if (!localStorage.getItem(STORAGE_KEY)) {
     subscribe('app:ready', () => setTimeout(showTutorial, 600));
   }
-  // Permetre repetir el tutorial des del modal d'ajuda
   subscribe('tutorial:repeat', showTutorial);
 }
 
-/**
- * Mostra el tutorial des del pas 1
- */
 function showTutorial() {
   currentStep = 0;
   if (overlayEl) overlayEl.remove();
 
   overlayEl = document.createElement('div');
   overlayEl.className = 'tutorial-overlay';
-  overlayEl.id = 'tutorialOverlay';
 
-  // Tancar amb clic al fons fosc (no al spotlight ni a la caixa)
   overlayEl.addEventListener('click', (e) => {
     if (e.target === overlayEl) dismiss();
   });
@@ -60,9 +62,6 @@ function showTutorial() {
   renderStep();
 }
 
-/**
- * Renderitza el pas actual
- */
 function renderStep() {
   if (!overlayEl) return;
   const step = STEPS[currentStep];
@@ -70,23 +69,24 @@ function renderStep() {
 
   overlayEl.innerHTML = '';
 
-  // Spotlight sobre l'element objectiu
-  const targetEl = document.querySelector(step.target);
+  // Trobar el target (mòbil o desktop)
+  const selector = isMobile() ? (step.mobileTarget || step.target) : step.target;
+  const targetEl = document.querySelector(selector);
+
+  // Spotlight
   if (targetEl) {
     const rect = targetEl.getBoundingClientRect();
-    const pad = 8;
+    const pad = 6;
     const spot = document.createElement('div');
     spot.className = 'tutorial-spotlight';
-    spot.style.cssText = `
-      left: ${rect.left - pad}px;
-      top: ${rect.top - pad}px;
-      width: ${rect.width + pad * 2}px;
-      height: ${rect.height + pad * 2}px;
-    `;
+    spot.style.left = `${rect.left - pad}px`;
+    spot.style.top = `${rect.top - pad}px`;
+    spot.style.width = `${rect.width + pad * 2}px`;
+    spot.style.height = `${rect.height + pad * 2}px`;
     overlayEl.appendChild(spot);
   }
 
-  // Caixa de contingut
+  // Tooltip
   const box = document.createElement('div');
   box.className = 'tutorial-box';
 
@@ -122,30 +122,108 @@ function renderStep() {
 
   const mainBtn = document.createElement('button');
   mainBtn.className = 'tutorial-next';
-  if (isLast) {
-    mainBtn.textContent = t('tutorial.skip') + ' ✓';
-    mainBtn.addEventListener('click', dismiss);
-  } else {
-    mainBtn.textContent = t('tutorial.next') + ' →';
-    mainBtn.addEventListener('click', nextStep);
-  }
+  mainBtn.textContent = isLast ? (t('tutorial.skip') + ' ✓') : (t('tutorial.next') + ' →');
+  mainBtn.addEventListener('click', isLast ? dismiss : nextStep);
   actions.appendChild(mainBtn);
   box.appendChild(actions);
 
-  // Posicionar respecte al target
-  if (targetEl) {
-    const rect = targetEl.getBoundingClientRect();
-    const spaceBelow = window.innerHeight - rect.bottom;
-    if (spaceBelow > 200) {
-      box.style.top = `${rect.bottom + 16}px`;
+  // Afegir al DOM per poder mesurar dimensions
+  box.style.visibility = 'hidden';
+  box.style.position = 'fixed';
+  box.style.top = '0';
+  box.style.left = '0';
+  overlayEl.appendChild(box);
+
+  // Forçar reflow perquè getBoundingClientRect retorni dimensions reals
+  box.offsetHeight; // eslint-disable-line no-unused-expressions
+
+  // Posicionar amb clamping al viewport
+  positionTooltip(box, targetEl);
+  // Última verificació: forçar dins el viewport
+  assegurarVisibilitat(box);
+  box.style.visibility = '';
+}
+
+/**
+ * Posiciona el tooltip respecte al target, clampejat dins el viewport.
+ * Funciona tant en desktop com en mòbil.
+ */
+function positionTooltip(box, targetEl) {
+  const HEADER_H = 70;
+  const MARGIN = 16;
+  const boxRect = box.getBoundingClientRect();
+  const bw = boxRect.width;
+  const bh = boxRect.height;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  let top, left;
+
+  if (!targetEl) {
+    // Centrat
+    top = (vh - bh) / 2;
+    left = (vw - bw) / 2;
+  } else {
+    const r = targetEl.getBoundingClientRect();
+
+    // Decidir posició ideal segons on és el target
+    const targetIsLeft = r.right < vw * 0.4;
+    const targetIsBottom = r.top > vh * 0.6;
+    const targetIsWide = r.width > vw * 0.5;
+
+    if (targetIsLeft) {
+      // Tooltip a la dreta del target, centrat verticalment
+      left = r.right + 16;
+      top = r.top + r.height / 2 - bh / 2;
+    } else if (targetIsBottom) {
+      // Tooltip a sobre del target
+      left = r.left + r.width / 2 - bw / 2;
+      top = r.top - bh - 12;
+    } else if (targetIsWide) {
+      // Target gran (canvas): centrar tooltip a la pantalla
+      left = (vw - bw) / 2;
+      top = (vh - bh) / 2;
     } else {
-      box.style.bottom = `${window.innerHeight - rect.top + 16}px`;
+      // Default: a sota del target
+      left = r.left + r.width / 2 - bw / 2;
+      top = r.bottom + 12;
     }
-    const cx = rect.left + rect.width / 2;
-    box.style.left = `${Math.max(16, Math.min(cx - 160, window.innerWidth - 336))}px`;
   }
 
-  overlayEl.appendChild(box);
+  // Clamp: mai fora del viewport
+  top = Math.max(HEADER_H + MARGIN, Math.min(top, vh - bh - MARGIN));
+  left = Math.max(MARGIN, Math.min(left, vw - bw - MARGIN));
+
+  box.style.top = `${top}px`;
+  box.style.left = `${left}px`;
+  // Netejar bottom/transform que puguin interferir
+  box.style.bottom = 'auto';
+  box.style.transform = 'none';
+}
+
+/**
+ * Última xarxa de seguretat: si el tooltip queda fora del viewport, corregir.
+ */
+function assegurarVisibilitat(el) {
+  const rect = el.getBoundingClientRect();
+  const minTop = 100;  // sota el header (~70px) + marge
+  const minLeft = 16;
+  const maxBottom = window.innerHeight - 16;
+  const maxRight = window.innerWidth - 16;
+
+  if (rect.top < minTop) {
+    el.style.top = minTop + 'px';
+    el.style.transform = 'none';
+  }
+  if (rect.bottom > maxBottom) {
+    el.style.top = (maxBottom - rect.height) + 'px';
+  }
+  if (rect.left < minLeft) {
+    el.style.left = minLeft + 'px';
+  }
+  if (rect.right > maxRight) {
+    el.style.left = (maxRight - rect.width) + 'px';
+  }
 }
 
 function nextStep() {
