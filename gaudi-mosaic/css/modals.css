@@ -309,6 +309,7 @@
 
 /* --- Banner de cookies (GDPR) --- */
 .cookie-banner {
+  display: none;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -318,15 +319,11 @@
   border-top: 1px solid rgba(212,168,67,0.3);
   backdrop-filter: blur(10px);
   padding: 16px 24px;
-  display: flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  transform: translateY(100%);
-  transition: transform 0.4s ease;
 }
-.cookie-banner.visible { transform: translateY(0); }
-.cookie-banner.hidden { display: none; }
+.cookie-banner.visible { display: flex; }
 
 .cookie-text {
   font-family: 'DM Sans', sans-serif;

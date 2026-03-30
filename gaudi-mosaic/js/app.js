@@ -407,31 +407,29 @@ function setupCookieConsent() {
   const banner = document.getElementById('cookieBanner');
   if (!banner) return;
 
-  // Si ja ha decidit, aplicar i amagar
+  // Si ja ha decidit, aplicar sense mostrar banner
   if (consent === 'accepted') {
     carregarAnalytics();
-    banner.classList.add('hidden');
     return;
   }
   if (consent === 'rejected') {
-    banner.classList.add('hidden');
     return;
   }
 
-  // Mostrar banner amb animació
-  setTimeout(() => banner.classList.add('visible'), 1000);
+  // Primera visita: mostrar banner després d'1 segon
+  setTimeout(() => {
+    banner.classList.add('visible');
+  }, 1000);
 
   document.getElementById('cookieAccept')?.addEventListener('click', () => {
     localStorage.setItem(CONSENT_KEY, 'accepted');
     carregarAnalytics();
     banner.classList.remove('visible');
-    setTimeout(() => banner.classList.add('hidden'), 400);
   });
 
   document.getElementById('cookieReject')?.addEventListener('click', () => {
     localStorage.setItem(CONSENT_KEY, 'rejected');
     banner.classList.remove('visible');
-    setTimeout(() => banner.classList.add('hidden'), 400);
   });
 }
 
@@ -440,8 +438,7 @@ export function restablirConsentiment() {
   localStorage.removeItem(CONSENT_KEY);
   const banner = document.getElementById('cookieBanner');
   if (banner) {
-    banner.classList.remove('hidden');
-    setTimeout(() => banner.classList.add('visible'), 50);
+    banner.classList.add('visible');
   }
 }
 
