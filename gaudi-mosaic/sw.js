@@ -105,6 +105,11 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(event.request.url);
 
+  // Google Analytics / GTM: deixar passar sense interceptar
+  if (url.hostname.includes('googletagmanager.com') || url.hostname.includes('google-analytics.com')) {
+    return;
+  }
+
   // Fonts de Google: stale-while-revalidate
   if (FONT_PATTERN.test(url.href)) {
     event.respondWith(staleWhileRevalidate(event.request));
