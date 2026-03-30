@@ -392,20 +392,22 @@ export default {
       },
       {
         icon: '🍪',
-        title: 'Sense cookies de rastreig',
-        text: 'No utilitzem cookies de rastreig, analítiques ni de tercers. No hi ha Google Analytics, Facebook Pixel ni cap servei de seguiment.'
+        title: 'Cookies d\'anàlisi (opcionals)',
+        text: 'Utilitzem Google Analytics per entendre com s\'utilitza l\'app i millorar-la. Aquestes cookies només es carreguen si tu ho acceptes. No recopilem dades personals identificables. Pots canviar la teva decisió en qualsevol moment.'
       },
       {
         icon: '📡',
-        title: 'Sense connexió a servidors',
-        text: 'L\'app funciona completament al teu navegador. No enviem cap informació a servidors externs. Tot el processament és local.'
+        title: 'Processament local',
+        text: 'L\'app funciona completament al teu navegador. Els teus mosaics es creen i es guarden localment. L\'únic servei extern és Google Analytics (si l\'has acceptat).'
       },
       {
         icon: '💾',
         title: 'Emmagatzematge local',
-        text: 'Els teus projectes guardats i la preferència d\'idioma s\'emmagatzemen al localStorage del teu navegador. Aquestes dades romanen al teu dispositiu i les pots esborrar en qualsevol moment des de la configuració del navegador.'
+        text: 'Els teus projectes guardats, la preferència d\'idioma i el consentiment de cookies s\'emmagatzemen al localStorage del teu navegador. Aquestes dades romanen al teu dispositiu.'
       }
     ],
+    privacyResetCookies: 'Canviar preferència de cookies',
+    privacyCookiesReset: 'Preferència de cookies restablerta',
 
     // Contacte
     navContact: 'Contacte',
@@ -431,6 +433,13 @@ export default {
     offline: 'Sense connexió — treballant offline',
     online: 'Connexió restablerta',
     updated: 'Nova versió disponible — recarrega per actualitzar'
+  },
+
+  // ---- Cookies (GDPR) ----
+  cookies: {
+    text: 'Utilitzem cookies d\'anàlisi per millorar l\'experiència. Pots acceptar-les o rebutjar-les.',
+    accept: 'Acceptar',
+    reject: 'Rebutjar'
   },
 
   // ---- Selector d'idioma ----

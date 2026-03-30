@@ -393,20 +393,22 @@ export default {
       },
       {
         icon: '🍪',
-        title: 'No tracking cookies',
-        text: 'We do not use tracking cookies, analytics or third-party services. No Google Analytics, Facebook Pixel or any tracking service.'
+        title: 'Analytics cookies (optional)',
+        text: 'We use Google Analytics to understand how the app is used and improve it. These cookies are only loaded if you accept them. We do not collect personally identifiable data. You can change your decision at any time.'
       },
       {
         icon: '📡',
-        title: 'No server connection',
-        text: 'The app runs entirely in your browser. We do not send any information to external servers. All processing is local.'
+        title: 'Local processing',
+        text: 'The app runs entirely in your browser. Your mosaics are created and saved locally. The only external service is Google Analytics (if you accepted it).'
       },
       {
         icon: '💾',
         title: 'Local storage only',
-        text: 'Your saved projects and language preference are stored in your browser\'s localStorage. This data stays on your device and you can delete it at any time from your browser settings.'
+        text: 'Your saved projects, language preference and cookie consent are stored in your browser\'s localStorage. This data stays on your device.'
       }
     ],
+    privacyResetCookies: 'Change cookie preference',
+    privacyCookiesReset: 'Cookie preference reset',
 
     // Contact
     navContact: 'Contact',
@@ -432,6 +434,13 @@ export default {
     offline: 'No connection — working offline',
     online: 'Connection restored',
     updated: 'New version available — reload to update'
+  },
+
+  // ---- Cookies (GDPR) ----
+  cookies: {
+    text: 'We use analytics cookies to improve the experience. You can accept or reject them.',
+    accept: 'Accept',
+    reject: 'Reject'
   },
 
   // ---- Language selector ----

@@ -13,14 +13,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Gaudí Mosaic — Trencadís Creator</title>
 
-  <!-- Google Analytics (GA4) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8K62JMVDNQ"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-8K62JMVDNQ');
-  </script>
+  <!-- GA4 es carrega condicionalment des de js/app.js (GDPR) -->
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
@@ -271,6 +264,15 @@
 
 <!-- Notificació toast -->
 <div class="notification" id="notification" role="status" aria-live="polite"></div>
+
+<!-- Banner de consentiment de cookies (GDPR) -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Consentiment de cookies">
+  <p class="cookie-text" id="cookieText" data-i18n="cookies.text">Utilitzem cookies d'anàlisi per millorar l'experiència.</p>
+  <div class="cookie-actions">
+    <button class="cookie-btn reject" id="cookieReject" data-i18n="cookies.reject">Rebutjar</button>
+    <button class="cookie-btn accept" id="cookieAccept" data-i18n="cookies.accept">Acceptar</button>
+  </div>
+</div>
 
 <!-- Entrada de l'aplicació -->
 <script type="module" src="js/app.js"></script>

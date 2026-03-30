@@ -342,6 +342,18 @@ function renderPrivacitatSection(container) {
       container.appendChild(card);
     });
   }
+
+  // Botó per restablir preferència de cookies
+  const resetBtn = createElement('button', {
+    className: 'break-btn use',
+    textContent: t('education.privacyResetCookies'),
+    style: 'margin-top: 16px;',
+    onClick: () => {
+      import('../app.js').then(m => m.restablirConsentiment());
+      emit('notify', t('education.privacyCookiesReset'));
+    }
+  });
+  container.appendChild(resetBtn);
 }
 
 // =====================================================

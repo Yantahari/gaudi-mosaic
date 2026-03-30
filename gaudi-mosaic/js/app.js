@@ -383,9 +383,72 @@ if (document.readyState === 'loading') {
   init();
 }
 
-// Registrar SW després de la càrrega (no bloquejar el render)
+// ---- GDPR: consentiment de cookies + GA4 condicional ----
+
+const CONSENT_KEY = 'gaudi-mosaic-cookies-consent';
+const GA_ID = 'G-8K62JMVDNQ';
+
+/** Carrega GA4 dinàmicament (només si l'usuari ha acceptat) */
+function carregarAnalytics() {
+  if (document.querySelector(`script[src*="${GA_ID}"]`)) return; // ja carregat
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', GA_ID);
+}
+
+/** Inicialitza el banner de consentiment */
+function setupCookieConsent() {
+  const consent = localStorage.getItem(CONSENT_KEY);
+  const banner = document.getElementById('cookieBanner');
+  if (!banner) return;
+
+  // Si ja ha decidit, aplicar i amagar
+  if (consent === 'accepted') {
+    carregarAnalytics();
+    banner.classList.add('hidden');
+    return;
+  }
+  if (consent === 'rejected') {
+    banner.classList.add('hidden');
+    return;
+  }
+
+  // Mostrar banner amb animació
+  setTimeout(() => banner.classList.add('visible'), 1000);
+
+  document.getElementById('cookieAccept')?.addEventListener('click', () => {
+    localStorage.setItem(CONSENT_KEY, 'accepted');
+    carregarAnalytics();
+    banner.classList.remove('visible');
+    setTimeout(() => banner.classList.add('hidden'), 400);
+  });
+
+  document.getElementById('cookieReject')?.addEventListener('click', () => {
+    localStorage.setItem(CONSENT_KEY, 'rejected');
+    banner.classList.remove('visible');
+    setTimeout(() => banner.classList.add('hidden'), 400);
+  });
+}
+
+/** Permet restablir el consentiment (des de la secció de privacitat) */
+export function restablirConsentiment() {
+  localStorage.removeItem(CONSENT_KEY);
+  const banner = document.getElementById('cookieBanner');
+  if (banner) {
+    banner.classList.remove('hidden');
+    setTimeout(() => banner.classList.add('visible'), 50);
+  }
+}
+
+// Registrar SW i cookies després de la càrrega (no bloquejar el render)
 window.addEventListener('load', () => {
   registerServiceWorker();
   setupOfflineIndicator();
   setupInstallPrompt();
+  setupCookieConsent();
 });
