@@ -35,7 +35,6 @@ const CORE_ASSETS = [
   './js/ui/breakzone.js',
   './js/ui/modals.js',
   './js/ui/tutorial.js',
-  './js/ui/guided.js',
 
   // Dades
   './js/data/palettes.js',

@@ -1,6 +1,6 @@
 // =====================================================
-// GAUDÍ MOSAIC — Tutorial de primera vegada
-// 3 passos visuals que apareixen un sol cop
+// GAUDÍ MOSAIC — Tutorial interactiu pas a pas
+// Guia l'usuari pel flux real de l'app amb spotlights
 // =====================================================
 
 import { subscribe } from '../state.js';
@@ -8,99 +8,161 @@ import { t } from '../i18n/i18n.js';
 
 const STORAGE_KEY = 'gaudi-tutorial-done';
 
+// Definició dels passos: element a destacar + text
+const STEPS = [
+  { icon: '🎨', titleKey: 'tutorial.step1title', textKey: 'tutorial.step1text', target: '#panel-ceramics' },
+  { icon: '⚡', titleKey: 'tutorial.step2title', textKey: 'tutorial.step2text', target: '.break-actions' },
+  { icon: '✋', titleKey: 'tutorial.step3title', textKey: 'tutorial.step3text', target: '#canvasArea' },
+  { icon: '🧩', titleKey: 'tutorial.step4title', textKey: 'tutorial.step4text', target: '#toolbar' },
+  { icon: '💾', titleKey: 'tutorial.step5title', textKey: 'tutorial.step5text', target: '#exportBtn' }
+];
+
+let currentStep = 0;
+let overlayEl = null;
+let onKeyHandler = null;
+
 /**
- * Inicialitza el tutorial — es mostra després d'app:ready si és la primera vegada
+ * Inicialitza el tutorial — es mostra la primera vegada o quan es demana
  */
 export function initTutorial() {
-  if (localStorage.getItem(STORAGE_KEY)) return;
-  subscribe('app:ready', () => setTimeout(showTutorial, 600));
+  if (!localStorage.getItem(STORAGE_KEY)) {
+    subscribe('app:ready', () => setTimeout(showTutorial, 600));
+  }
+  // Permetre repetir el tutorial des del modal d'ajuda
+  subscribe('tutorial:repeat', showTutorial);
 }
 
 /**
- * Mostra l'overlay del tutorial amb 3 passos
+ * Mostra el tutorial des del pas 1
  */
 function showTutorial() {
-  const overlay = document.createElement('div');
-  overlay.className = 'tutorial-overlay';
+  currentStep = 0;
+  if (overlayEl) overlayEl.remove();
 
-  const steps = [
-    { icon: '🎨', text: t('tutorial.step1') },
-    { icon: '💥', text: t('tutorial.step2') },
-    { icon: '✨', text: t('tutorial.step3') }
-  ];
+  overlayEl = document.createElement('div');
+  overlayEl.className = 'tutorial-overlay';
+  overlayEl.id = 'tutorialOverlay';
 
-  // Contenidor principal
+  // Tancar amb clic al fons fosc (no al spotlight ni a la caixa)
+  overlayEl.addEventListener('click', (e) => {
+    if (e.target === overlayEl) dismiss();
+  });
+
+  document.body.appendChild(overlayEl);
+  requestAnimationFrame(() => overlayEl.classList.add('active'));
+
+  onKeyHandler = (e) => {
+    if (e.key === 'Escape') dismiss();
+    if (e.key === 'ArrowRight' || e.key === 'Enter') nextStep();
+  };
+  document.addEventListener('keydown', onKeyHandler);
+
+  renderStep();
+}
+
+/**
+ * Renderitza el pas actual
+ */
+function renderStep() {
+  if (!overlayEl) return;
+  const step = STEPS[currentStep];
+  const isLast = currentStep === STEPS.length - 1;
+
+  overlayEl.innerHTML = '';
+
+  // Spotlight sobre l'element objectiu
+  const targetEl = document.querySelector(step.target);
+  if (targetEl) {
+    const rect = targetEl.getBoundingClientRect();
+    const pad = 8;
+    const spot = document.createElement('div');
+    spot.className = 'tutorial-spotlight';
+    spot.style.cssText = `
+      left: ${rect.left - pad}px;
+      top: ${rect.top - pad}px;
+      width: ${rect.width + pad * 2}px;
+      height: ${rect.height + pad * 2}px;
+    `;
+    overlayEl.appendChild(spot);
+  }
+
+  // Caixa de contingut
   const box = document.createElement('div');
   box.className = 'tutorial-box';
 
-  // Passos
-  const stepsRow = document.createElement('div');
-  stepsRow.className = 'tutorial-steps';
-
-  steps.forEach((step, i) => {
-    const el = document.createElement('div');
-    el.className = 'tutorial-step';
-    el.style.animationDelay = `${0.15 + i * 0.2}s`;
-
-    const num = document.createElement('div');
-    num.className = 'tutorial-num';
-    num.textContent = i + 1;
-
-    const icon = document.createElement('div');
-    icon.className = 'tutorial-icon';
-    icon.textContent = step.icon;
-
-    const label = document.createElement('div');
-    label.className = 'tutorial-label';
-    label.textContent = step.text;
-
-    el.appendChild(num);
-    el.appendChild(icon);
-    el.appendChild(label);
-    stepsRow.appendChild(el);
-
-    // Fletxa entre passos (excepte l'últim)
-    if (i < steps.length - 1) {
-      const arrow = document.createElement('div');
-      arrow.className = 'tutorial-arrow';
-      arrow.textContent = '→';
-      arrow.style.animationDelay = `${0.25 + i * 0.2}s`;
-      stepsRow.appendChild(arrow);
-    }
+  // Punts de progrés
+  const dots = document.createElement('div');
+  dots.className = 'tutorial-dots';
+  STEPS.forEach((_, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'tutorial-dot' + (i === currentStep ? ' active' : '') + (i < currentStep ? ' done' : '');
+    dots.appendChild(dot);
   });
+  box.appendChild(dots);
 
-  box.appendChild(stepsRow);
+  // Contingut
+  const content = document.createElement('div');
+  content.className = 'tutorial-content';
+  content.innerHTML = `
+    <div class="tutorial-icon">${step.icon}</div>
+    <div class="tutorial-title">${t(step.titleKey)}</div>
+    <div class="tutorial-text">${t(step.textKey)}</div>
+  `;
+  box.appendChild(content);
 
-  // Botó de tancar
-  const btn = document.createElement('button');
-  btn.className = 'tutorial-btn';
-  btn.textContent = t('tutorial.skip');
-  btn.addEventListener('click', () => dismiss(overlay));
-  box.appendChild(btn);
+  // Botons
+  const actions = document.createElement('div');
+  actions.className = 'tutorial-actions';
 
-  overlay.appendChild(box);
+  const skipBtn = document.createElement('button');
+  skipBtn.className = 'tutorial-skip';
+  skipBtn.textContent = t('tutorial.skip');
+  skipBtn.addEventListener('click', dismiss);
+  actions.appendChild(skipBtn);
 
-  // Tancar amb clic fora o Escape
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) dismiss(overlay);
-  });
-  const onKey = (e) => {
-    if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
-      dismiss(overlay);
-      document.removeEventListener('keydown', onKey);
+  const mainBtn = document.createElement('button');
+  mainBtn.className = 'tutorial-next';
+  if (isLast) {
+    mainBtn.textContent = t('tutorial.skip') + ' ✓';
+    mainBtn.addEventListener('click', dismiss);
+  } else {
+    mainBtn.textContent = t('tutorial.next') + ' →';
+    mainBtn.addEventListener('click', nextStep);
+  }
+  actions.appendChild(mainBtn);
+  box.appendChild(actions);
+
+  // Posicionar respecte al target
+  if (targetEl) {
+    const rect = targetEl.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
+    if (spaceBelow > 200) {
+      box.style.top = `${rect.bottom + 16}px`;
+    } else {
+      box.style.bottom = `${window.innerHeight - rect.top + 16}px`;
     }
-  };
-  document.addEventListener('keydown', onKey);
+    const cx = rect.left + rect.width / 2;
+    box.style.left = `${Math.max(16, Math.min(cx - 160, window.innerWidth - 336))}px`;
+  }
 
-  document.body.appendChild(overlay);
-  requestAnimationFrame(() => overlay.classList.add('active'));
+  overlayEl.appendChild(box);
 }
 
-/**
- * Tanca el tutorial i marca com a completat
- */
-function dismiss(overlay) {
+function nextStep() {
+  if (currentStep < STEPS.length - 1) {
+    currentStep++;
+    renderStep();
+  }
+}
+
+function dismiss() {
   localStorage.setItem(STORAGE_KEY, '1');
-  overlay.classList.remove('active');
-  setTimeout(() => overlay.remove(), 400);
+  if (overlayEl) {
+    overlayEl.classList.remove('active');
+    setTimeout(() => { if (overlayEl) { overlayEl.remove(); overlayEl = null; } }, 400);
+  }
+  if (onKeyHandler) {
+    document.removeEventListener('keydown', onKeyHandler);
+    onKeyHandler = null;
+  }
 }

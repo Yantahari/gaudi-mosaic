@@ -187,3 +187,67 @@
   font-size: 13px;
   font-style: italic;
 }
+
+/* --- Tarjetes de plantilles --- */
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  padding: 8px 12px;
+}
+
+.template-card {
+  background: rgba(212,168,67,0.06);
+  border: 1px solid rgba(212,168,67,0.15);
+  border-radius: 8px;
+  padding: 14px 10px 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.template-card:hover {
+  border-color: rgba(212,168,67,0.5);
+  background: rgba(212,168,67,0.1);
+  transform: translateY(-2px);
+}
+.template-card.active {
+  border-color: var(--gaudi-gold);
+  background: rgba(212,168,67,0.15);
+  box-shadow: 0 0 12px rgba(212,168,67,0.15);
+}
+
+.template-card svg {
+  fill: none;
+  stroke: rgba(212,168,67,0.5);
+  stroke-width: 2;
+  transition: stroke 0.25s;
+}
+.template-card.active svg,
+.template-card:hover svg {
+  stroke: var(--gaudi-gold);
+}
+
+.template-card-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gaudi-cream);
+  line-height: 1.2;
+}
+.template-card-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  color: rgba(245,236,215,0.5);
+  line-height: 1.3;
+}
+.template-card-none {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: rgba(245,236,215,0.55);
+  padding: 10px;
+  border-style: dashed;
+}

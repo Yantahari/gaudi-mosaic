@@ -273,64 +273,66 @@ function initTemplatesPanel() {
   if (!container) return;
 
   container.innerHTML = '';
+  container.className = 'templates-grid';
 
-  // Opció de cap plantilla
-  const noneEl = createElement('div', {
-    className: 'template-item active',
+  // Funció per seleccionar una tarjeta
+  const selectCard = (el, template) => {
+    container.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    setState('activeTemplate', template);
+    emit('canvas:render');
+  };
+
+  // Opció "Sense plantilla"
+  const noneCard = createElement('div', {
+    className: 'template-card template-card-none active',
     textContent: t('panels.noTemplate'),
-    onClick: () => {
-      setState('activeTemplate', null);
-      container.querySelectorAll('.template-item').forEach(tpl => tpl.classList.remove('active'));
-      noneEl.classList.add('active');
-      emit('canvas:render');
-    }
+    onClick: () => selectCard(noneCard, null)
   });
-  container.appendChild(noneEl);
+  container.appendChild(noneCard);
 
+  // Tarjetes per a cada plantilla
   TEMPLATES.forEach(template => {
-    const el = createElement('div', {
-      className: 'template-item'
-    });
+    const card = createElement('div', { className: 'template-card' });
 
+    // Miniatura SVG
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('viewBox', template.viewBox);
-    svg.setAttribute('width', '60');
-    svg.setAttribute('height', '40');
-    svg.style.fill = 'none';
-    svg.style.stroke = 'rgba(212,168,67,0.5)';
-    svg.style.strokeWidth = '2';
-
+    svg.setAttribute('width', '64');
+    svg.setAttribute('height', '64');
     template.paths.forEach(pathStr => {
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       path.setAttribute('d', pathStr);
       svg.appendChild(path);
     });
+    card.appendChild(svg);
 
-    // Nom i descripció traduïts
+    // Nom traduït
     const tplName = t(`templateNames.${template.id}`);
+    const name = createElement('div', {
+      className: 'template-card-name',
+      textContent: tplName !== `templateNames.${template.id}` ? tplName : template.name
+    });
+    card.appendChild(name);
+
+    // Descripció traduïda
     const tplDesc = t(`templateDescriptions.${template.id}`);
+    const desc = createElement('div', {
+      className: 'template-card-desc',
+      textContent: tplDesc !== `templateDescriptions.${template.id}` ? tplDesc : template.description
+    });
+    card.appendChild(desc);
 
-    const info = createElement('div', { className: 'template-info' }, [
-      createElement('div', { className: 'template-name', textContent: tplName !== `templateNames.${template.id}` ? tplName : template.name }),
-      createElement('div', { className: 'template-desc', textContent: tplDesc !== `templateDescriptions.${template.id}` ? tplDesc : template.description })
-    ]);
-
-    el.appendChild(svg);
-    el.appendChild(info);
-
-    el.addEventListener('click', () => {
-      setState('activeTemplate', template);
-      container.querySelectorAll('.template-item').forEach(tpl => tpl.classList.remove('active'));
-      el.classList.add('active');
-      emit('canvas:render');
+    card.addEventListener('click', () => {
+      selectCard(card, template);
       const displayName = tplName !== `templateNames.${template.id}` ? tplName : template.name;
       emit('notify', t('panels.templateActive', { name: displayName }));
     });
 
-    container.appendChild(el);
+    container.appendChild(card);
   });
 
-  // Control d'opacitat de la plantilla
+  // Controls d'opacitat i mida
   const opacitySlider = document.getElementById('templateOpacity');
   if (opacitySlider) {
     opacitySlider.addEventListener('input', (e) => {
@@ -338,8 +340,6 @@ function initTemplatesPanel() {
       emit('canvas:render');
     });
   }
-
-  // Control de mida de la plantilla
   const scaleSlider = document.getElementById('templateScale');
   if (scaleSlider) {
     scaleSlider.addEventListener('input', (e) => {

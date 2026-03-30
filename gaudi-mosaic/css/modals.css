@@ -308,121 +308,104 @@
 }
 
 /* --- TUTORIAL PRIMERA VEGADA --- */
+/* --- Tutorial interactiu amb spotlight --- */
 .tutorial-overlay {
   position: fixed;
   inset: 0;
   z-index: 500;
-  background: rgba(28,25,20,0.88);
-  backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: rgba(28,25,20,0.75);
   opacity: 0;
   transition: opacity 0.4s ease;
-  padding: 20px;
 }
-.tutorial-overlay.active {
-  opacity: 1;
+.tutorial-overlay.active { opacity: 1; }
+
+.tutorial-spotlight {
+  position: fixed;
+  border: 2px solid var(--gaudi-gold);
+  border-radius: 8px;
+  box-shadow: 0 0 0 9999px rgba(28,25,20,0.75), 0 0 24px rgba(212,168,67,0.3);
+  transition: all 0.4s ease;
+  pointer-events: none;
 }
+
 .tutorial-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32px;
-  max-width: 520px;
-  width: 100%;
+  position: fixed;
+  width: 320px;
+  background: rgba(28,25,20,0.97);
+  border: 1px solid rgba(212,168,67,0.3);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  animation: tutorialSlideIn 0.3s ease;
 }
-.tutorial-steps {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-}
-.tutorial-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  opacity: 0;
-  transform: translateY(16px);
-  animation: tutorialFadeIn 0.5s ease forwards;
-}
-@keyframes tutorialFadeIn {
+@keyframes tutorialSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.tutorial-num {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--gaudi-gold);
-  color: var(--gaudi-dark);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
+
+.tutorial-dots {
   display: flex;
-  align-items: center;
+  gap: 6px;
   justify-content: center;
+  margin-bottom: 16px;
 }
-.tutorial-icon {
-  font-size: 40px;
-  line-height: 1;
+.tutorial-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(212,168,67,0.2);
+  transition: all 0.3s;
 }
-.tutorial-label {
+.tutorial-dot.active { background: var(--gaudi-gold); transform: scale(1.3); }
+.tutorial-dot.done { background: rgba(212,168,67,0.5); }
+
+.tutorial-content { text-align: center; margin-bottom: 16px; }
+.tutorial-icon { font-size: 36px; line-height: 1; margin-bottom: 8px; }
+.tutorial-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--gaudi-gold);
+  margin-bottom: 6px;
+}
+.tutorial-text {
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
-  color: var(--gaudi-cream);
-  text-align: center;
-  max-width: 110px;
-  line-height: 1.3;
+  color: rgba(245,236,215,0.7);
+  line-height: 1.4;
 }
-.tutorial-arrow {
-  font-size: 20px;
-  color: rgba(212,168,67,0.4);
-  margin-bottom: 20px;
-  opacity: 0;
-  animation: tutorialFadeIn 0.4s ease forwards;
+
+.tutorial-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
 }
-.tutorial-btn {
-  padding: 10px 32px;
+.tutorial-skip {
+  background: none;
+  border: none;
+  color: rgba(245,236,215,0.45);
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 6px 8px;
+}
+.tutorial-skip:hover { color: var(--gaudi-cream); }
+.tutorial-next {
+  padding: 8px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 1px;
   color: var(--gaudi-dark);
   background: var(--gaudi-gold);
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
-  opacity: 0;
-  animation: tutorialFadeIn 0.5s ease 0.8s forwards;
+  transition: background 0.2s;
+  letter-spacing: 0.5px;
 }
-.tutorial-btn:hover {
-  background: #e0b84e;
-  transform: scale(1.04);
-}
+.tutorial-next:hover { background: #e0b84e; }
 
-/* Mòbil: passos en columna */
 @media (max-width: 480px) {
-  .tutorial-steps {
-    flex-direction: column;
-    gap: 16px;
-  }
-  .tutorial-step {
-    flex-direction: row;
-    gap: 12px;
-  }
-  .tutorial-icon {
-    font-size: 32px;
-  }
-  .tutorial-label {
-    text-align: left;
-    max-width: none;
-  }
-  .tutorial-arrow {
-    transform: rotate(90deg);
-    margin: 0;
-  }
+  .tutorial-box { width: calc(100vw - 32px); left: 16px !important; right: 16px; }
 }
 
 /* --- NAVEGACIÓ MÒBIL (BOTTOM TABS) --- */

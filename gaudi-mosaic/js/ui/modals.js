@@ -171,6 +171,20 @@ function renderGuiaSection(container) {
     });
   }
   container.appendChild(drecList);
+
+  // Botó per repetir el tutorial interactiu
+  const repeatBtn = createElement('button', {
+    className: 'break-btn use',
+    textContent: t('tutorial.repeat'),
+    style: 'margin-top: 16px; align-self: center;',
+    onClick: () => {
+      // Tancar el modal educatiu i llançar el tutorial
+      const overlay = document.querySelector('.modal-overlay');
+      if (overlay) overlay.remove();
+      emit('tutorial:repeat');
+    }
+  });
+  container.appendChild(repeatBtn);
 }
 
 function showHelpModal() {

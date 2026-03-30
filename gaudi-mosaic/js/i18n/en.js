@@ -190,18 +190,19 @@ export default {
 
   // ---- Tutorial ----
   tutorial: {
-    step1: 'Choose a tile',
-    step2: 'Break it',
-    step3: 'Compose your mosaic',
-    skip: 'Got it'
-  },
-
-  // ---- Tutorial ----
-  tutorial: {
-    step1: 'Choose a tile',
-    step2: 'Break it',
-    step3: 'Compose your mosaic',
-    skip: 'Got it'
+    step1title: 'Choose a ceramic',
+    step1text: 'Select a tile from the left panel',
+    step2title: 'Break it',
+    step2text: 'Press "Break" to fracture it into fragments',
+    step3title: 'Drag to canvas',
+    step3text: 'Bring the fragments from the tray to the canvas',
+    step4title: 'Compose the mosaic',
+    step4text: 'Move, rotate and scale with the tools',
+    step5title: 'Export your work',
+    step5text: 'Save or share your mosaic',
+    next: 'Next',
+    skip: 'Got it',
+    repeat: 'Repeat tutorial'
   },
 
   // ---- Dialogs ----
@@ -420,22 +421,6 @@ export default {
     contactProjectTitle: 'About the project',
     contactProjectText: 'Gaudí Mosaic is a project created to commemorate the centenary of Antoni Gaudí\'s death (1926–2026). The application is free.',
     contactLicense: 'Made with ♥ in Barcelona'
-  },
-
-  // ---- Guided mode ----
-  guided: {
-    splashBtn: 'Complete a mosaic',
-    headerBtn: '🧩 Guided',
-    headerTitle: 'Guided mode: complete a mosaic',
-    modalTitle: 'Complete the mosaic',
-    modalSubtitle: 'Choose a challenge. Some pieces are already placed — you need to complete the rest!',
-    fragments: 'fragments',
-    loading: 'Preparing the challenge…',
-    started: 'Challenge "{name}" started! Complete the mosaic.',
-    progressBtn: '🧩 Progress',
-    progress: '{placed}/{total} pieces · {remaining} remaining · {time}',
-    completed: 'Mosaic completed! Time: {time}',
-    exitBtn: 'Exit guided mode'
   },
 
   // ---- PWA ----

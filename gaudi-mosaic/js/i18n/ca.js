@@ -190,10 +190,19 @@ export default {
 
   // ---- Tutorial ----
   tutorial: {
-    step1: 'Tria una rajola',
-    step2: 'Trenca-la',
-    step3: 'Compon el mosaic',
-    skip: 'Entesos'
+    step1title: 'Tria una ceràmica',
+    step1text: 'Selecciona una rajola del panell esquerre',
+    step2title: 'Trenca-la',
+    step2text: 'Prem "Trencar" per fracturar-la en fragments',
+    step3title: 'Arrossega al llenç',
+    step3text: 'Porta els fragments des de la safata al llenç',
+    step4title: 'Compon el mosaic',
+    step4text: 'Mou, gira i escala amb les eines',
+    step5title: 'Exporta la teva obra',
+    step5text: 'Desa o comparteix el teu mosaic',
+    next: 'Següent',
+    skip: 'Entesos',
+    repeat: 'Repetir tutorial'
   },
 
   // ---- Diàlegs ----
@@ -411,22 +420,6 @@ export default {
     contactProjectTitle: 'Sobre el projecte',
     contactProjectText: 'Gaudí Mosaic és un projecte creat per commemorar el centenari de la mort d\'Antoni Gaudí (1926–2026). L\'aplicació és gratuïta.',
     contactLicense: 'Fet amb ♥ a Barcelona'
-  },
-
-  // ---- Mode guiat ----
-  guided: {
-    splashBtn: 'Completa un mosaic',
-    headerBtn: '🧩 Guiat',
-    headerTitle: 'Mode guiat: completa un mosaic',
-    modalTitle: 'Completa el mosaic',
-    modalSubtitle: 'Tria un repte. Algunes peces ja estan col·locades — tu has de completar la resta!',
-    fragments: 'fragments',
-    loading: 'Preparant el repte…',
-    started: 'Repte "{name}" iniciat! Completa el mosaic.',
-    progressBtn: '🧩 Progrés',
-    progress: '{placed}/{total} peces · Falten {remaining} · {time}',
-    completed: 'Mosaic completat! Temps: {time}',
-    exitBtn: 'Sortir del mode guiat'
   },
 
   // ---- PWA ----

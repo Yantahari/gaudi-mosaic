@@ -17,7 +17,6 @@ import { initStorage } from './utils/storage.js';
 import { initExport } from './utils/export.js';
 import { initTutorial } from './ui/tutorial.js';
 import { initI18n, t, setLanguage, getCurrentLang, getAvailableLanguages } from './i18n/i18n.js';
-import { initGuided } from './ui/guided.js';
 
 /**
  * Inicialització principal de l'aplicació
@@ -39,7 +38,6 @@ function init() {
   initStorage();
   initExport();
   initTutorial();
-  initGuided();
   initMobilePanel();
 
   // Selector d'idioma
