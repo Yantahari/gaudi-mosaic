@@ -189,14 +189,14 @@ function showChallengeSelector() {
   overlay.id = 'guidedModal';
 
   const modal = document.createElement('div');
-  modal.className = 'modal-content';
-  modal.style.maxWidth = '600px';
+  modal.className = 'modal';
+  modal.style.cssText = 'max-width: 600px; padding: 28px; overflow-y: auto;';
 
   // Títol
   const title = document.createElement('h2');
   title.className = 'modal-title';
   title.textContent = t('guided.modalTitle');
-  title.style.cssText = 'color: #D4A843; margin-bottom: 8px;';
+  title.style.marginBottom = '8px';
 
   const subtitle = document.createElement('p');
   subtitle.textContent = t('guided.modalSubtitle');
@@ -292,6 +292,9 @@ function showChallengeSelector() {
   });
 
   document.body.appendChild(overlay);
+  // Activar transició d'opacitat al tick següent
+  // (setTimeout és més fiable que rAF en tots els entorns)
+  setTimeout(() => overlay.classList.add('active'), 10);
 }
 
 /**
