@@ -4,16 +4,14 @@
 // =====================================================
 
 import { PALETTES } from '../data/palettes.js';
-import { loadTexture, getCachedTexture } from '../data/textures.js';
 
 /**
- * Genera un patró de ceràmica en un canvas.
- * Primer intenta usar una textura Midjourney si existeix;
- * si no, genera un patró procedural.
+ * Genera un patró de ceràmica procedural en un canvas.
+ * Usa colors d'una paleta i un dels 10 patrons disponibles.
  * @param {HTMLCanvasElement} canvas - Canvas on dibuixar
  * @param {string} paletteKey - Clau de la paleta de colors
- * @param {string} patternType - Tipus de patró
- * @param {string} ceramicType - Tipus de ceràmica (glazed, matte, iridescent, rustic)
+ * @param {number|string} patternType - Índex o nom del patró
+ * @param {string} ceramicType - Acabat: glazed, matte, iridescent, rustic
  * @returns {Object} Informació del patró generat
  */
 export function generateCeramicPattern(canvas, paletteKey, patternType, ceramicType = 'glazed') {
@@ -21,15 +19,6 @@ export function generateCeramicPattern(canvas, paletteKey, patternType, ceramicT
   const w = canvas.width = 100;
   const h = canvas.height = 100;
 
-  // Comprovar si hi ha una textura Midjourney al cache
-  const texture = getCachedTexture(paletteKey, ceramicType);
-  if (texture) {
-    // Usar la textura real
-    ctx.drawImage(texture, 0, 0, w, h);
-    return { paletteKey, patternType, ceramicType, source: 'texture' };
-  }
-
-  // Fallback: generar proceduralment
   const palette = PALETTES[paletteKey].colors;
 
   // Color base

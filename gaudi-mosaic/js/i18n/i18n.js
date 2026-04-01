@@ -5,11 +5,13 @@
 
 import ca from './ca.js';
 import en from './en.js';
+import ja from './ja.js';
+import es from './es.js';
 
 const STORAGE_KEY = 'gaudi-mosaic-lang';
 
-// Idiomes disponibles (només els complets)
-const AVAILABLE_LANGS = { ca, en };
+// Idiomes disponibles (es inclòs per mostrar el botó, però té easter egg)
+const AVAILABLE_LANGS = { ca, en, ja, es };
 
 // Idioma actiu
 let currentLang = ca;
@@ -59,11 +61,17 @@ export function t(key, params) {
  */
 export function setLanguage(langCode) {
   if (!AVAILABLE_LANGS[langCode]) return;
+
+  // Easter egg: si l'idioma té la marca, emetre event especial en lloc de canviar
+  if (AVAILABLE_LANGS[langCode].meta.hasEasterEgg) {
+    window.dispatchEvent(new CustomEvent('easteregg:lang', { detail: langCode }));
+    return;
+  }
+
   currentLang = AVAILABLE_LANGS[langCode];
   localStorage.setItem(STORAGE_KEY, langCode);
   document.documentElement.lang = langCode;
 
-  // Emetre event perquè la UI es pugui actualitzar
   window.dispatchEvent(new CustomEvent('languagechange', { detail: langCode }));
 }
 

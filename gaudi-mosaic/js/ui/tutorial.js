@@ -127,103 +127,27 @@ function renderStep() {
   actions.appendChild(mainBtn);
   box.appendChild(actions);
 
-  // Afegir al DOM per poder mesurar dimensions
-  box.style.visibility = 'hidden';
+  // Posicionar el tooltip
   box.style.position = 'fixed';
-  box.style.top = '0';
-  box.style.left = '0';
-  overlayEl.appendChild(box);
+  box.style.zIndex = '10000';
 
-  // Forçar reflow perquè getBoundingClientRect retorni dimensions reals
-  box.offsetHeight; // eslint-disable-line no-unused-expressions
-
-  // Posicionar amb clamping al viewport
-  positionTooltip(box, targetEl);
-  // Última verificació: forçar dins el viewport
-  assegurarVisibilitat(box);
-  box.style.visibility = '';
-}
-
-/**
- * Posiciona el tooltip respecte al target, clampejat dins el viewport.
- * Funciona tant en desktop com en mòbil.
- */
-function positionTooltip(box, targetEl) {
-  const HEADER_H = 70;
-  const MARGIN = 16;
-  const boxRect = box.getBoundingClientRect();
-  const bw = boxRect.width;
-  const bh = boxRect.height;
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-
-  let top, left;
-
-  if (!targetEl) {
-    // Centrat
-    top = (vh - bh) / 2;
-    left = (vw - bw) / 2;
+  if (isMobile()) {
+    // Mòbil: centrat a baix, sobre la nav
+    box.style.bottom = '80px';
+    box.style.left = '16px';
+    box.style.right = '16px';
+    box.style.width = 'auto';
   } else {
-    const r = targetEl.getBoundingClientRect();
-
-    // Decidir posició ideal segons on és el target
-    const targetIsLeft = r.right < vw * 0.4;
-    const targetIsBottom = r.top > vh * 0.6;
-    const targetIsWide = r.width > vw * 0.5;
-
-    if (targetIsLeft) {
-      // Tooltip a la dreta del target, centrat verticalment
-      left = r.right + 16;
-      top = r.top + r.height / 2 - bh / 2;
-    } else if (targetIsBottom) {
-      // Tooltip a sobre del target
-      left = r.left + r.width / 2 - bw / 2;
-      top = r.top - bh - 12;
-    } else if (targetIsWide) {
-      // Target gran (canvas): centrar tooltip a la pantalla
-      left = (vw - bw) / 2;
-      top = (vh - bh) / 2;
-    } else {
-      // Default: a sota del target
-      left = r.left + r.width / 2 - bw / 2;
-      top = r.bottom + 12;
-    }
+    // Desktop: centrat a la zona del canvas (a la dreta del panell)
+    const panelW = 250;
+    const availW = window.innerWidth - panelW;
+    box.style.maxWidth = '380px';
+    box.style.left = (panelW + (availW - 380) / 2) + 'px';
+    box.style.top = '50%';
+    box.style.transform = 'translateY(-50%)';
   }
 
-  // Clamp: mai fora del viewport
-  top = Math.max(HEADER_H + MARGIN, Math.min(top, vh - bh - MARGIN));
-  left = Math.max(MARGIN, Math.min(left, vw - bw - MARGIN));
-
-  box.style.top = `${top}px`;
-  box.style.left = `${left}px`;
-  // Netejar bottom/transform que puguin interferir
-  box.style.bottom = 'auto';
-  box.style.transform = 'none';
-}
-
-/**
- * Última xarxa de seguretat: si el tooltip queda fora del viewport, corregir.
- */
-function assegurarVisibilitat(el) {
-  const rect = el.getBoundingClientRect();
-  const minTop = 100;  // sota el header (~70px) + marge
-  const minLeft = 16;
-  const maxBottom = window.innerHeight - 16;
-  const maxRight = window.innerWidth - 16;
-
-  if (rect.top < minTop) {
-    el.style.top = minTop + 'px';
-    el.style.transform = 'none';
-  }
-  if (rect.bottom > maxBottom) {
-    el.style.top = (maxBottom - rect.height) + 'px';
-  }
-  if (rect.left < minLeft) {
-    el.style.left = minLeft + 'px';
-  }
-  if (rect.right > maxRight) {
-    el.style.left = (maxRight - rect.width) + 'px';
-  }
+  overlayEl.appendChild(box);
 }
 
 function nextStep() {

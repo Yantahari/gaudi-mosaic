@@ -54,6 +54,7 @@ function init() {
 
   // Easter egg: cita aleatòria en fer doble clic al logo
   setupEasterEgg();
+  setupEasterEggES();
 
   // Inicialitzar la safata
   subscribe('app:ready', () => {
@@ -143,6 +144,108 @@ function setupNotifications() {
     timeout = setTimeout(() => {
       el.classList.remove('show');
     }, 2500);
+  });
+}
+
+/**
+ * Easter egg: modal quan l'usuari tria castellà
+ */
+function setupEasterEggES() {
+  window.addEventListener('easteregg:lang', () => {
+    // Si ja existeix el modal, no crear-ne un altre
+    if (document.getElementById('easterEggModal')) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.id = 'easterEggModal';
+    overlay.style.zIndex = '1100'; // sobre la splash (z-index: 1000)
+
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.cssText = 'max-width:600px; padding:0; overflow-y:auto;';
+
+    modal.innerHTML = `
+      <div style="padding:40px 32px; text-align:center;">
+        <p style="font-family:'Playfair Display',serif; font-size:28px; font-style:italic; color:#D4A843; line-height:1.3; margin-bottom:8px;">
+          «Sóc català i parlaré en català.»
+        </p>
+        <p style="font-size:13px; color:rgba(245,236,215,0.5); margin-bottom:32px;">
+          — Antoni Gaudí, 11 de setembre de 1924
+        </p>
+
+        <!-- Retall de diari de l'arrest de Gaudí, 1924 -->
+        <div style="width:100%; height:1px; background:rgba(212,168,67,0.15); margin:0 auto 28px;"></div>
+
+        <div style="text-align:left; font-family:'DM Sans',sans-serif; font-size:14px; color:rgba(245,236,215,0.8); line-height:1.7;">
+          <p style="margin-bottom:16px;">
+            El 11 de septiembre de 1924 — Diada Nacional de Catalunya — Antoni Gaudí, de 72 años, fue detenido por la policía durante una manifestación. Cuando los agentes le exigieron que hablara en castellano, Gaudí se negó rotundamente.
+          </p>
+          <p style="margin-bottom:16px;">
+            Fue llevado a comisaría y solo quedó en libertad tras el pago de una fianza. El episodio tuvo amplia repercusión en la prensa de la época.
+          </p>
+          <p style="margin-bottom:16px;">
+            Para Gaudí, el catalán no era solo un idioma — era parte inseparable de su identidad, de su arte y de su visión del mundo. La misma pasión que ponía en cada mosaico, en cada curva de la Sagrada Família, la ponía en defender su lengua.
+          </p>
+
+          <div style="width:100%; height:1px; background:rgba(212,168,67,0.15); margin:20px auto;"></div>
+
+          <p style="margin-bottom:16px; color:rgba(245,236,215,0.6);">
+            Hoy, un siglo después, el catalán sigue siendo una lengua amenazada. A pesar de ser hablada por más de 10 millones de personas, su presencia en la educación, los medios y la vida pública se ve continuamente cuestionada.
+          </p>
+
+          <div style="width:100%; height:1px; background:rgba(212,168,67,0.15); margin:20px auto;"></div>
+
+          <p style="margin-bottom:8px;">
+            Esta aplicación está hecha en catalán — la lengua de Gaudí.
+          </p>
+          <p style="margin-bottom:8px;">
+            Dado que el catalán y el castellano son lenguas hermanas, te invitamos a explorarla en catalán. Creemos que entenderás la mayor parte, y de paso, descubrirás una lengua con una rica tradición literaria y cultural.
+          </p>
+          <p style="color:#D4A843; font-style:italic;">
+            Es lo que habría querido el maestro.
+          </p>
+        </div>
+
+        <div style="display:flex; gap:12px; justify-content:center; margin-top:28px; flex-wrap:wrap;">
+          <button id="eeCA" style="padding:12px 28px; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; background:#D4A843; color:#1C1914; border:none; border-radius:4px; cursor:pointer; letter-spacing:0.5px;">
+            Endavant, en català
+          </button>
+          <button id="eeEN" style="padding:12px 28px; font-family:'DM Sans',sans-serif; font-size:13px; background:transparent; color:rgba(245,236,215,0.5); border:1px solid rgba(245,236,215,0.2); border-radius:4px; cursor:pointer;">
+            English version
+          </button>
+        </div>
+      </div>
+    `;
+
+    overlay.appendChild(modal);
+
+    // Tancar amb clic al fons
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) overlay.remove();
+    });
+
+    // Botons
+    modal.querySelector('#eeCA').addEventListener('click', () => {
+      overlay.remove();
+      setLanguage('ca');
+      translateDOM();
+      emit('notify', t('notify.langChanged', { name: 'Català' }));
+    });
+    modal.querySelector('#eeEN').addEventListener('click', () => {
+      overlay.remove();
+      setLanguage('en');
+      translateDOM();
+      emit('notify', t('notify.langChanged', { name: 'English' }));
+    });
+
+    // Escape per tancar
+    const onKey = (e) => {
+      if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', onKey); }
+    };
+    document.addEventListener('keydown', onKey);
+
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.classList.add('active'), 10);
   });
 }
 
@@ -416,20 +519,33 @@ function setupCookieConsent() {
     return;
   }
 
-  // Primera visita: mostrar banner després d'1 segon
-  setTimeout(() => {
-    banner.classList.add('visible');
-  }, 1000);
+  // Mostrar banner quan l'splash desapareix (no abans — splash té z-index 1000)
+  const splash = document.getElementById('splash');
+  const mostrarBanner = () => { banner.style.display = 'flex'; };
+
+  if (splash && !splash.classList.contains('hidden')) {
+    // Observar quan la splash s'amaga
+    const obs = new MutationObserver(() => {
+      if (splash.classList.contains('hidden')) {
+        obs.disconnect();
+        setTimeout(mostrarBanner, 500);
+      }
+    });
+    obs.observe(splash, { attributes: true, attributeFilter: ['class'] });
+  } else {
+    // Splash ja amagada (o no existeix) — mostrar després d'1 segon
+    setTimeout(mostrarBanner, 1000);
+  }
 
   document.getElementById('cookieAccept')?.addEventListener('click', () => {
     localStorage.setItem(CONSENT_KEY, 'accepted');
     carregarAnalytics();
-    banner.classList.remove('visible');
+    banner.style.display = 'none';
   });
 
   document.getElementById('cookieReject')?.addEventListener('click', () => {
     localStorage.setItem(CONSENT_KEY, 'rejected');
-    banner.classList.remove('visible');
+    banner.style.display = 'none';
   });
 }
 
@@ -438,7 +554,7 @@ export function restablirConsentiment() {
   localStorage.removeItem(CONSENT_KEY);
   const banner = document.getElementById('cookieBanner');
   if (banner) {
-    banner.classList.add('visible');
+    banner.style.display = 'flex';
   }
 }
 
