@@ -1,2 +1,27 @@
 # Local Netlify folder
 .netlify
+
+# Credencials i secrets
+.env
+rutaalemania-*.json
+
+# Logs i artefactes de Bluesky
+scripts/engagement-log.json
+scripts/following-log.json
+scripts/pending-replies.json
+scripts/reply-candidates.json
+scripts/social-images/
+scripts/__pycache__/
+
+# Documents de treball (no publicar)
+prompt-ccode-*.md
+prompts-*.md
+propostes-*.md
+informe-*.md
+eines-*.md
+instruccions-*.md
+pla-*.md
+bugs-*.md
+Problemes/
+archivo/
+descartable/
