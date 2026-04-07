@@ -21,9 +21,18 @@ let currentLang = ca;
  * Carrega l'idioma guardat a localStorage o usa el per defecte (català).
  */
 export function initI18n() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved && AVAILABLE_LANGS[saved]) {
-    currentLang = AVAILABLE_LANGS[saved];
+  // 1. Prioritzar ?lang= de la URL (per a indexació de cercadors)
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlLang = urlParams.get('lang');
+  if (urlLang && AVAILABLE_LANGS[urlLang] && !AVAILABLE_LANGS[urlLang].meta.hasEasterEgg) {
+    currentLang = AVAILABLE_LANGS[urlLang];
+    localStorage.setItem(STORAGE_KEY, urlLang);
+  } else {
+    // 2. Fallback a localStorage
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && AVAILABLE_LANGS[saved]) {
+      currentLang = AVAILABLE_LANGS[saved];
+    }
   }
   document.documentElement.lang = currentLang.meta.lang;
 }

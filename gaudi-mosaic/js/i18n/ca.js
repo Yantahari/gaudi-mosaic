@@ -442,6 +442,15 @@ export default {
     reject: 'Rebutjar'
   },
 
+  // ---- SEO (meta tags dinàmics) ----
+  seo: {
+    title: 'Gaudí Mosaic — Trencadís Creator',
+    description: 'Crea mosaics digitals amb la tècnica del trencadís d\'Antoni Gaudí. App gratuïta per al centenari 1926-2026.',
+    ogTitle: 'Gaudí Mosaic — Trencadís Creator',
+    ogDescription: 'Crea mosaics digitals amb la tècnica del trencadís d\'Antoni Gaudí. App gratuïta per al centenari 1926-2026.',
+    ogImageAlt: 'Gaudí Mosaic — Fragments de trencadís amb rajoles de colors envoltant el títol de l\'aplicació'
+  },
+
   // ---- Selector d'idioma ----
   language: {
     label: 'Idioma',

@@ -100,6 +100,48 @@ function translateDOM() {
     const val = t(key);
     if (val !== key) el.setAttribute('aria-label', val);
   });
+
+  // Actualitzar meta tags SEO segons l'idioma actiu
+  updateMetaTags();
+}
+
+/**
+ * Actualitza els meta tags del <head> segons l'idioma actiu.
+ * Permet que Google indexi el contingut correcte per cada idioma.
+ */
+function updateMetaTags() {
+  const title = t('seo.title');
+  const desc = t('seo.description');
+  const ogTitle = t('seo.ogTitle');
+  const ogDesc = t('seo.ogDescription');
+  const ogImgAlt = t('seo.ogImageAlt');
+
+  // Només actualitzar si la clau existeix (no és la clau literal)
+  if (title !== 'seo.title') {
+    document.title = title;
+  }
+  if (desc !== 'seo.description') {
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.content = desc;
+  }
+  if (ogTitle !== 'seo.ogTitle') {
+    const ogT = document.querySelector('meta[property="og:title"]');
+    if (ogT) ogT.content = ogTitle;
+    const twT = document.querySelector('meta[name="twitter:title"]');
+    if (twT) twT.content = ogTitle;
+  }
+  if (ogDesc !== 'seo.ogDescription') {
+    const ogD = document.querySelector('meta[property="og:description"]');
+    if (ogD) ogD.content = ogDesc;
+    const twD = document.querySelector('meta[name="twitter:description"]');
+    if (twD) twD.content = ogDesc;
+  }
+  if (ogImgAlt !== 'seo.ogImageAlt') {
+    const ogA = document.querySelector('meta[property="og:image:alt"]');
+    if (ogA) ogA.content = ogImgAlt;
+    const twA = document.querySelector('meta[name="twitter:image:alt"]');
+    if (twA) twA.content = ogImgAlt;
+  }
 }
 
 /**

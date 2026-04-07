@@ -14,6 +14,13 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Gaudí Mosaic — Trencadís Creator</title>
 
+  <!-- Hreflang: variants d'idioma per a cercadors -->
+  <link rel="alternate" hreflang="ca" href="https://gaudimosaic.art/?lang=ca" />
+  <link rel="alternate" hreflang="en" href="https://gaudimosaic.art/?lang=en" />
+  <link rel="alternate" hreflang="ja" href="https://gaudimosaic.art/?lang=ja" />
+  <link rel="alternate" hreflang="x-default" href="https://gaudimosaic.art/" />
+  <link rel="canonical" href="https://gaudimosaic.art/" />
+
   <!-- GA4 es carrega condicionalment des de js/app.js (GDPR) -->
 
   <!-- Open Graph -->
@@ -28,9 +35,11 @@
   <meta property="og:site_name" content="Gaudí Mosaic">
   <meta property="og:locale" content="ca_ES">
   <meta property="og:locale:alternate" content="en_GB">
+  <meta property="og:locale:alternate" content="ja_JP">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@gaudimosaic">
   <meta name="twitter:title" content="Gaudí Mosaic — Trencadís Creator">
   <meta name="twitter:description" content="Crea mosaics digitals amb la tècnica del trencadís d'Antoni Gaudí. App gratuïta per al centenari 1926-2026. / Create digital mosaics with Antoni Gaudí's trencadís technique. Free app for the 1926-2026 centenary.">
   <meta name="twitter:image" content="https://gaudimosaic.art/assets/og-image.png">
@@ -40,6 +49,42 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Schema.org JSON-LD: dades estructurades per a cercadors -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Gaudí Mosaic",
+    "alternateName": ["ガウディ・モザイク", "Gaudí Mosaic — Trencadís Creator", "ガウディ モザイク トレンカディス"],
+    "url": "https://gaudimosaic.art",
+    "description": "Create digital mosaics inspired by Antoni Gaudí's trencadís technique. / アントニ・ガウディのトレンカディス技法でデジタルモザイクを作ろう。",
+    "inLanguage": ["ca", "en", "ja"],
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Web",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "Pot Pourri Corp"
+    },
+    "about": {
+      "@type": "Person",
+      "name": "Antoni Gaudí",
+      "alternateName": "アントニ・ガウディ",
+      "birthDate": "1852-06-25",
+      "deathDate": "1926-06-10",
+      "birthPlace": "Reus, Catalunya",
+      "nationality": "Catalan",
+      "knowsAbout": ["Architecture", "Trencadís", "Mosaic", "Modernisme"]
+    },
+    "keywords": "Gaudí, ガウディ, trencadís, トレンカディス, mosaic, モザイク, Barcelona, バルセロナ, Sagrada Família, サグラダ・ファミリア, Park Güell, グエル公園, Casa Batlló, カサ・バトリョ, digital art, デジタルアート, 没後100周年, 2026, centenari"
+  }
+  </script>
 
   <!-- Estils -->
   <link rel="stylesheet" href="css/styles.css">
@@ -274,6 +319,29 @@
     <button class="cookie-btn accept" id="cookieAccept" data-i18n="cookies.accept">Acceptar</button>
   </div>
 </div>
+
+<!-- Contingut SEO estàtic per a cercadors (noscript) -->
+<noscript>
+  <div lang="ca">
+    <h1>Gaudí Mosaic — Trencadís Creator</h1>
+    <p>Crea mosaics digitals amb la tècnica del trencadís d'Antoni Gaudí. App gratuïta per al centenari 1926-2026.</p>
+  </div>
+  <div lang="en">
+    <h1>Gaudí Mosaic — Trencadís Creator</h1>
+    <p>Create digital mosaics with Antoni Gaudí's trencadís technique. Free web app for the 1926-2026 centenary. Inspired by Park Güell, Casa Batlló and Sagrada Família.</p>
+  </div>
+  <div lang="ja">
+    <h1>ガウディ・モザイク — トレンカディス・クリエイター</h1>
+    <p>アントニ・ガウディのトレンカディス技法にインスピレーションを受けたデジタルモザイクアート制作アプリ。グエル公園、カサ・バトリョ、サグラダ・ファミリアの美しいモザイクの世界をデジタルで体験しましょう。</p>
+    <p>ガウディ没後100周年（1926年–2026年）を記念して制作された無料ウェブアプリケーションです。バルセロナからお届けします。</p>
+    <ul>
+      <li>本物のトレンカディスのように陶器を割って破片を作成</li>
+      <li>グエル公園、カサ・バトリョなどの作品にインスピレーションを得たテンプレート</li>
+      <li>釉薬、マット、玉虫色、ラスティックの陶器タイル</li>
+      <li>高画質PNGエクスポート</li>
+    </ul>
+  </div>
+</noscript>
 
 <!-- Entrada de l'aplicació -->
 <script type="module" src="js/app.js"></script>

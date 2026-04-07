@@ -443,6 +443,15 @@ export default {
     reject: 'Reject'
   },
 
+  // ---- SEO (dynamic meta tags) ----
+  seo: {
+    title: 'Gaudí Mosaic — Trencadís Creator',
+    description: 'Create digital mosaics with Antoni Gaudí\'s trencadís technique. Free web app for the 1926-2026 centenary. Inspired by Park Güell, Casa Batlló & Sagrada Família.',
+    ogTitle: 'Gaudí Mosaic — Trencadís Creator',
+    ogDescription: 'Create digital mosaics with Antoni Gaudí\'s trencadís technique. Free web app for the 1926-2026 centenary.',
+    ogImageAlt: 'Gaudí Mosaic — Colourful trencadís ceramic fragments surrounding the application title'
+  },
+
   // ---- Language selector ----
   language: {
     label: 'Language',
