@@ -142,6 +142,17 @@ function updateMetaTags() {
     const twA = document.querySelector('meta[name="twitter:image:alt"]');
     if (twA) twA.content = ogImgAlt;
   }
+
+  // Actualitzar canonical URL segons l'idioma actiu
+  const currentLang = getCurrentLang();
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  if (canonicalLink) {
+    if (currentLang && currentLang !== 'ca') {
+      canonicalLink.href = `https://gaudimosaic.art/?lang=${currentLang}`;
+    } else {
+      canonicalLink.href = 'https://gaudimosaic.art/';
+    }
+  }
 }
 
 /**
