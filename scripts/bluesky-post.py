@@ -33,28 +33,52 @@ import requests
 
 API_BASE = "https://bsky.social/xrpc"
 ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
+GRAPHEME_LIMIT = 300  # Límit dur de Bluesky per post
+REQUEST_TIMEOUT = 30  # Segons. Evita crides HTTP penjades indefinidament.
+
+
+class BlueskyAPIError(Exception):
+    """Error d'API de Bluesky amb el status code HTTP per al caller."""
+
+    def __init__(self, status_code, message):
+        self.status_code = status_code
+        self.message = message
+        super().__init__(f"[{status_code}] {message}")
+
+
+def count_graphemes(text):
+    """Compta grapheme clusters reals via regex \\X (UAX #29).
+    Bluesky compta graphemes, no code points: 🇬🇧 = 1 grapheme però len()=2."""
+    try:
+        import regex as _regex
+        return len(_regex.findall(r"\X", text))
+    except ImportError:
+        # Fallback conservador: len() sobreestima per seqüències emoji,
+        # cosa que és segura (rebutjarem abans que l'API).
+        return len(text)
 
 
 def load_env():
-    """Carrega variables del fitxer .env"""
-    if not ENV_PATH.exists():
-        print(f"Error: no s'ha trobat {ENV_PATH}")
-        print("Crea el fitxer .env amb BLUESKY_HANDLE i BLUESKY_APP_PASSWORD")
-        sys.exit(1)
+    """Retorna (handle, password). Prioritza variables d'entorn (per a GitHub Actions);
+    si no hi són, llegeix .env (per a execució local)."""
+    handle = os.environ.get("BLUESKY_HANDLE")
+    password = os.environ.get("BLUESKY_APP_PASSWORD")
 
-    env = {}
-    for line in ENV_PATH.read_text().splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        key, _, value = line.partition("=")
-        env[key.strip()] = value.strip()
-
-    handle = env.get("BLUESKY_HANDLE")
-    password = env.get("BLUESKY_APP_PASSWORD")
+    if not (handle and password) and ENV_PATH.exists():
+        for line in ENV_PATH.read_text().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            key, _, value = line.partition("=")
+            key = key.strip()
+            value = value.strip()
+            if key == "BLUESKY_HANDLE" and not handle:
+                handle = value
+            elif key == "BLUESKY_APP_PASSWORD" and not password:
+                password = value
 
     if not handle or not password:
-        print("Error: BLUESKY_HANDLE i BLUESKY_APP_PASSWORD són obligatoris al .env")
+        print("Error: BLUESKY_HANDLE i BLUESKY_APP_PASSWORD obligatoris (env vars o .env)")
         sys.exit(1)
 
     return handle, password
@@ -67,10 +91,10 @@ def create_session(handle, password):
     resp = requests.post(
         f"{API_BASE}/com.atproto.server.createSession",
         json={"identifier": handle, "password": password},
+        timeout=REQUEST_TIMEOUT,
     )
     if resp.status_code != 200:
-        print(f"Error d'autenticació ({resp.status_code}): {resp.text}")
-        sys.exit(1)
+        raise BlueskyAPIError(resp.status_code, f"autenticació fallida: {resp.text}")
 
     data = resp.json()
     return {
@@ -122,7 +146,7 @@ def fetch_link_card(session, url):
 
     # Obtenir metadata OG de la pàgina
     try:
-        resp = requests.get(url, timeout=10, headers={"User-Agent": "GaudiMosaic-Bot/1.0"})
+        resp = requests.get(url, timeout=REQUEST_TIMEOUT, headers={"User-Agent": "GaudiMosaic-Bot/1.0"})
         resp.raise_for_status()
     except Exception as e:
         print(f"  Avís: no s'ha pogut obtenir la pàgina {url}: {e}")
@@ -152,7 +176,7 @@ def fetch_link_card(session, url):
     # Pujar og:image com a blob si existeix
     if og_image_url:
         try:
-            img_resp = requests.get(og_image_url, timeout=15)
+            img_resp = requests.get(og_image_url, timeout=REQUEST_TIMEOUT)
             img_resp.raise_for_status()
             content_type = img_resp.headers.get("Content-Type", "image/png")
 
@@ -163,6 +187,7 @@ def fetch_link_card(session, url):
                     "Content-Type": content_type,
                 },
                 data=img_resp.content,
+                timeout=REQUEST_TIMEOUT,
             )
             if blob_resp.status_code == 200:
                 embed["external"]["thumb"] = blob_resp.json()["blob"]
@@ -234,6 +259,7 @@ def upload_image(session, image_path):
             "Content-Type": content_type,
         },
         data=data,
+        timeout=REQUEST_TIMEOUT,
     )
 
     if resp.status_code != 200:
@@ -293,6 +319,15 @@ def create_post(session, text, link_url=None, images=None, reply_to=None):
     Returns:
         dict amb uri i cid del post creat
     """
+    # Validació local de longitud: Bluesky rebutja posts >300 graphemes amb 400.
+    g_count = count_graphemes(text)
+    if g_count > GRAPHEME_LIMIT:
+        raise BlueskyAPIError(
+            0,
+            f"text massa llarg: {g_count} graphemes (màx {GRAPHEME_LIMIT}). "
+            f"Primer fragment: {text[:80]!r}",
+        )
+
     record = {
         "$type": "app.bsky.feed.post",
         "text": text,
@@ -326,11 +361,11 @@ def create_post(session, text, link_url=None, images=None, reply_to=None):
             "collection": "app.bsky.feed.post",
             "record": record,
         },
+        timeout=REQUEST_TIMEOUT,
     )
 
     if resp.status_code != 200:
-        print(f"Error publicant ({resp.status_code}): {resp.text}")
-        sys.exit(1)
+        raise BlueskyAPIError(resp.status_code, resp.text)
 
     data = resp.json()
     return {"uri": data["uri"], "cid": data["cid"]}
@@ -431,20 +466,24 @@ def main():
 
     handle, password = load_env()
     print(f"Autenticant com a {handle}...")
-    session = create_session(handle, password)
-    print(f"✓ Autenticat (DID: {session['did']})")
+    try:
+        session = create_session(handle, password)
+        print(f"✓ Autenticat (DID: {session['did']})")
 
-    if args.thread:
-        posts = json.loads(Path(args.thread).read_text())
-        results = post_thread(session, posts)
-        print(f"\n=== Fil publicat amb {len(results)} posts ===")
-        for i, r in enumerate(results):
-            post_id = r["uri"].split("/")[-1]
-            print(f"  Post {i + 1}: https://bsky.app/profile/{handle}/post/{post_id}")
-    else:
-        result = create_post(session, args.text, link_url=args.link, images=images)
-        post_id = result["uri"].split("/")[-1]
-        print(f"\n✓ Post publicat: https://bsky.app/profile/{handle}/post/{post_id}")
+        if args.thread:
+            posts = json.loads(Path(args.thread).read_text())
+            results = post_thread(session, posts)
+            print(f"\n=== Fil publicat amb {len(results)} posts ===")
+            for i, r in enumerate(results):
+                post_id = r["uri"].split("/")[-1]
+                print(f"  Post {i + 1}: https://bsky.app/profile/{handle}/post/{post_id}")
+        else:
+            result = create_post(session, args.text, link_url=args.link, images=images)
+            post_id = result["uri"].split("/")[-1]
+            print(f"\n✓ Post publicat: https://bsky.app/profile/{handle}/post/{post_id}")
+    except BlueskyAPIError as e:
+        print(f"Error Bluesky: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

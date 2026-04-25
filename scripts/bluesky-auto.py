@@ -15,11 +15,39 @@ Marca els posts com a publicats per no repetir-los.
 import json
 import sys
 import argparse
-from datetime import date
+import logging
+import time
+from datetime import date, datetime, timezone
 from pathlib import Path
+
+import requests
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 CALENDAR_PATH = SCRIPTS_DIR / "bluesky-calendar.json"
+LOG_DIR = SCRIPTS_DIR / "logs"
+LOG_PATH = LOG_DIR / "bluesky-auto.log"
+
+# Reintents per errors transitoris (rate limit 429 i timeouts de xarxa)
+RETRY_ATTEMPTS = 3
+RETRY_BACKOFF_SECONDS = 60
+
+
+def setup_logging():
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    handler = logging.FileHandler(LOG_PATH, encoding="utf-8")
+    handler.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(message)s"))
+    root = logging.getLogger()
+    root.setLevel(logging.INFO)
+    root.addHandler(handler)
+    # Només duplicar a stdout quan l'execució és interactiva; si ve de cron, el
+    # fitxer FileHandler ja recull tots els missatges.
+    if sys.stdout.isatty():
+        stream = logging.StreamHandler()
+        stream.setFormatter(logging.Formatter("%(message)s"))
+        root.addHandler(stream)
+
+
+log = logging.getLogger(__name__)
 
 # Importar el mòdul de publicació
 sys.path.insert(0, str(SCRIPTS_DIR))
@@ -82,9 +110,6 @@ def publish_entry(entry, dry_run=False):
     bp = import_module("bluesky-post")
 
     handle, password = bp.load_env()
-    print(f"Autenticant com a {handle}...")
-    session = bp.create_session(handle, password)
-    print(f"✓ Autenticat")
 
     # Convertir a format thread
     thread_posts = []
@@ -97,12 +122,57 @@ def publish_entry(entry, dry_run=False):
             tp["images"] = resolve_image_paths(p["images"])
         thread_posts.append(tp)
 
-    results = bp.post_thread(session, thread_posts)
+    # Reintents per a errors transitoris: 429 (rate limit) i timeouts de xarxa.
+    # Cobreix tant l'autenticació com la publicació — al divendres 24/04 el cron
+    # es va quedar penjat a `create_session` abans de cap retry, així que
+    # l'autenticació ha d'estar dins del bucle.
+    # Qualsevol altre BlueskyAPIError es propaga immediatament per no emmascarar
+    # 400 (text massa llarg, contingut invàlid, etc.).
+    results = None
+    for attempt in range(1, RETRY_ATTEMPTS + 1):
+        try:
+            log.info("Autenticant com a %s (intent %d/%d)...", handle, attempt, RETRY_ATTEMPTS)
+            session = bp.create_session(handle, password)
+            log.info("✓ Autenticat")
+            results = bp.post_thread(session, thread_posts)
+            break
+        except bp.BlueskyAPIError as e:
+            if e.status_code == 429 and attempt < RETRY_ATTEMPTS:
+                log.warning(
+                    "Rate limit 429 (intent %d/%d). Esperant %ds abans de reintentar...",
+                    attempt, RETRY_ATTEMPTS, RETRY_BACKOFF_SECONDS,
+                )
+                time.sleep(RETRY_BACKOFF_SECONDS)
+                continue
+            log.error(
+                "Publicació fallida (%s) [HTTP %s]: %s",
+                entry["id"], e.status_code, e.message,
+            )
+            raise
+        except requests.exceptions.Timeout as e:
+            if attempt < RETRY_ATTEMPTS:
+                log.warning(
+                    "Timeout de xarxa (intent %d/%d): %s. Esperant %ds abans de reintentar...",
+                    attempt, RETRY_ATTEMPTS, e, RETRY_BACKOFF_SECONDS,
+                )
+                time.sleep(RETRY_BACKOFF_SECONDS)
+                continue
+            log.error(
+                "Publicació fallida (%s) després de %d intents per timeout: %s",
+                entry["id"], RETRY_ATTEMPTS, e,
+            )
+            raise
 
-    print(f"\n✓ Fil publicat amb {len(results)} posts")
+    if not results:
+        return False
+
+    log.info("Fil publicat amb %d posts (%s)", len(results), entry["id"])
     for i, r in enumerate(results):
         post_id = r["uri"].split("/")[-1]
-        print(f"  Post {i+1}: https://bsky.app/profile/{handle}/post/{post_id}")
+        log.info("  Post %d: https://bsky.app/profile/%s/post/%s", i + 1, handle, post_id)
+
+    # Desar URIs dels posts publicats al entry (per al primer, que és el root)
+    entry["published_uris"] = [r["uri"] for r in results]
 
     return True
 
@@ -115,6 +185,7 @@ def main():
     parser.add_argument("--force", action="store_true", help="Publica encara que ja estigui marcat")
     args = parser.parse_args()
 
+    setup_logging()
     cal = load_calendar()
 
     if args.list:
@@ -127,24 +198,27 @@ def main():
     entries = [e for e in cal if e["date"] == target_date]
 
     if not entries:
-        print(f"No hi ha posts programats per al {target_date}")
+        log.info("No hi ha posts programats per al %s", target_date)
         return
 
     for entry in entries:
         if entry.get("published") and not args.force:
-            print(f"⏭ {entry['id']} ja publicat (usa --force per republicar)")
+            log.info("⏭ %s ja publicat (usa --force per republicar)", entry["id"])
             continue
 
-        print(f"\n{'='*50}")
-        print(f"Publicant: {entry['id']} ({entry['type']})")
-        print(f"{'='*50}")
+        log.info("Publicant %s (%s, data calendari %s)", entry["id"], entry["type"], entry["date"])
 
-        success = publish_entry(entry, dry_run=args.dry_run)
+        try:
+            success = publish_entry(entry, dry_run=args.dry_run)
+        except Exception as e:
+            log.error("Error irrecuperable publicant %s: %s", entry["id"], e)
+            sys.exit(1)
 
         if success and not args.dry_run:
             entry["published"] = True
+            entry["published_at"] = datetime.now(timezone.utc).isoformat()
             save_calendar(cal)
-            print(f"✓ Marcat com a publicat")
+            log.info("✓ %s marcat com a publicat (%s)", entry["id"], entry["published_at"])
 
 
 if __name__ == "__main__":

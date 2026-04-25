@@ -1,0 +1,65 @@
+name: Bluesky Auto Post
+
+# Publica automàticament el post programat per a la data d'avui des de
+# scripts/bluesky-calendar.json. Si no hi ha post programat, surt sense fer res.
+# Si publica, fa commit del JSON actualitzat per persistir l'estat published=true.
+
+on:
+  schedule:
+    # 07:00 UTC = 09:00 CEST (estiu) / 08:00 CET (hivern). Diari.
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Evita execucions paral·leles que podrien causar conflictes al JSON.
+concurrency:
+  group: bluesky-auto
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Necessari perquè el step de commit pugui fer push amb el GITHUB_TOKEN.
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install requests regex Pillow
+
+      - name: Run bluesky-auto
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+        run: python scripts/bluesky-auto.py
+
+      - name: Commit calendar updates if any post was published
+        run: |
+          if git diff --quiet scripts/bluesky-calendar.json; then
+            echo "No hi ha canvis al calendari — res a publicar avui o ja publicat."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add scripts/bluesky-calendar.json
+            git commit -m "Auto: actualitza calendari Bluesky després de publicació"
+            git push
+          fi
+
+      - name: Upload log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bluesky-auto-log
+          path: scripts/logs/bluesky-auto.log
+          if-no-files-found: ignore

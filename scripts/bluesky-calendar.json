@@ -1,17 +1,17 @@
 [
   {
-    "id": "w1-fri-edu",
+    "id": "w1-sat-edu",
     "date": "2026-04-04",
     "type": "educational",
     "published": true,
     "posts": [
       {
         "lang": "ca",
-        "text": "Què és el trencadís?\n\nTècnica decorativa que usa fragments irregulars de ceràmica o vidre per crear mosaics.\n\nEl nom ve del català «trencar» — l'art de trencar per crear. Gaudí el va portar a un nivell que ningú ha superat.\n\nFalten 67 dies.\n\n#Gaudí #Trencadís #Centenari2026"
+        "text": "Què és el trencadís?\n\nEl trencadís és una tècnica decorativa que utilitza fragments irregulars de ceràmica, vidre o altres materials per crear mosaics.\n\nEl nom ve del verb català «trencar» — l'art de trencar per crear. Gaudí no el va inventar, però el va portar a un nivell que ningú ha superat.\n\nFalten 67 dies.\n\n#Gaudí #Trencadís #Centenari2026"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 What is trencadís?\n\nA decorative technique using irregular fragments of ceramic or glass to create mosaics.\n\nFrom the Catalan 'trencar' (to break) — the art of breaking to create. Gaudí took it to a level no one has surpassed.\n\n67 days to go.\n\n#Gaudí #Trencadís #Centenary2026"
+        "text": "🇬🇧 What is trencadís?\n\nTrencadís is a decorative technique using irregular fragments of ceramic, glass or other materials to create mosaics.\n\nThe name comes from the Catalan verb 'trencar' (to break) — the art of breaking to create. Gaudí didn't invent it, but took it to a level no one has surpassed.\n\n67 days to go.\n\n#Gaudí #Trencadís #Centenary2026"
       },
       {
         "lang": "ja",
@@ -21,155 +21,193 @@
   },
   {
     "id": "w2-mon",
-    "date": "2026-04-07",
+    "date": "2026-04-06",
     "type": "countdown",
     "published": true,
     "posts": [
       {
         "lang": "ca",
-        "text": "Falten 64 dies per al centenari de Gaudí.\n\nGaudí penjava cadenes al revés per trobar la forma perfecta dels arcs. Quan les girava, obtenia la corba catenària — l'estructura més estable possible.\n\nMatemàtiques i gravetat com a eines de disseny.\n\n#Gaudí #Centenari2026 #Barcelona"
+        "text": "Falten 65 dies per al centenari de Gaudí.\n\nGaudí penjava cadenes al revés per trobar la forma perfecta dels arcs. Quan les girava, obtenia la corba catenària — l'estructura més estable possible.\n\nMatemàtiques i gravetat com a eines de disseny.\n\n#Gaudí #Centenari2026 #Barcelona"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 64 days until the Gaudí centenary.\n\nGaudí hung chains upside down to find the perfect arch shape. When flipped, they formed catenary curves — the most stable structure possible.\n\nMathematics and gravity as design tools.\n\n#Gaudí #Centenary2026 #Barcelona"
+        "text": "🇬🇧 65 days until the Gaudí centenary.\n\nGaudí hung chains upside down to find the perfect arch shape. When flipped, they formed catenary curves — the most stable structure possible.\n\nMathematics and gravity as design tools.\n\n#Gaudí #Centenary2026 #Barcelona"
       },
       {
         "lang": "ja",
-        "text": "🇯🇵 ガウディ没後100周年まであと64日。\n\nガウディは鎖を逆さに吊るして完璧なアーチの形を探しました。それを反転させるとカテナリー曲線 — 最も安定した構造が現れます。\n\n数学と重力をデザインツールに。\n\n#ガウディ #バルセロナ #建築"
+        "text": "🇯🇵 ガウディ没後100周年まであと65日。\n\nガウディは鎖を逆さに吊るして完璧なアーチの形を探しました。それを反転させるとカテナリー曲線 — 最も安定した構造が現れます。\n\n数学と重力をデザインツールに。\n\n#ガウディ #バルセロナ #建築"
       }
     ]
   },
   {
     "id": "w2-wed",
-    "date": "2026-04-09",
+    "date": "2026-04-08",
     "type": "quote",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
-        "text": "«L'originalitat consisteix a tornar a l'origen.»\n\nPer a Gaudí, crear no era inventar sinó redescobrir. Cada forma de la natura ja conté la solució perfecta.\n\nFalten 62 dies.\n\n#Gaudí #Centenari2026",
-        "images": [
-          {
-            "path": "scripts/social-images/w2-wed-quote.jpg",
-            "alt": "Cita d'Antoni Gaudí sobre fons de fragments de trencadís: «L'originalitat consisteix a tornar a l'origen.»"
-          }
-        ]
+        "text": "«L'originalitat consisteix a tornar a l'origen.»\n\nPer a Gaudí, crear no era inventar sinó redescobrir. Cada forma de la natura ja conté la solució perfecta.\n\nFalten 63 dies.\n\n#Gaudí #Centenari2026"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 'L'originalitat consisteix a tornar a l'origen.'\n\nFor Gaudí, creating wasn't inventing but rediscovering. Every form in nature already contains the perfect solution.\n\n62 days to go.\n\n#Gaudí #Centenary2026"
+        "text": "🇬🇧 'L'originalitat consisteix a tornar a l'origen.'\n\nFor Gaudí, creating wasn't inventing but rediscovering. Every form in nature already contains the perfect solution.\n\n63 days to go.\n\n#Gaudí #Centenary2026"
       },
       {
         "lang": "ja",
-        "text": "🇯🇵 「L'originalitat consisteix a tornar a l'origen.」\n\nガウディにとって、創造とは発明ではなく再発見でした。自然のあらゆる形はすでに完璧な解決策を含んでいます。\n\nあと62日。\n\n#ガウディ #建築"
+        "text": "🇯🇵 「L'originalitat consisteix a tornar a l'origen.」\n\nガウディにとって、創造とは発明ではなく再発見でした。自然のあらゆる形はすでに完璧な解決策を含んでいます。\n\nあと63日。\n\n#ガウディ #建築"
       }
     ]
   },
   {
     "id": "w2-fri",
-    "date": "2026-04-11",
+    "date": "2026-04-10",
     "type": "educational",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
-        "text": "Les columnes de la Sagrada Família es ramifiquen cap al sostre com troncs d'arbre, distribuint el pes com un bosc de pedra.\n\nGaudí va ser el primer arquitecte biomimètic — estudiava la natura amb ulls d'enginyer.\n\nFalten 60 dies.\n\n#Gaudí #Trencadís #Centenari2026",
-        "images": [
-          {
-            "path": "scripts/social-images/w2-fri-edu.jpg",
-            "alt": "Imatge amb text sobre fons de trencadís: Les columnes de la Sagrada Família es ramifiquen com troncs d'arbre"
-          }
-        ]
+        "text": "Les columnes de la Sagrada Família es ramifiquen cap al sostre com troncs d'arbre, distribuint el pes com un bosc de pedra.\n\nGaudí va ser el primer arquitecte biomimètic — estudiava la natura amb ulls d'enginyer.\n\nFalten 61 dies.\n\n#Gaudí #Trencadís #Centenari2026"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 The columns of the Sagrada Família branch towards the ceiling like tree trunks, distributing weight like a forest of stone.\n\nGaudí was the first biomimetic architect — he studied nature with an engineer's eyes.\n\n60 days to go.\n\n#Gaudí #Trencadís #Centenary2026"
+        "text": "🇬🇧 The columns of the Sagrada Família branch towards the ceiling like tree trunks, distributing weight like a forest of stone.\n\nGaudí was the first biomimetic architect — he studied nature with an engineer's eyes.\n\n61 days to go.\n\n#Gaudí #Trencadís #Centenary2026"
       },
       {
         "lang": "ja",
-        "text": "🇯🇵 サグラダ・ファミリアの柱は木の幹のように天井に向かって枝分かれし、石の森のように重量を分配しています。\n\nガウディは最初のバイオミメティック建築家でした。\n\nあと60日。\n\n#ガウディ #トレンカディス"
+        "text": "🇯🇵 サグラダ・ファミリアの柱は木の幹のように天井に向かって枝分かれし、石の森のように重量を分配しています。\n\nガウディは最初のバイオミメティック建築家でした。\n\nあと61日。\n\n#ガウディ #トレンカディス"
       }
     ]
   },
   {
     "id": "w3-mon",
-    "date": "2026-04-14",
+    "date": "2026-04-13",
     "type": "countdown",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
-        "text": "Falten 57 dies per al centenari de Gaudí.\n\nSet obres de Gaudí són Patrimoni de la Humanitat per la UNESCO. Cap altre arquitecte en té tantes.\n\nCasa Vicens, Parc Güell, Palau Güell, Casa Batlló, Casa Milà, la cripta de la Colònia Güell i la Sagrada Família.\n\n#Gaudí #Centenari2026 #Barcelona"
+        "text": "Falten 58 dies per al centenari de Gaudí.\n\nSet obres de Gaudí són Patrimoni de la Humanitat per la UNESCO. Cap altre arquitecte en té tantes.\n\nCasa Vicens, Parc Güell, Palau Güell, Casa Batlló, Casa Milà, la cripta de la Colònia Güell i la Sagrada Família.\n\n#Gaudí #Centenari2026 #Barcelona"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 57 days until the Gaudí centenary.\n\nSeven of Gaudí's works are UNESCO World Heritage Sites. No other architect has as many.\n\nCasa Vicens, Park Güell, Palau Güell, Casa Batlló, Casa Milà, the Colònia Güell crypt and the Sagrada Família.\n\n#Gaudí #Centenary2026 #Barcelona"
+        "text": "🇬🇧 58 days until the Gaudí centenary.\n\nSeven of Gaudí's works are UNESCO World Heritage Sites. No other architect has as many.\n\nCasa Vicens, Park Güell, Palau Güell, Casa Batlló, Casa Milà, the Colònia Güell crypt and the Sagrada Família.\n\n#Gaudí #Centenary2026 #Barcelona"
       },
       {
         "lang": "ja",
-        "text": "🇯🇵 ガウディ没後100周年まであと57日。\n\nガウディの7つの作品がユネスコ世界遺産に登録されています。これほど多い建築家は他にいません。\n\nカサ・ビセンス、グエル公園、グエル邸、カサ・バトリョ、カサ・ミラ、コロニア・グエルの地下聖堂、サグラダ・ファミリア。\n\n#ガウディ #バルセロナ #建築"
+        "text": "🇯🇵 ガウディ没後100周年まであと58日。\n\nガウディの7つの作品がユネスコ世界遺産に登録されています。これほど多い建築家は他にいません。\n\nカサ・ビセンス、グエル公園、グエル邸、カサ・バトリョ、カサ・ミラ、コロニア・グエルの地下聖堂、サグラダ・ファミリア。\n\n#ガウディ #バルセロナ #建築"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mjrphca6m72r",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mjrphd45en2d",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mjrphds6nc2l"
+    ],
+    "published_at": "2026-04-18T15:02:28.148902+00:00"
   },
   {
     "id": "w3-wed",
-    "date": "2026-04-16",
+    "date": "2026-04-15",
     "type": "quote",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
-        "text": "«La línia recta és la línia dels homes. La corba és la línia de Déu.»\n\nObserveu la natura: no hi ha angles rectes. Les branques es corben, les ones ondulant, els ossos es retorcen. Gaudí va construir com la natura construeix.\n\nFalten 55 dies.\n\n#Gaudí #Centenari2026"
+        "text": "«La línia recta és la línia dels homes. La corba és la línia de Déu.»\n\nObserveu la natura: no hi ha angles rectes. Les branques es corben, les ones ondulant, els ossos es retorcen. Gaudí va construir com la natura construeix.\n\nFalten 56 dies.\n\n#Gaudí #Centenari2026"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 'La línia recta és la línia dels homes. La corba és la línia de Déu.'\n\nObserve nature: there are no right angles. Branches curve, waves undulate, bones twist. Gaudí built the way nature builds.\n\n55 days to go.\n\n#Gaudí #Centenary2026"
+        "text": "🇬🇧 'La línia recta és la línia dels homes. La corba és la línia de Déu.'\n\nObserve nature: there are no right angles. Branches curve, waves undulate, bones twist. Gaudí built the way nature builds.\n\n56 days to go.\n\n#Gaudí #Centenary2026"
       },
       {
         "lang": "ja",
-        "text": "🇯🇵 「La línia recta és la línia dels homes. La corba és la línia de Déu.」\n\n自然を観察してください。直角は存在しません。枝は曲がり、波はうねり、骨はねじれます。ガウディは自然が建てるように建てました。\n\nあと55日。\n\n#ガウディ #建築"
+        "text": "🇯🇵 「La línia recta és la línia dels homes. La corba és la línia de Déu.」\n\n自然を観察してください。直角は存在しません。枝は曲がり、波はうねり、骨はねじれます。ガウディは自然が建てるように建てました。\n\nあと56日。\n\n#ガウディ #建築"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mjrphje6jn2r",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mjrphk53fn2i",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mjrphkt22x2q"
+    ],
+    "published_at": "2026-04-18T15:02:35.518104+00:00"
   },
   {
     "id": "w3-fri",
-    "date": "2026-04-18",
+    "date": "2026-04-17",
     "type": "educational",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
-        "text": "Per a Gaudí, el trencadís era una metàfora: de la destrucció neix la creació.\n\nCada fragment trencat troba el seu lloc en un tot harmònic. No hi ha errors, només possibilitats.\n\nCom la vida mateixa.\n\nFalten 53 dies.\n\n#Gaudí #Trencadís #Centenari2026"
+        "text": "Per a Gaudí, el trencadís era una metàfora: de la destrucció neix la creació.\n\nCada fragment trencat troba el seu lloc en un tot harmònic. No hi ha errors, només possibilitats.\n\nCom la vida mateixa.\n\nFalten 54 dies.\n\n#Gaudí #Trencadís #Centenari2026"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 For Gaudí, trencadís was a metaphor: from destruction, creation is born.\n\nEvery broken fragment finds its place in a harmonious whole. There are no mistakes, only possibilities.\n\nLike life itself.\n\n53 days to go.\n\n#Gaudí #Trencadís #Centenary2026"
+        "text": "🇬🇧 For Gaudí, trencadís was a metaphor: from destruction, creation is born.\n\nEvery broken fragment finds its place in a harmonious whole. There are no mistakes, only possibilities.\n\nLike life itself.\n\n54 days to go.\n\n#Gaudí #Trencadís #Centenary2026"
       },
       {
         "lang": "ja",
-        "text": "🇯🇵 ガウディにとってトレンカディスは比喩でした。破壊から創造が生まれる。\n\n壊れた破片は調和の中にその場所を見つけます。間違いはなく、可能性だけ。\n\n人生そのもののように。\n\nあと53日。\n\n#ガウディ #トレンカディス"
+        "text": "🇯🇵 ガウディにとってトレンカディスは比喩でした。破壊から創造が生まれる。\n\n壊れた破片は調和の中にその場所を見つけます。間違いはなく、可能性だけ。\n\n人生そのもののように。\n\nあと54日。\n\n#ガウディ #トレンカディス"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mjrphpiyev2r",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mjrphq7go72q",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mjrphqyjab2u"
+    ],
+    "published_at": "2026-04-18T15:02:41.990752+00:00"
   },
   {
     "id": "w4-mon",
-    "date": "2026-04-21",
+    "date": "2026-04-20",
     "type": "countdown",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
-        "text": "Falten 50 dies per al centenari de Gaudí.\n\nEl banc serpentí del Parc Güell és probablement el primer moble urbà ergonòmic de la història.\n\nGaudí va fer seure un obrer nu sobre guix fresc perquè el banc s'adaptés al cos humà. 150 metres de trencadís que són còmodes de debò.\n\n#Gaudí #Centenari2026 #Barcelona"
+        "text": "Falten 51 dies per al centenari de Gaudí.\n\nEl banc serpentí del Parc Güell és probablement el primer moble urbà ergonòmic.\n\nGaudí va fer seure un obrer nu sobre guix fresc perquè el banc s'adaptés al cos humà. 150 metres de trencadís que són còmodes de debò.\n\n#Gaudí #Centenari2026 #Barcelona"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 50 days until the Gaudí centenary.\n\nThe serpentine bench of Park Güell is probably the first ergonomic urban furniture in history.\n\nGaudí had a worker sit naked on fresh plaster so the bench would fit the human body. 150 metres of trencadís that are genuinely comfortable.\n\n#Gaudí #Centenary2026 #Barcelona"
+        "text": "🇬🇧 51 days until the Gaudí centenary.\n\nThe serpentine bench of Park Güell is probably the first ergonomic urban furniture.\n\nGaudí had a worker sit naked on fresh plaster so the bench would fit the human body. 150 metres of trencadís that are genuinely comfortable.\n\n#Gaudí #Centenary2026 #Barcelona"
       },
       {
         "lang": "ja",
-        "text": "🇯🇵 ガウディ没後100周年まであと50日。\n\nグエル公園の蛇行ベンチは、おそらく歴史上初の人間工学的な都市家具です。\n\nガウディは労働者を裸で生石膏の上に座らせ、人体にフィットするベンチを作りました。150メートルのトレンカディスが本当に快適です。\n\n#ガウディ #バルセロナ #建築"
+        "text": "🇯🇵 ガウディ没後100周年まであと51日。\n\nグエル公園の蛇行ベンチは、おそらく歴史上初の人間工学的な都市家具です。\n\nガウディは労働者を裸で生石膏の上に座らせ、人体にフィットするベンチを作りました。150メートルのトレンカディスが本当に快適です。\n\n#ガウディ #バルセロナ #建築"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mk3xosdw2i2s",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mk3xouuyxt2q",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mk3xozl7ne2g"
+    ],
+    "published_at": "2026-04-22T16:56:33.233999+00:00"
+  },
+  {
+    "id": "w4-wed",
+    "date": "2026-04-22",
+    "type": "quote",
+    "published": true,
+    "posts": [
+      {
+        "lang": "ca",
+        "text": "«Per fer les coses bé cal: primer, l'amor; segon, la tècnica.»\n\nGaudí posava la passió per davant del saber fer. Sense amor pel que fas, la tècnica és buida.\n\nFalten 49 dies.\n\n#Gaudí #Centenari2026"
+      },
+      {
+        "lang": "en",
+        "text": "🇬🇧 'Per fer les coses bé cal: primer, l'amor; segon, la tècnica.'\n\nGaudí put passion before skill. Without love for what you do, technique is empty.\n\n49 days to go.\n\n#Gaudí #Centenary2026"
+      },
+      {
+        "lang": "ja",
+        "text": "🇯🇵 「Per fer les coses bé cal: primer, l'amor; segon, la tècnica.」\n\nガウディは情熱を技術の上に置きました。やっていることへの愛がなければ、技術は空虚です。\n\nあと49日。\n\n#ガウディ #建築"
+      }
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mk3xpbobnl2q",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mk3xpcffv32q",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mk3xpcuzqt24"
+    ],
+    "published_at": "2026-04-22T16:56:43.583320+00:00"
   },
   {
     "id": "special-sant-jordi",
@@ -193,61 +231,67 @@
   },
   {
     "id": "w4-fri",
-    "date": "2026-04-25",
+    "date": "2026-04-24",
     "type": "educational",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
-        "text": "La façana de la Casa Batlló evoca ossos, esquelets i formes marines. La teulada imita l'esquena d'un drac.\n\nEl trencadís iridiscent canvia de color amb la llum: blau intens al matí, verds i violetes al capvespre.\n\nFalten 46 dies.\n\n#Gaudí #Trencadís #Centenari2026"
+        "text": "La façana de la Casa Batlló evoca ossos, esquelets i formes marines. La teulada imita l'esquena d'un drac.\n\nEl trencadís iridiscent canvia de color amb la llum: blau intens al matí, verds i violetes al capvespre.\n\nFalten 47 dies.\n\n#Gaudí #Trencadís #Centenari2026"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 Casa Batlló's façade evokes bones, skeletons and marine forms. The roof mimics the back of a dragon.\n\nThe iridescent trencadís changes colour with the light: deep blue in the morning, greens and violets at dusk.\n\n46 days to go.\n\n#Gaudí #Trencadís #Centenary2026"
+        "text": "🇬🇧 Casa Batlló's façade evokes bones, skeletons and marine forms. The roof mimics the back of a dragon.\n\nThe iridescent trencadís changes colour with the light: deep blue in the morning, greens and violets at dusk.\n\n47 days to go.\n\n#Gaudí #Trencadís #Centenary2026"
       },
       {
         "lang": "ja",
-        "text": "🇯🇵 カサ・バトリョのファサードは骨、骸骨、海の形を想起させます。屋根はドラゴンの背中を模しています。\n\n虹色のトレンカディスは光とともに色を変えます。朝は深い青、夕方には緑と紫に。\n\nあと46日。\n\n#ガウディ #トレンカディス"
+        "text": "🇯🇵 カサ・バトリョのファサードは骨、骸骨、海の形を想起させます。屋根はドラゴンの背中を模しています。\n\n虹色のトレンカディスは光とともに色を変えます。朝は深い青、夕方には緑と紫に。\n\nあと47日。\n\n#ガウディ #トレンカディス"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkcubvfkjr2x",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkcubwhw4n2q",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkcubyttj22s"
+    ],
+    "published_at": "2026-04-25T10:44:12.917657+00:00"
   },
   {
     "id": "w5-mon",
-    "date": "2026-04-28",
+    "date": "2026-04-27",
     "type": "countdown",
     "published": false,
     "posts": [
       {
         "lang": "ca",
-        "text": "Falten 43 dies per al centenari de Gaudí.\n\nGaudí era vegetarià estricte durant els últims anys de la seva vida. Vivia de manera cada cop més austera, fins a instal·lar-se al taller de la Sagrada Família.\n\nQuan va morir, el van confondre amb un indigent.\n\n#Gaudí #Centenari2026 #Barcelona"
+        "text": "Falten 44 dies per al centenari de Gaudí.\n\nGaudí era vegetarià estricte durant els últims anys de la seva vida. Vivia de manera cada cop més austera, fins a instal·lar-se al taller de la Sagrada Família.\n\nQuan va morir, el van confondre amb un indigent.\n\n#Gaudí #Centenari2026 #Barcelona"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 43 days until the Gaudí centenary.\n\nGaudí was a strict vegetarian during the last years of his life. He lived ever more austerely, eventually moving into the Sagrada Família workshop.\n\nWhen he died, he was mistaken for a vagrant.\n\n#Gaudí #Centenary2026 #Barcelona"
+        "text": "🇬🇧 44 days until the Gaudí centenary.\n\nGaudí was a strict vegetarian during the last years of his life. He lived ever more austerely, eventually moving into the Sagrada Família workshop.\n\nWhen he died, he was mistaken for a vagrant.\n\n#Gaudí #Centenary2026 #Barcelona"
       },
       {
         "lang": "ja",
-        "text": "🇯🇵 ガウディ没後100周年まであと43日。\n\nガウディは晩年、厳格な菜食主義者でした。ますます質素な生活を送り、最終的にサグラダ・ファミリアの工房に住み込みました。\n\n亡くなった時、浮浪者と間違えられました。\n\n#ガウディ #バルセロナ #建築"
+        "text": "🇯🇵 ガウディ没後100周年まであと44日。\n\nガウディは晩年、厳格な菜食主義者でした。ますます質素な生活を送り、最終的にサグラダ・ファミリアの工房に住み込みました。\n\n亡くなった時、浮浪者と間違えられました。\n\n#ガウディ #バルセロナ #建築"
       }
     ]
   },
   {
     "id": "w5-wed",
-    "date": "2026-04-30",
+    "date": "2026-04-29",
     "type": "quote",
     "published": false,
     "posts": [
       {
         "lang": "ca",
-        "text": "«El color en els objectes és la vida.»\n\nLa Casa Batlló és la prova: la façana canvia de color amb la llum del dia. El trencadís iridiscent s'il·lumina a l'alba i es torna profund al capvespre.\n\nFalten 41 dies.\n\n#Gaudí #Centenari2026"
+        "text": "«El color en els objectes és la vida.»\n\nLa Casa Batlló és la prova: la façana canvia de color amb la llum del dia. El trencadís iridiscent s'il·lumina a l'alba i es torna profund al capvespre.\n\nFalten 42 dies.\n\n#Gaudí #Centenari2026"
       },
       {
         "lang": "en",
-        "text": "🇬🇧 'El color en els objectes és la vida.'\n\nCasa Batlló is the proof: the façade changes colour with daylight. The iridescent trencadís glows at dawn and deepens at dusk.\n\n41 days to go.\n\n#Gaudí #Centenary2026"
+        "text": "🇬🇧 'El color en els objectes és la vida.'\n\nCasa Batlló is the proof: the façade changes colour with daylight. The iridescent trencadís glows at dawn and deepens at dusk.\n\n42 days to go.\n\n#Gaudí #Centenary2026"
       },
       {
         "lang": "ja",
-        "text": "🇯🇵 「El color en els objectes és la vida.」\n\nカサ・バトリョがその証拠です。ファサードは日光とともに色を変えます。虹色のトレンカディスは夜明けに輝き、夕暮れには深みを増します。\n\nあと41日。\n\n#ガウディ #建築"
+        "text": "🇯🇵 「El color en els objectes és la vida.」\n\nカサ・バトリョがその証拠です。ファサードは日光とともに色を変えます。虹色のトレンカディスは夜明けに輝き、夕暮れには深みを増します。\n\nあと42日。\n\n#ガウディ #建築"
       }
     ]
   },
