@@ -214,6 +214,8 @@
     "date": "2026-04-23",
     "type": "special",
     "published": false,
+    "skipped": true,
+    "skipped_reason": "Cron local penjat el 24/04 i Sant Jordi ja havia passat — no té sentit publicar 2 dies tard",
     "posts": [
       {
         "lang": "ca",
