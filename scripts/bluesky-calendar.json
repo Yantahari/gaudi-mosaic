@@ -261,7 +261,7 @@
     "id": "w5-mon",
     "date": "2026-04-27",
     "type": "countdown",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
@@ -275,7 +275,13 @@
         "lang": "ja",
         "text": "🇯🇵 ガウディ没後100周年まであと44日。\n\nガウディは晩年、厳格な菜食主義者でした。ますます質素な生活を送り、最終的にサグラダ・ファミリアの工房に住み込みました。\n\n亡くなった時、浮浪者と間違えられました。\n\n#ガウディ #バルセロナ #建築"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkhqa2a3p72g",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkhqa2hlyd2a",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkhqa2qql42i"
+    ],
+    "published_at": "2026-04-27T09:14:51.490729+00:00"
   },
   {
     "id": "w5-wed",
