@@ -24,7 +24,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # Necessari perquè el step de commit pugui fer push amb el GITHUB_TOKEN.
           persist-credentials: true
@@ -35,7 +35,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        run: pip install requests regex Pillow
+        run: pip install -r requirements.txt
 
       - name: Run bluesky-auto
         env:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Upload log on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: bluesky-auto-log
           path: scripts/logs/bluesky-auto.log
