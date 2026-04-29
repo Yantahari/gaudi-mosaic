@@ -287,7 +287,7 @@
     "id": "w5-wed",
     "date": "2026-04-29",
     "type": "quote",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
@@ -301,7 +301,13 @@
         "lang": "ja",
         "text": "🇯🇵 「El color en els objectes és la vida.」\n\nカサ・バトリョがその証拠です。ファサードは日光とともに色を変えます。虹色のトレンカディスは夜明けに輝き、夕暮れには深みを増します。\n\nあと42日。\n\n#ガウディ #建築"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkmqqgzqj62q",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkmqqhcika2i",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkmqqhkaz52u"
+    ],
+    "published_at": "2026-04-29T09:07:20.474297+00:00"
   },
   {
     "id": "special-dia-treball",
