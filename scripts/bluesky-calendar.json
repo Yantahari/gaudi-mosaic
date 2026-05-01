@@ -313,7 +313,7 @@
     "id": "special-dia-treball",
     "date": "2026-05-01",
     "type": "special",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
@@ -327,7 +327,13 @@
         "lang": "ja",
         "text": "🇯🇵 トレンカディスは職人の芸術。\n\nガウディは左官、陶芸家、鍛冶屋と共に働きました。グエル公園のすべての破片は手作業で置かれました。\n\nメーデーに — すべての傑作の裏に何千もの手があることを。\n\nあと40日。\n\n#メーデー #ガウディ"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkrr4ug2dz2s",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkrr4unjgi2g",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mkrr4uvglc2x"
+    ],
+    "published_at": "2026-05-01T08:57:35.808313+00:00"
   },
   {
     "id": "w6-mon",
