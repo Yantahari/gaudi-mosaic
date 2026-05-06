@@ -359,7 +359,7 @@
     "id": "w6-wed",
     "date": "2026-05-06",
     "type": "quote",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
@@ -373,7 +373,13 @@
         "lang": "ja",
         "text": "🇯🇵 「Res no és art si no prové de la natura.」\n\nSFの柱は木を、カサ・バトリョのファサードは海を、グエル邸の煙突はキノコを模しています。ガウディは自然をコピーせず、理解しました。\n\nあと35日。\n\n#ガウディ #建築"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3ml6esgqkzn2q",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3ml6esh67sq2i",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3ml6eshei3b2s"
+    ],
+    "published_at": "2026-05-06T09:21:37.734142+00:00"
   },
   {
     "id": "w6-fri",
