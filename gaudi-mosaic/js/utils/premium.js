@@ -8,7 +8,7 @@ import { renderExportCanvas } from './export.js';
 
 // Feature flag: posa-ho a true només quan el producte Gumroad estigui publicat
 // i el flux estigui testejat end-to-end en producció.
-export const PREMIUM_ENABLED = false;
+export const PREMIUM_ENABLED = true;
 
 const GUMROAD_PRODUCT_URL = 'https://cardom.gumroad.com/l/gaudimosaic-hd';
 const PRICE_LABEL = '4 €';
