@@ -1,0 +1,10 @@
+{
+  "name": "gaudi-mosaic",
+  "version": "1.0.0",
+  "description": "Gaudí Mosaic — Trencadís Creator. Aplicació estàtica + Netlify Functions per la versió premium 4K.",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

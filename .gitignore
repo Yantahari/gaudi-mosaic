@@ -1,9 +1,16 @@
 # Local Netlify folder
 .netlify
 
+# Node dependencies (Netlify Functions + scripts)
+node_modules/
+package-lock.json
+
 # Credencials i secrets
 .env
 rutaalemania-*.json
+
+# Document de governança intern (no publicar al repo públic)
+CEO.md
 
 # Logs i artefactes de Bluesky
 scripts/engagement-log.json
@@ -11,6 +18,7 @@ scripts/following-log.json
 scripts/pending-replies.json
 scripts/reply-candidates.json
 scripts/social-images/
+scripts/logs/
 scripts/__pycache__/
 
 # Documents de treball (no publicar)

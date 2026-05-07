@@ -1,6 +1,10 @@
 [build]
   publish = "."
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # Service Worker: no cachejar mai (el navegador ha de verificar actualitzacions)
 [[headers]]
   for = "/sw.js"

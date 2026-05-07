@@ -5,6 +5,7 @@
 
 import { getState, emit, subscribe } from '../state.js';
 import { t } from '../i18n/i18n.js';
+import { startPremiumPurchase, PREMIUM_ENABLED } from './premium.js';
 
 /**
  * Inicialitza el sistema d'exportació
@@ -14,9 +15,13 @@ export function initExport() {
 }
 
 /**
- * Renderitza el mosaic a un canvas d'exportació a 2x resolució
+ * Renderitza el mosaic a un canvas d'exportació.
+ * @param {Object} [opts]
+ * @param {number} [opts.scale=2] Multiplicador de resolució (2 = estàndard, 4 = HD imprimible)
+ * @param {boolean} [opts.watermark=true] Si dibuixa la marca d'aigua "gaudimosaic.art"
  */
-function renderExportCanvas() {
+export function renderExportCanvas(opts = {}) {
+  const { scale = 2, watermark = true } = opts;
   const state = getState();
 
   // Calcular el bounding box de totes les peces
@@ -40,8 +45,7 @@ function renderExportCanvas() {
   const contentW = maxX - minX;
   const contentH = maxY - minY;
 
-  // Exportar a 2x resolució per alta qualitat
-  const scale = 2;
+  // Exportar al multiplicador demanat (2 = estàndard, 4 = HD imprimible)
   const exportCanvas = document.createElement('canvas');
   exportCanvas.width = contentW * scale;
   exportCanvas.height = contentH * scale;
@@ -103,8 +107,10 @@ function renderExportCanvas() {
     });
   });
 
-  // Watermark subtil a la cantonada inferior dreta
-  drawWatermark(eCtx, contentW, contentH);
+  // Watermark subtil a la cantonada inferior dreta (opcional)
+  if (watermark) {
+    drawWatermark(eCtx, contentW, contentH);
+  }
 
   return exportCanvas;
 }
@@ -242,7 +248,7 @@ function showShareModal(exportCanvas) {
     btnRow.appendChild(shareBtn);
   }
 
-  // Botó descarregar
+  // Botó descarregar (gratuït, amb watermark, 2x)
   const dlBtn = document.createElement('button');
   dlBtn.className = canShare ? 'break-btn cancel' : 'break-btn use';
   dlBtn.textContent = '↓ ' + t('share.downloadBtn');
@@ -257,6 +263,36 @@ function showShareModal(exportCanvas) {
   btnRow.appendChild(dlBtn);
 
   body.appendChild(btnRow);
+
+  // --- Bloc de compra premium 4K (només si està habilitat) ---
+  if (!PREMIUM_ENABLED) {
+    // Premium desactivat — saltem completament la secció
+  } else {
+  const premiumBlock = document.createElement('div');
+  premiumBlock.style.cssText = `
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(212,168,67,0.15);
+    text-align: center;
+  `;
+
+  const premiumLabel = document.createElement('p');
+  premiumLabel.style.cssText = 'margin: 0 0 10px; font-size: 12px; color: rgba(245,236,215,0.55); line-height: 1.5;';
+  premiumLabel.innerHTML = `Vols la <strong>versió imprimible 4K</strong> sense marca d'aigua?`;
+
+  const premiumBtn = document.createElement('button');
+  premiumBtn.className = 'break-btn use';
+  premiumBtn.style.cssText = 'background: linear-gradient(135deg, rgba(212,168,67,0.95), rgba(184,134,46,0.95)); color: #1C1914;';
+  premiumBtn.textContent = '✦ Comprar versió 4K · 4 €';
+  premiumBtn.addEventListener('click', () => {
+    close();
+    startPremiumPurchase();
+  });
+
+  premiumBlock.appendChild(premiumLabel);
+  premiumBlock.appendChild(premiumBtn);
+  body.appendChild(premiumBlock);
+  }
 
   // --- Montar ---
   modal.appendChild(header);
