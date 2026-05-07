@@ -144,6 +144,16 @@ function setupHeaderActions() {
     exportBtn.addEventListener('click', () => emit('export:png'));
   }
 
+  // Foto → mosaic
+  const photoBtn = document.getElementById('photoBtn');
+  if (photoBtn) {
+    photoBtn.addEventListener('click', async () => {
+      // Càrrega lazy: només importar el mòdul quan l'usuari clica
+      const { openPhotoUploadModal } = await import('./photoUpload.js');
+      openPhotoUploadModal();
+    });
+  }
+
   // Guardar
   const saveBtn = document.getElementById('saveBtn');
   if (saveBtn) {

@@ -221,6 +221,28 @@ export function duplicatePiece(index) {
 }
 
 /**
+ * Substitueix totes les peces del llenç de cop. Usat pel
+ * generador de mosaic des de foto (~2000 peces) on cridar
+ * addPiece n vegades faria n snapshots d'historial = catàstrofe.
+ *
+ * Crea UN sol snapshot d'historial (l'estat anterior, perquè
+ * l'undo retorni al llenç buit/anterior) i emet un sol render.
+ */
+export function replacePieces(newPieces) {
+  saveHistory();
+  state.placedPieces = newPieces.map(p => ({
+    ...p,
+    id: generateId(),
+    layer: state.activeLayer,
+    rotation: p.rotation || 0,
+    scale: p.scale || 1
+  }));
+  state.selectedPiece = null;
+  emit('canvas:render');
+  emit('pieces:change');
+}
+
+/**
  * Neteja tot el llenç
  */
 export function clearCanvas() {
