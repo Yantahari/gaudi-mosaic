@@ -3,7 +3,7 @@
 // Estratègia cache-first per funcionar offline
 // =====================================================
 
-const CACHE_NAME = 'gaudi-mosaic-v4';
+const CACHE_NAME = 'gaudi-mosaic-v5';
 
 // Assets essencials per funcionar offline.
 // Paths relatius a la ubicació del SW (arrel del site).
@@ -46,6 +46,7 @@ const CORE_ASSETS = [
   './js/utils/export.js',
   './js/utils/storage.js',
   './js/utils/helpers.js',
+  './js/utils/premium.js',
 
   // i18n
   './js/i18n/i18n.js',
