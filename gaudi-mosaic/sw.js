@@ -3,7 +3,17 @@
 // Estratègia cache-first per funcionar offline
 // =====================================================
 
-const CACHE_NAME = 'gaudi-mosaic-v7';
+// Caches separades per propòsit: bumpear codi NO invalida textures (~80 MB).
+//   - CODE_CACHE: HTML, CSS, JS, manifest, icones, og-image (bumpea sovint)
+//   - TEXTURE_CACHE: rajoles ceràmiques (~80 MB, bumpea molt rarament)
+//   - FONT_CACHE: Google Fonts (extern, stale-while-revalidate)
+const CODE_CACHE = 'gm-code-v8';
+const TEXTURE_CACHE = 'gm-textures-v1';
+const FONT_CACHE = 'gm-fonts-v1';
+const KEEP_CACHES = new Set([CODE_CACHE, TEXTURE_CACHE, FONT_CACHE]);
+
+// Compatibilitat enrere amb el codi que encara fa servir CACHE_NAME
+const CACHE_NAME = CODE_CACHE;
 
 // Assets essencials per funcionar offline.
 // Paths relatius a la ubicació del SW (arrel del site).
@@ -86,13 +96,13 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// ---- Activació: netegem caches antigues ----
+// ---- Activació: netegem caches antigues, conservem les que volem ----
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
       .then(keys => Promise.all(
         keys
-          .filter(key => key !== CACHE_NAME)
+          .filter(key => !KEEP_CACHES.has(key))
           .map(key => caches.delete(key))
       ))
       .then(() => self.clients.claim())
@@ -151,7 +161,7 @@ async function cacheFirst(request) {
   }
 }
 
-// Cache-first lazy: com cache-first, però guarda textures al primer ús
+// Cache-first lazy: textures, persisteixen al TEXTURE_CACHE (no s'invaliden amb bumps de codi)
 async function cacheFirstLazy(request) {
   const cached = await caches.match(request);
   if (cached) return cached;
@@ -159,7 +169,7 @@ async function cacheFirstLazy(request) {
   try {
     const response = await fetch(request);
     if (response.ok) {
-      const cache = await caches.open(CACHE_NAME);
+      const cache = await caches.open(TEXTURE_CACHE);
       cache.put(request, response.clone());
     }
     return response;
@@ -168,9 +178,9 @@ async function cacheFirstLazy(request) {
   }
 }
 
-// Stale-while-revalidate: servir del cache i actualitzar en segon pla
+// Stale-while-revalidate: Google Fonts, persisteix al FONT_CACHE
 async function staleWhileRevalidate(request) {
-  const cache = await caches.open(CACHE_NAME);
+  const cache = await caches.open(FONT_CACHE);
   const cached = await cache.match(request);
 
   const fetchPromise = fetch(request).then(response => {
