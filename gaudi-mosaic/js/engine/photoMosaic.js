@@ -68,7 +68,39 @@ export async function generatePhotoMosaic(referenceImg, opts = {}) {
 
   onProgress(0.25, 'Componiendo mosaic…');
 
-  const placements = [];
+  // Capa de fons: la pròpia imatge borrosa i enfosquida.
+  // Replica el comportament del Python: omple els forats entre fragments
+  // amb el color real de la foto, no amb el fons negre del llenç.
+  const bgCanvas = document.createElement('canvas');
+  bgCanvas.width = outW;
+  bgCanvas.height = outH;
+  const bgCtx = bgCanvas.getContext('2d');
+  // Capa fosca per multiplicar (la imatge sortirà enfosquida)
+  bgCtx.fillStyle = '#000';
+  bgCtx.fillRect(0, 0, outW, outH);
+  // Imatge borrosa amb opacitat reduïda → efecte multiply lleuger
+  bgCtx.filter = 'blur(6px)';
+  bgCtx.globalAlpha = 0.45;
+  bgCtx.drawImage(referenceImg, 0, 0, outW, outH);
+  bgCtx.filter = 'none';
+  bgCtx.globalAlpha = 1.0;
+
+  const bgPolygon = [
+    { x: 0, y: 0 },
+    { x: outW, y: 0 },
+    { x: outW, y: outH },
+    { x: 0, y: outH }
+  ];
+  const placements = [{
+    canvas: bgCanvas,
+    x: 0,
+    y: 0,
+    w: outW,
+    h: outH,
+    rotation: 0,
+    polygon: bgPolygon,
+    isBackground: true  // marcador per UI/futurs filtres
+  }];
   const totalCells = gridCols * gridRows;
   let processed = 0;
 
