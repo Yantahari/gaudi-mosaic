@@ -82,15 +82,15 @@ function showPurchaseModal(token) {
   const intro = document.createElement('p');
   intro.style.cssText = 'margin: 0 0 16px; line-height: 1.55; color: rgba(245,236,215,0.85);';
   intro.innerHTML = `
-    Descarrega el teu mosaic en alta resolució <strong>4×</strong>, sense marca d'aigua,
-    llest per imprimir en A2 a 300 DPI.
+    Descarrega el teu mosaic en <strong>resolució 4K</strong>, sense marca d'aigua,
+    llest per imprimir.
   `;
   body.appendChild(intro);
 
   const details = document.createElement('ul');
   details.style.cssText = 'margin: 0 0 20px; padding-left: 20px; color: rgba(245,236,215,0.7); line-height: 1.7; font-size: 13px;';
   details.innerHTML = `
-    <li>Resolució 4× (~4× la mida estàndard, ideal per impressió)</li>
+    <li>Resolució 4K (mínim 3840 px al costat llarg)</li>
     <li>Sense marca d'aigua</li>
     <li>Pagament únic, descàrrega immediata</li>
     <li>Processat per Gumroad (factura amb IVA inclosa)</li>
@@ -234,7 +234,11 @@ function showPurchaseModal(token) {
     // Render asíncron perquè el navegador pugui actualitzar UI primer
     setTimeout(() => {
       try {
-        const hdCanvas = renderExportCanvas({ scale: 4, watermark: false });
+        const hdCanvas = renderExportCanvas({
+          scale: 4,
+          watermark: false,
+          minLongEdge: 3840  // garantia "4K real" fins i tot per mosaics petits
+        });
         triggerDownload(hdCanvas);
         setStatus(`<span style="color: rgba(140,210,140,0.95);">✓ Descàrrega iniciada. Gràcies!</span>`);
         cancelBtn.textContent = 'Tancar';

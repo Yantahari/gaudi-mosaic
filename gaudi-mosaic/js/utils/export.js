@@ -17,11 +17,14 @@ export function initExport() {
 /**
  * Renderitza el mosaic a un canvas d'exportació.
  * @param {Object} [opts]
- * @param {number} [opts.scale=2] Multiplicador de resolució (2 = estàndard, 4 = HD imprimible)
+ * @param {number} [opts.scale=2] Multiplicador mínim de resolució (2 = estàndard, 4 = HD imprimible)
  * @param {boolean} [opts.watermark=true] Si dibuixa la marca d'aigua "gaudimosaic.art"
+ * @param {number} [opts.minLongEdge=0] Píxels mínims al costat llarg de la sortida.
+ *   Si el bounding box renderitzat a `scale` és més petit, l'escala s'augmenta
+ *   automàticament per garantir aquest mínim. Útil per la versió premium 4K.
  */
 export function renderExportCanvas(opts = {}) {
-  const { scale = 2, watermark = true } = opts;
+  const { scale: requestedScale = 2, watermark = true, minLongEdge = 0 } = opts;
   const state = getState();
 
   // Calcular el bounding box de totes les peces
@@ -45,10 +48,18 @@ export function renderExportCanvas(opts = {}) {
   const contentW = maxX - minX;
   const contentH = maxY - minY;
 
-  // Exportar al multiplicador demanat (2 = estàndard, 4 = HD imprimible)
+  // Calculem l'escala efectiva: com a mínim la sol·licitada, però
+  // augmentem-la si cal per garantir el `minLongEdge`. Així mosaics
+  // petits s'escalen al mínim 4K en lloc de quedar-se a 1500px.
+  const naturalLongEdge = Math.max(contentW, contentH);
+  const minScaleForLongEdge = minLongEdge > 0
+    ? minLongEdge / naturalLongEdge
+    : 0;
+  const scale = Math.max(requestedScale, minScaleForLongEdge);
+
   const exportCanvas = document.createElement('canvas');
-  exportCanvas.width = contentW * scale;
-  exportCanvas.height = contentH * scale;
+  exportCanvas.width = Math.round(contentW * scale);
+  exportCanvas.height = Math.round(contentH * scale);
   const eCtx = exportCanvas.getContext('2d');
 
   eCtx.scale(scale, scale);
