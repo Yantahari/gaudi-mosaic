@@ -425,7 +425,7 @@
     "id": "w7-wed",
     "date": "2026-05-13",
     "type": "quote",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
@@ -439,7 +439,13 @@
         "lang": "ja",
         "text": "🇯🇵 「L'arbre prop del meu taller: aquest és el meu mestre.」\n\nガウディはエンジニアの目で木を研究しました。サグラダ・ファミリアの柱は石の木 — 彼の最後の教訓です。\n\nあと28日。\n\n#ガウディ #建築"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mlpz6albo52s",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mlpz6aqeyr2s",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mlpz6att6s2a"
+    ],
+    "published_at": "2026-05-13T09:41:23.902746+00:00"
   },
   {
     "id": "w7-fri",
