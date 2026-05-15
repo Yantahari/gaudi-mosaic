@@ -451,7 +451,7 @@
     "id": "w7-fri",
     "date": "2026-05-15",
     "type": "educational",
-    "published": false,
+    "published": true,
     "posts": [
       {
         "lang": "ca",
@@ -465,7 +465,13 @@
         "lang": "ja",
         "text": "🇯🇵 グエル邸の煙突はトレンカディスで覆われた巨大なキノコです。それぞれが異なります。\n\nガウディは機能的な要素を彫刻に変えました。煙突でさえも芸術に。\n\nあと26日。\n\n#ガウディ #トレンカディス"
       }
-    ]
+    ],
+    "published_uris": [
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mlv2abvkg22a",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mlv2ac5erz2q",
+      "at://did:plc:ot45u5w6ybqh2z6gupd2rco2/app.bsky.feed.post/3mlv2acgdwq24"
+    ],
+    "published_at": "2026-05-15T09:43:45.123475+00:00"
   },
   {
     "id": "w8-mon",
